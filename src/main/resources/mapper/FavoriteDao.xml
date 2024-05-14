@@ -12,8 +12,7 @@
 
     <!--查询单个-->
     <select id="queryById" resultMap="FavoriteMap">
-        select
-iduser_idcollection_idfavorite_content_idfavorite_time
+        select iduser_idcollection_idfavorite_content_idfavorite_time
         from favorite
         where id = #{id}
     </select>
@@ -21,7 +20,7 @@ iduser_idcollection_idfavorite_content_idfavorite_time
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="FavoriteMap">
         select
-iduser_idcollection_idfavorite_content_idfavorite_time
+        iduser_idcollection_idfavorite_content_idfavorite_time
         from favorite
         <where>
             <if test="id != null">
@@ -76,7 +75,7 @@ iduser_idcollection_idfavorite_content_idfavorite_time
         insert into favorite(user_idcollection_idfavorite_content_idfavorite_time)
         values
         <foreach collection="entities" item="entity" separator=",">
-        (#{entity.userId}#{entity.collectionId}#{entity.favoriteContentId}#{entity.favoriteTime})
+            (#{entity.userId}#{entity.collectionId}#{entity.favoriteContentId}#{entity.favoriteTime})
         </foreach>
     </insert>
 
@@ -87,7 +86,8 @@ iduser_idcollection_idfavorite_content_idfavorite_time
             (#{entity.userId}#{entity.collectionId}#{entity.favoriteContentId}#{entity.favoriteTime})
         </foreach>
         on duplicate key update
-user_id = values(user_id)collection_id = values(collection_id)favorite_content_id = values(favorite_content_id)favorite_time = values(favorite_time)
+        user_id = values(user_id)collection_id = values(collection_id)favorite_content_id =
+        values(favorite_content_id)favorite_time = values(favorite_time)
     </insert>
 
     <!--通过主键修改数据-->
@@ -112,7 +112,9 @@ user_id = values(user_id)collection_id = values(collection_id)favorite_content_i
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from favorite where id = #{id}
+        delete
+        from favorite
+        where id = #{id}
     </delete>
 
 </mapper>

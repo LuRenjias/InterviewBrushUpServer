@@ -14,8 +14,7 @@
 
     <!--查询单个-->
     <select id="queryById" resultMap="CommentMap">
-        select
-iduser_idcategory_idcomment_contentcomment_timeparent_comment_idcategory
+        select iduser_idcategory_idcomment_contentcomment_timeparent_comment_idcategory
         from comment
         where id = #{id}
     </select>
@@ -23,7 +22,7 @@ iduser_idcategory_idcomment_contentcomment_timeparent_comment_idcategory
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="CommentMap">
         select
-iduser_idcategory_idcomment_contentcomment_timeparent_comment_idcategory
+        iduser_idcategory_idcomment_contentcomment_timeparent_comment_idcategory
         from comment
         <where>
             <if test="id != null">
@@ -90,7 +89,7 @@ iduser_idcategory_idcomment_contentcomment_timeparent_comment_idcategory
         insert into comment(user_idcategory_idcomment_contentcomment_timeparent_comment_idcategory)
         values
         <foreach collection="entities" item="entity" separator=",">
-        (#{entity.userId}#{entity.categoryId}#{entity.commentContent}#{entity.commentTime}#{entity.parentCommentId}#{entity.category})
+            (#{entity.userId}#{entity.categoryId}#{entity.commentContent}#{entity.commentTime}#{entity.parentCommentId}#{entity.category})
         </foreach>
     </insert>
 
@@ -101,7 +100,8 @@ iduser_idcategory_idcomment_contentcomment_timeparent_comment_idcategory
             (#{entity.userId}#{entity.categoryId}#{entity.commentContent}#{entity.commentTime}#{entity.parentCommentId}#{entity.category})
         </foreach>
         on duplicate key update
-user_id = values(user_id)category_id = values(category_id)comment_content = values(comment_content)comment_time = values(comment_time)parent_comment_id = values(parent_comment_id)category = values(category)
+        user_id = values(user_id)category_id = values(category_id)comment_content = values(comment_content)comment_time
+        = values(comment_time)parent_comment_id = values(parent_comment_id)category = values(category)
     </insert>
 
     <!--通过主键修改数据-->
@@ -132,7 +132,9 @@ user_id = values(user_id)category_id = values(category_id)comment_content = valu
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from comment where id = #{id}
+        delete
+        from comment
+        where id = #{id}
     </delete>
 
 </mapper>

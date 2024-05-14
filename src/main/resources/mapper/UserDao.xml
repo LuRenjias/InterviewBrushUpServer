@@ -20,8 +20,7 @@
 
     <!--查询单个-->
     <select id="queryById" resultMap="UserMap">
-        select
-idopenidphone_numbernicknameavatar_urlgenderfollowing_countfollowers_countuser_identityregistration_timelast_login_timelast_login_iplast_login_device
+        select idopenidphone_numbernicknameavatar_urlgenderfollowing_countfollowers_countuser_identityregistration_timelast_login_timelast_login_iplast_login_device
         from user
         where id = #{id}
     </select>
@@ -29,7 +28,7 @@ idopenidphone_numbernicknameavatar_urlgenderfollowing_countfollowers_countuser_i
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="UserMap">
         select
-idopenidphone_numbernicknameavatar_urlgenderfollowing_countfollowers_countuser_identityregistration_timelast_login_timelast_login_iplast_login_device
+        idopenidphone_numbernicknameavatar_urlgenderfollowing_countfollowers_countuser_identityregistration_timelast_login_timelast_login_iplast_login_device
         from user
         <where>
             <if test="id != null">
@@ -129,21 +128,27 @@ idopenidphone_numbernicknameavatar_urlgenderfollowing_countfollowers_countuser_i
     </insert>
 
     <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into user(openidphone_numbernicknameavatar_urlgenderfollowing_countfollowers_countuser_identityregistration_timelast_login_timelast_login_iplast_login_device)
+        insert into
+        user(openidphone_numbernicknameavatar_urlgenderfollowing_countfollowers_countuser_identityregistration_timelast_login_timelast_login_iplast_login_device)
         values
         <foreach collection="entities" item="entity" separator=",">
-        (#{entity.openid}#{entity.phoneNumber}#{entity.nickname}#{entity.avatarUrl}#{entity.gender}#{entity.followingCount}#{entity.followersCount}#{entity.userIdentity}#{entity.registrationTime}#{entity.lastLoginTime}#{entity.lastLoginIp}#{entity.lastLoginDevice})
+            (#{entity.openid}#{entity.phoneNumber}#{entity.nickname}#{entity.avatarUrl}#{entity.gender}#{entity.followingCount}#{entity.followersCount}#{entity.userIdentity}#{entity.registrationTime}#{entity.lastLoginTime}#{entity.lastLoginIp}#{entity.lastLoginDevice})
         </foreach>
     </insert>
 
     <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into user(openidphone_numbernicknameavatar_urlgenderfollowing_countfollowers_countuser_identityregistration_timelast_login_timelast_login_iplast_login_device)
+        insert into
+        user(openidphone_numbernicknameavatar_urlgenderfollowing_countfollowers_countuser_identityregistration_timelast_login_timelast_login_iplast_login_device)
         values
         <foreach collection="entities" item="entity" separator=",">
             (#{entity.openid}#{entity.phoneNumber}#{entity.nickname}#{entity.avatarUrl}#{entity.gender}#{entity.followingCount}#{entity.followersCount}#{entity.userIdentity}#{entity.registrationTime}#{entity.lastLoginTime}#{entity.lastLoginIp}#{entity.lastLoginDevice})
         </foreach>
         on duplicate key update
-openid = values(openid)phone_number = values(phone_number)nickname = values(nickname)avatar_url = values(avatar_url)gender = values(gender)following_count = values(following_count)followers_count = values(followers_count)user_identity = values(user_identity)registration_time = values(registration_time)last_login_time = values(last_login_time)last_login_ip = values(last_login_ip)last_login_device = values(last_login_device)
+        openid = values(openid)phone_number = values(phone_number)nickname = values(nickname)avatar_url =
+        values(avatar_url)gender = values(gender)following_count = values(following_count)followers_count =
+        values(followers_count)user_identity = values(user_identity)registration_time =
+        values(registration_time)last_login_time = values(last_login_time)last_login_ip =
+        values(last_login_ip)last_login_device = values(last_login_device)
     </insert>
 
     <!--通过主键修改数据-->
@@ -192,7 +197,9 @@ openid = values(openid)phone_number = values(phone_number)nickname = values(nick
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from user where id = #{id}
+        delete
+        from user
+        where id = #{id}
     </delete>
 
 </mapper>

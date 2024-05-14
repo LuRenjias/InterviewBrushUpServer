@@ -15,8 +15,7 @@
 
     <!--查询单个-->
     <select id="queryById" resultMap="ChoiceQuestionMap">
-        select
-idquestionoptionstypecategorycorrect_optionpublish_timeviews_count
+        select idquestionoptionstypecategorycorrect_optionpublish_timeviews_count
         from choice_question
         where id = #{id}
     </select>
@@ -24,7 +23,7 @@ idquestionoptionstypecategorycorrect_optionpublish_timeviews_count
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="ChoiceQuestionMap">
         select
-idquestionoptionstypecategorycorrect_optionpublish_timeviews_count
+        idquestionoptionstypecategorycorrect_optionpublish_timeviews_count
         from choice_question
         <where>
             <if test="id != null">
@@ -97,7 +96,7 @@ idquestionoptionstypecategorycorrect_optionpublish_timeviews_count
         insert into choice_question(questionoptionstypecategorycorrect_optionpublish_timeviews_count)
         values
         <foreach collection="entities" item="entity" separator=",">
-        (#{entity.question}#{entity.options}#{entity.type}#{entity.category}#{entity.correctOption}#{entity.publishTime}#{entity.viewsCount})
+            (#{entity.question}#{entity.options}#{entity.type}#{entity.category}#{entity.correctOption}#{entity.publishTime}#{entity.viewsCount})
         </foreach>
     </insert>
 
@@ -108,7 +107,8 @@ idquestionoptionstypecategorycorrect_optionpublish_timeviews_count
             (#{entity.question}#{entity.options}#{entity.type}#{entity.category}#{entity.correctOption}#{entity.publishTime}#{entity.viewsCount})
         </foreach>
         on duplicate key update
-question = values(question)options = values(options)type = values(type)category = values(category)correct_option = values(correct_option)publish_time = values(publish_time)views_count = values(views_count)
+        question = values(question)options = values(options)type = values(type)category = values(category)correct_option
+        = values(correct_option)publish_time = values(publish_time)views_count = values(views_count)
     </insert>
 
     <!--通过主键修改数据-->
@@ -142,7 +142,9 @@ question = values(question)options = values(options)type = values(type)category 
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from choice_question where id = #{id}
+        delete
+        from choice_question
+        where id = #{id}
     </delete>
 
 </mapper>

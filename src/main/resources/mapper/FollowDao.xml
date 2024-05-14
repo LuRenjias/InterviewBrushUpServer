@@ -11,8 +11,7 @@
 
     <!--查询单个-->
     <select id="queryById" resultMap="FollowMap">
-        select
-iduser_idfollower_user_idfollow_time
+        select iduser_idfollower_user_idfollow_time
         from follow
         where id = #{id}
     </select>
@@ -20,7 +19,7 @@ iduser_idfollower_user_idfollow_time
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="FollowMap">
         select
-iduser_idfollower_user_idfollow_time
+        iduser_idfollower_user_idfollow_time
         from follow
         <where>
             <if test="id != null">
@@ -69,7 +68,7 @@ iduser_idfollower_user_idfollow_time
         insert into follow(user_idfollower_user_idfollow_time)
         values
         <foreach collection="entities" item="entity" separator=",">
-        (#{entity.userId}#{entity.followerUserId}#{entity.followTime})
+            (#{entity.userId}#{entity.followerUserId}#{entity.followTime})
         </foreach>
     </insert>
 
@@ -80,7 +79,7 @@ iduser_idfollower_user_idfollow_time
             (#{entity.userId}#{entity.followerUserId}#{entity.followTime})
         </foreach>
         on duplicate key update
-user_id = values(user_id)follower_user_id = values(follower_user_id)follow_time = values(follow_time)
+        user_id = values(user_id)follower_user_id = values(follower_user_id)follow_time = values(follow_time)
     </insert>
 
     <!--通过主键修改数据-->
@@ -102,7 +101,9 @@ user_id = values(user_id)follower_user_id = values(follower_user_id)follow_time 
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from follow where id = #{id}
+        delete
+        from follow
+        where id = #{id}
     </delete>
 
 </mapper>

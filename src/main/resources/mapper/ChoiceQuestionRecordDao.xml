@@ -12,8 +12,7 @@
 
     <!--查询单个-->
     <select id="queryById" resultMap="ChoiceQuestionRecordMap">
-        select
-iduser_idchoice_question_iduser_optionchoice_time
+        select iduser_idchoice_question_iduser_optionchoice_time
         from choice_question_record
         where id = #{id}
     </select>
@@ -21,7 +20,7 @@ iduser_idchoice_question_iduser_optionchoice_time
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="ChoiceQuestionRecordMap">
         select
-iduser_idchoice_question_iduser_optionchoice_time
+        iduser_idchoice_question_iduser_optionchoice_time
         from choice_question_record
         <where>
             <if test="id != null">
@@ -76,7 +75,7 @@ iduser_idchoice_question_iduser_optionchoice_time
         insert into choice_question_record(user_idchoice_question_iduser_optionchoice_time)
         values
         <foreach collection="entities" item="entity" separator=",">
-        (#{entity.userId}#{entity.choiceQuestionId}#{entity.userOption}#{entity.choiceTime})
+            (#{entity.userId}#{entity.choiceQuestionId}#{entity.userOption}#{entity.choiceTime})
         </foreach>
     </insert>
 
@@ -87,7 +86,8 @@ iduser_idchoice_question_iduser_optionchoice_time
             (#{entity.userId}#{entity.choiceQuestionId}#{entity.userOption}#{entity.choiceTime})
         </foreach>
         on duplicate key update
-user_id = values(user_id)choice_question_id = values(choice_question_id)user_option = values(user_option)choice_time = values(choice_time)
+        user_id = values(user_id)choice_question_id = values(choice_question_id)user_option =
+        values(user_option)choice_time = values(choice_time)
     </insert>
 
     <!--通过主键修改数据-->
@@ -112,7 +112,9 @@ user_id = values(user_id)choice_question_id = values(choice_question_id)user_opt
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from choice_question_record where id = #{id}
+        delete
+        from choice_question_record
+        where id = #{id}
     </delete>
 
 </mapper>

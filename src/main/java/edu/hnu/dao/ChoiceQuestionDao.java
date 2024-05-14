@@ -1,6 +1,7 @@
 package edu.hnu.dao;
 
 import edu.hnu.entity.ChoiceQuestion;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
  * @author lx
  * @since 2024-05-14 10:10:54
  */
+@Mapper
 public interface ChoiceQuestionDao {
 
     /**

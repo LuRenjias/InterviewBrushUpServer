@@ -17,8 +17,7 @@
 
     <!--查询单个-->
     <select id="queryById" resultMap="ArticleMap">
-        select
-iduser_idtitlecontentcreate_timelikes_countfavorites_countcategoryviews_countstatus
+        select iduser_idtitlecontentcreate_timelikes_countfavorites_countcategoryviews_countstatus
         from article
         where id = #{id}
     </select>
