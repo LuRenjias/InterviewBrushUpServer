@@ -101,6 +101,11 @@
             <version>6.1.0</version>
         </dependency>
 
+        <!--访问其他服务端-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+        </dependency>
 
     </dependencies>
 
