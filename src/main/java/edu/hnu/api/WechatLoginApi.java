@@ -7,5 +7,8 @@ import org.springframework.web.service.annotation.HttpExchange;
 @HttpExchange("/sns")
 public interface WechatLoginApi {
     @GetExchange("/jscode2session")
-    String wechatLogin(String appid, String secret, String js_code, String grant_type);
+    String wechatLogin(@RequestParam("appid") String appid,
+                       @RequestParam("secret") String secret,
+                       @RequestParam("js_code") String js_code,
+                       @RequestParam("grant_type") String grant_type);
 }
