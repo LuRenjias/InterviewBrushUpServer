@@ -1,6 +1,5 @@
 package edu.hnu.service.impl;
 
-import com.github.pagehelper.Page;
 import edu.hnu.entity.Comment;
 import edu.hnu.dao.CommentDao;
 import edu.hnu.service.CommentService;

@@ -1,6 +1,5 @@
 package edu.hnu.service.impl;
 
-import com.github.pagehelper.Page;
 import edu.hnu.entity.IntegratedQuestion;
 import edu.hnu.dao.IntegratedQuestionDao;
 import edu.hnu.service.IntegratedQuestionService;

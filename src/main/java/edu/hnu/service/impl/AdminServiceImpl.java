@@ -1,6 +1,5 @@
 package edu.hnu.service.impl;
 
-import com.github.pagehelper.Page;
 import edu.hnu.entity.Admin;
 import edu.hnu.dao.AdminDao;
 import edu.hnu.service.AdminService;

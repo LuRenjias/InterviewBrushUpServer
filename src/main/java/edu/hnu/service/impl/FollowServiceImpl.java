@@ -1,6 +1,5 @@
 package edu.hnu.service.impl;
 
-import com.github.pagehelper.Page;
 import edu.hnu.entity.Follow;
 import edu.hnu.dao.FollowDao;
 import edu.hnu.service.FollowService;

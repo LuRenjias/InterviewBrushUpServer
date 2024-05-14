@@ -1,6 +1,5 @@
 package edu.hnu.service.impl;
 
-import com.github.pagehelper.Page;
 import edu.hnu.dao.ChoiceQuestionDao;
 import edu.hnu.entity.ChoiceQuestion;
 import edu.hnu.service.ChoiceQuestionService;

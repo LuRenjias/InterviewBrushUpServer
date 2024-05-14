@@ -1,6 +1,5 @@
 package edu.hnu.service.impl;
 
-import com.github.pagehelper.Page;
 import edu.hnu.entity.User;
 import edu.hnu.dao.UserDao;
 import edu.hnu.service.UserService;

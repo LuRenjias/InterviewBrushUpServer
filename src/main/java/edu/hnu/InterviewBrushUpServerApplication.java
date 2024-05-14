@@ -8,7 +8,7 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 
 @SpringBootApplication
 // 指定 mapper 接口所在的包，以及 mapper 接口使用的注解。
-@MapperScan(basePackages = "edu.hnu.mapper", annotationClass = Mapper.class)
+@MapperScan(basePackages = "edu.hnu.dao", annotationClass = Mapper.class)
 @ServletComponentScan // 使过滤器生效
 public class InterviewBrushUpServerApplication {
 

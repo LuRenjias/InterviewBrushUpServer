@@ -1,6 +1,5 @@
 package edu.hnu.service.impl;
 
-import com.github.pagehelper.Page;
 import edu.hnu.entity.Collection;
 import edu.hnu.dao.CollectionDao;
 import edu.hnu.service.CollectionService;

@@ -1,6 +1,5 @@
 package edu.hnu.service.impl;
 
-import com.github.pagehelper.Page;
 import edu.hnu.entity.Favorite;
 import edu.hnu.dao.FavoriteDao;
 import edu.hnu.service.FavoriteService;
