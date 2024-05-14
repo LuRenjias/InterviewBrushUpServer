@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.hnu.dao.IntegratedQuestionDao">
+
+    <resultMap type="edu.hnu.entity.IntegratedQuestion" id="IntegratedQuestionMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="question" column="question" jdbcType="VARCHAR"/>
+        <result property="answer" column="answer" jdbcType="VARCHAR"/>
+        <result property="category" column="category" jdbcType="INTEGER"/>
+        <result property="importanceLevel" column="importance_level" jdbcType="INTEGER"/>
+        <result property="publishTime" column="publish_time" jdbcType="TIMESTAMP"/>
+        <result property="viewsCount" column="views_count" jdbcType="INTEGER"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="IntegratedQuestionMap">
+        select
+iduser_idquestionanswercategoryimportance_levelpublish_timeviews_countstatus
+        from integrated_question
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="IntegratedQuestionMap">
+        select
+iduser_idquestionanswercategoryimportance_levelpublish_timeviews_countstatus
+        from integrated_question
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="question != null and question != ''">
+                and question = #{question}
+            </if>
+            <if test="answer != null and answer != ''">
+                and answer = #{answer}
+            </if>
+            <if test="category != null">
+                and category = #{category}
+            </if>
+            <if test="importanceLevel != null">
+                and importance_level = #{importanceLevel}
+            </if>
+            <if test="publishTime != null">
+                and publish_time = #{publishTime}
+            </if>
+            <if test="viewsCount != null">
+                and views_count = #{viewsCount}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from integrated_question
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="question != null and question != ''">
+                and question = #{question}
+            </if>
+            <if test="answer != null and answer != ''">
+                and answer = #{answer}
+            </if>
+            <if test="category != null">
+                and category = #{category}
+            </if>
+            <if test="importanceLevel != null">
+                and importance_level = #{importanceLevel}
+            </if>
+            <if test="publishTime != null">
+                and publish_time = #{publishTime}
+            </if>
+            <if test="viewsCount != null">
+                and views_count = #{viewsCount}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into integrated_question(user_idquestionanswercategoryimportance_levelpublish_timeviews_countstatus)
+        values (#{userId}#{question}#{answer}#{category}#{importanceLevel}#{publishTime}#{viewsCount}#{status})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into integrated_question(user_idquestionanswercategoryimportance_levelpublish_timeviews_countstatus)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.userId}#{entity.question}#{entity.answer}#{entity.category}#{entity.importanceLevel}#{entity.publishTime}#{entity.viewsCount}#{entity.status})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into integrated_question(user_idquestionanswercategoryimportance_levelpublish_timeviews_countstatus)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.userId}#{entity.question}#{entity.answer}#{entity.category}#{entity.importanceLevel}#{entity.publishTime}#{entity.viewsCount}#{entity.status})
+        </foreach>
+        on duplicate key update
+user_id = values(user_id)question = values(question)answer = values(answer)category = values(category)importance_level = values(importance_level)publish_time = values(publish_time)views_count = values(views_count)status = values(status)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update integrated_question
+        <set>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="question != null and question != ''">
+                question = #{question},
+            </if>
+            <if test="answer != null and answer != ''">
+                answer = #{answer},
+            </if>
+            <if test="category != null">
+                category = #{category},
+            </if>
+            <if test="importanceLevel != null">
+                importance_level = #{importanceLevel},
+            </if>
+            <if test="publishTime != null">
+                publish_time = #{publishTime},
+            </if>
+            <if test="viewsCount != null">
+                views_count = #{viewsCount},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from integrated_question where id = #{id}
+    </delete>
+
+</mapper>
+

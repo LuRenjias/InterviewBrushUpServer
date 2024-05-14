@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>edu.hnu</groupId>
-    <artifactId>InterviewBrushUpServer</artifactId>
+    <artifactId>InterviewBrushUpServer</artifactId>z
     <version>0.0.1-SNAPSHOT</version>
     <name>InterviewBrushUpServer</name>
     <description>InterviewBrushUpServer</description>
@@ -87,6 +87,20 @@
             <groupId>jakarta.servlet</groupId>
             <artifactId>jakarta.servlet-api</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>javax.annotation</groupId>
+            <artifactId>javax.annotation-api</artifactId>
+            <version>1.3.2</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper-spring-boot-starter -->
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper</artifactId>
+            <version>6.1.0</version>
+        </dependency>
+
 
     </dependencies>
 

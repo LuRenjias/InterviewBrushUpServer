@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.hnu.dao.CollectionDao">
+
+    <resultMap type="edu.hnu.entity.Collection" id="CollectionMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="collectionName" column="collection_name" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="contentCount" column="content_count" jdbcType="INTEGER"/>
+        <result property="module" column="module" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="CollectionMap">
+        select
+iduser_idcollection_namecreate_timecontent_countmodule
+        from collection
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="CollectionMap">
+        select
+iduser_idcollection_namecreate_timecontent_countmodule
+        from collection
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="collectionName != null and collectionName != ''">
+                and collection_name = #{collectionName}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="contentCount != null">
+                and content_count = #{contentCount}
+            </if>
+            <if test="module != null">
+                and module = #{module}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from collection
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="collectionName != null and collectionName != ''">
+                and collection_name = #{collectionName}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="contentCount != null">
+                and content_count = #{contentCount}
+            </if>
+            <if test="module != null">
+                and module = #{module}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into collection(user_idcollection_namecreate_timecontent_countmodule)
+        values (#{userId}#{collectionName}#{createTime}#{contentCount}#{module})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into collection(user_idcollection_namecreate_timecontent_countmodule)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.userId}#{entity.collectionName}#{entity.createTime}#{entity.contentCount}#{entity.module})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into collection(user_idcollection_namecreate_timecontent_countmodule)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.userId}#{entity.collectionName}#{entity.createTime}#{entity.contentCount}#{entity.module})
+        </foreach>
+        on duplicate key update
+user_id = values(user_id)collection_name = values(collection_name)create_time = values(create_time)content_count = values(content_count)module = values(module)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update collection
+        <set>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="collectionName != null and collectionName != ''">
+                collection_name = #{collectionName},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="contentCount != null">
+                content_count = #{contentCount},
+            </if>
+            <if test="module != null">
+                module = #{module},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from collection where id = #{id}
+    </delete>
+
+</mapper>
+

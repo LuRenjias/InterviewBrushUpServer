@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.hnu.dao.ArticleDao">
+
+    <resultMap type="edu.hnu.entity.Article" id="ArticleMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="title" column="title" jdbcType="VARCHAR"/>
+        <result property="content" column="content" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="likesCount" column="likes_count" jdbcType="INTEGER"/>
+        <result property="favoritesCount" column="favorites_count" jdbcType="INTEGER"/>
+        <result property="category" column="category" jdbcType="INTEGER"/>
+        <result property="viewsCount" column="views_count" jdbcType="INTEGER"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="ArticleMap">
+        select
+iduser_idtitlecontentcreate_timelikes_countfavorites_countcategoryviews_countstatus
+        from article
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="ArticleMap">
+        select
+iduser_idtitlecontentcreate_timelikes_countfavorites_countcategoryviews_countstatus
+        from article
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="title != null and title != ''">
+                and title = #{title}
+            </if>
+            <if test="content != null and content != ''">
+                and content = #{content}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="likesCount != null">
+                and likes_count = #{likesCount}
+            </if>
+            <if test="favoritesCount != null">
+                and favorites_count = #{favoritesCount}
+            </if>
+            <if test="category != null">
+                and category = #{category}
+            </if>
+            <if test="viewsCount != null">
+                and views_count = #{viewsCount}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from article
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="title != null and title != ''">
+                and title = #{title}
+            </if>
+            <if test="content != null and content != ''">
+                and content = #{content}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="likesCount != null">
+                and likes_count = #{likesCount}
+            </if>
+            <if test="favoritesCount != null">
+                and favorites_count = #{favoritesCount}
+            </if>
+            <if test="category != null">
+                and category = #{category}
+            </if>
+            <if test="viewsCount != null">
+                and views_count = #{viewsCount}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into article(user_idtitlecontentcreate_timelikes_countfavorites_countcategoryviews_countstatus)
+        values (#{userId}#{title}#{content}#{createTime}#{likesCount}#{favoritesCount}#{category}#{viewsCount}#{status})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into article(user_idtitlecontentcreate_timelikes_countfavorites_countcategoryviews_countstatus)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.userId}#{entity.title}#{entity.content}#{entity.createTime}#{entity.likesCount}#{entity.favoritesCount}#{entity.category}#{entity.viewsCount}#{entity.status})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into article(user_idtitlecontentcreate_timelikes_countfavorites_countcategoryviews_countstatus)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.userId}#{entity.title}#{entity.content}#{entity.createTime}#{entity.likesCount}#{entity.favoritesCount}#{entity.category}#{entity.viewsCount}#{entity.status})
+        </foreach>
+        on duplicate key update
+user_id = values(user_id)title = values(title)content = values(content)create_time = values(create_time)likes_count = values(likes_count)favorites_count = values(favorites_count)category = values(category)views_count = values(views_count)status = values(status)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update article
+        <set>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="title != null and title != ''">
+                title = #{title},
+            </if>
+            <if test="content != null and content != ''">
+                content = #{content},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="likesCount != null">
+                likes_count = #{likesCount},
+            </if>
+            <if test="favoritesCount != null">
+                favorites_count = #{favoritesCount},
+            </if>
+            <if test="category != null">
+                category = #{category},
+            </if>
+            <if test="viewsCount != null">
+                views_count = #{viewsCount},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from article where id = #{id}
+    </delete>
+
+</mapper>
+
