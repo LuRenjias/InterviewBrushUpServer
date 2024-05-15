@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -35,7 +36,7 @@ public class Article {
     /**
      * 文章_创建时间
      */
-    private Date createTime;
+    private LocalDateTime createTime;
     /**
      * 文章_点赞数量
      */

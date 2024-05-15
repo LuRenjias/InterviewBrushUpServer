@@ -1,7 +1,9 @@
 package edu.hnu.controller;
 
 import edu.hnu.entity.Admin;
+import edu.hnu.entity.PageBean;
 import edu.hnu.service.AdminService;
+import edu.hnu.utils.Result;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,16 +25,16 @@ public class AdminController {
     private AdminService adminService;
 
     /**
-     * 分页查询
+     * 分页查询文章数据.
      *
-     * @param admin 筛选条件
-     * @param pageRequest      分页对象
-     * @return 查询结果
+     * @param page 当前页码
+     * @param pageSize 一页展示的文章数量
      */
-    /*@GetMapping
-    public ResponseEntity<Page<Admin>> queryByPage(Admin admin, PageRequest pageRequest) {
-        return ResponseEntity.ok(this.adminService.queryByPage(admin, pageRequest));
-    }*/
+    @GetMapping("getArticle")
+    public Result queryByPage(Integer page,Integer pageSize) {
+        PageBean pageBean=adminService.ListArticle(page,pageSize);
+        return Result.success(pageBean);
+    }
 
     /**
      * 通过主键查询单条数据
@@ -78,5 +80,22 @@ public class AdminController {
         return ResponseEntity.ok(this.adminService.deleteById(id));
     }
 
+    /**
+     * 审核文章
+     */
+    @PostMapping("addArticle")
+    public Result addArticle(Integer id){
+        this.adminService.updateAStateById(id);
+        return Result.success();
+    }
+
+    /**
+     * 审核题目
+     */
+    @PostMapping("addQuestion")
+    public Result addQuestion(Integer id){
+        this.adminService.updateQStateById(id);
+        return Result.success();
+    }
 }
 

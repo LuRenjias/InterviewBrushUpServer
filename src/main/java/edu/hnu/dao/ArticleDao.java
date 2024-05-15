@@ -3,6 +3,7 @@ package edu.hnu.dao;
 import edu.hnu.entity.Article;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -22,6 +23,14 @@ public interface ArticleDao {
      * @return 实例对象
      */
     Article queryById(Integer id);
+
+    /**
+     * 查询所有文章数据
+     *
+     * @return 文章数据对象列表
+     */
+    @Select("select * from article")
+    List<Article> list();
 
     /**
      * 查询指定行数据
@@ -80,6 +89,14 @@ public interface ArticleDao {
      * @return 影响行数
      */
     int deleteById(Integer id);
+
+    /**
+     * 修改审核状态为成功
+     *
+     * @param id 文章 id
+     * @return 影响行数
+     */
+    int updateStateById(Integer id);
 
 }
 

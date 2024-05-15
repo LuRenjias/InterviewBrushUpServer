@@ -13,7 +13,7 @@
 
     <!--查询单个-->
     <select id="queryById" resultMap="AdminMap">
-        select idphone_numberpasswordnicknameavatar_urlgender
+        select id,phone_number,password,nickname,avatar_url,gender
         from admin
         where id = #{id}
     </select>

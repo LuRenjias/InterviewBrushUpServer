@@ -158,6 +158,13 @@ user_id = values(user_id)title = values(title)content = values(content)create_ti
         </set>
         where id = #{id}
     </update>
+    <update id="updateStateById">
+        update article
+        <set>
+            status = 1
+        </set>
+        where id = #{id}
+    </update>
 
     <!--通过主键删除-->
     <delete id="deleteById">
