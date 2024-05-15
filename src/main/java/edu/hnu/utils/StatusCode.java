@@ -1,5 +1,8 @@
 package edu.hnu.utils;
 
+import lombok.Getter;
+
+@Getter
 public enum StatusCode {
     // openid获取异常
     OPENID_ERROR(500),
@@ -15,7 +18,4 @@ public enum StatusCode {
         this.code = code;
     }
 
-    public int getCode() {
-        return code;
-    }
 }
