@@ -2,6 +2,9 @@ package edu.hnu.service;
 
 import com.github.pagehelper.Page;
 import edu.hnu.entity.Admin;
+import edu.hnu.entity.PageBean;
+
+import java.awt.print.Pageable;
 
 
 /**
@@ -12,45 +15,48 @@ import edu.hnu.entity.Admin;
  */
 public interface AdminService {
 
-    /**
-     * 通过ID查询单条数据
-     *
-     * @param id 主键
-     * @return 实例对象
-     */
-    Admin queryById(Integer id);
+  /**
+   * 通过ID查询单条数据
+   *
+   * @param id 主键
+   * @return 实例对象
+   */
+  Admin queryById(Integer id);
 
-    /**
-     * 分页查询
-     *
-     * @param admin 筛选条件
-     * @param pageRequest      分页对象
-     * @return 查询结果
-     */
-    //Page<Admin> queryByPage(Admin admin, PageRequest pageRequest);
+  /**
+   * 查询当前页的文章数据.
+   *
+   * @param page 页码
+   * @param pageSize 一页展示的文章数量
+   * @return 文章数据的封装类
+   */
+  PageBean ListArticle(Integer page,Integer pageSize);
 
-    /**
-     * 新增数据
-     *
-     * @param admin 实例对象
-     * @return 实例对象
-     */
-    Admin insert(Admin admin);
+  /**
+   * 新增数据
+   *
+   * @param admin 实例对象
+   * @return 实例对象
+   */
+  Admin insert(Admin admin);
 
-    /**
-     * 修改数据
-     *
-     * @param admin 实例对象
-     * @return 实例对象
-     */
-    Admin update(Admin admin);
+  /**
+   * 修改数据
+   *
+   * @param admin 实例对象
+   * @return 实例对象
+   */
+  Admin update(Admin admin);
 
-    /**
-     * 通过主键删除数据
-     *
-     * @param id 主键
-     * @return 是否成功
-     */
-    boolean deleteById(Integer id);
+  /**
+   * 通过主键删除数据
+   *
+   * @param id 主键
+   * @return 是否成功
+   */
+  boolean deleteById(Integer id);
 
+  void updateAStateById(Integer id);
+
+  void updateQStateById(Integer id);
 }

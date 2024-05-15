@@ -80,5 +80,11 @@ public interface IntegratedQuestionDao {
      */
     int deleteById(Integer id);
 
+    /**
+     * 通过主键更新审核状态.
+     *
+     * @param id 主键
+     */
+    void updateStateById(Integer id);
 }
 
