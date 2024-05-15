@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * (User)实体类
@@ -55,11 +55,11 @@ public class User {
     /**
      * 用户_注册时间
      */
-    private Date registrationTime;
+    private LocalDateTime registrationTime;
     /**
      * 用户_上次登录时间
      */
-    private Date lastLoginTime;
+    private LocalDateTime lastLoginTime;
     /**
      * 用户_上次登录IP
      */
@@ -68,7 +68,6 @@ public class User {
      * 用户_上次登录设备
      */
     private String lastLoginDevice;
-
 
 }
 

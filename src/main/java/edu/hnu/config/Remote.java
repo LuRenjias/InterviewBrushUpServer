@@ -9,4 +9,6 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "remote")
 public class Remote {
     private String baseUrl;
+    private String appid;
+    private String secret;
 }

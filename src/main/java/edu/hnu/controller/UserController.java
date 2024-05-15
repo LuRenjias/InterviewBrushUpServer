@@ -1,21 +1,17 @@
 package edu.hnu.controller;
 
-import com.github.pagehelper.Page;
 import edu.hnu.entity.User;
 import edu.hnu.service.UserService;
-import org.springframework.http.ResponseEntity;
+import edu.hnu.utils.JwtUtils;
+import edu.hnu.utils.Result;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
-/**
- * (User)表控制层
- *
- * @author lx
- * @since 2024-05-14 10:13:32
- */
 @RestController
 @RequestMapping("user")
+@Slf4j
 public class UserController {
     /**
      * 服务对象
@@ -24,59 +20,24 @@ public class UserController {
     private UserService userService;
 
     /**
-     * 分页查询
-     *
-     * @param user 筛选条件
-     * @param pageRequest      分页对象
-     * @return 查询结果
+     * 微信小程序登录.
      */
-    /*@GetMapping
-    public ResponseEntity<Page<User>> queryByPage(User user, PageRequest pageRequest) {
-        return ResponseEntity.ok(this.userService.queryByPage(user, pageRequest));
-    }*/
+    @GetMapping("weChatLogin")
+    public Result weChatLogin(String code) {
+        log.info("weChatLogin: 微信小程序登录");
 
-    /**
-     * 通过主键查询单条数据
-     *
-     * @param id 主键
-     * @return 单条数据
-     */
-    @GetMapping("{id}")
-    public ResponseEntity<User> queryById(@PathVariable("id") Integer id) {
-        return ResponseEntity.ok(this.userService.queryById(id));
-    }
+        String openId = userService.getOpenId(code);
 
-    /**
-     * 新增数据
-     *
-     * @param user 实体
-     * @return 新增结果
-     */
-    @PostMapping
-    public ResponseEntity<User> add(User user) {
-        return ResponseEntity.ok(this.userService.insert(user));
-    }
+        if (openId == null) {
+            return Result.error();
+        }
 
-    /**
-     * 编辑数据
-     *
-     * @param user 实体
-     * @return 编辑结果
-     */
-    @PutMapping
-    public ResponseEntity<User> edit(User user) {
-        return ResponseEntity.ok(this.userService.update(user));
-    }
+        User user = userService.getUserByOpenId(openId);
 
-    /**
-     * 删除数据
-     *
-     * @param id 主键
-     * @return 删除是否成功
-     */
-    @DeleteMapping
-    public ResponseEntity<Boolean> deleteById(Integer id) {
-        return ResponseEntity.ok(this.userService.deleteById(id));
+        String token = JwtUtils.getToken(user);
+
+        return Result.success(token);
+
     }
 
 }
