@@ -8,7 +8,10 @@ public enum StatusCode {
     OPENID_ERROR(500),
 
     // 上传的头像文件为空
-    FILE_IS_EMPTY(501);
+    FILE_IS_EMPTY(501),
+
+    // 上传的头像不是图片格式
+    ILLEGAL_FORMAT(502);
 
     // 状态码
     private final int code;

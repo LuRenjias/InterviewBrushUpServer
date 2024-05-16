@@ -37,8 +37,73 @@
     </select>
 
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into user(openid, phone_number, nickname, avatar_url, gender, following_count, followers_count,
+                         user_identity, registration_time, last_login_time, last_login_ip, last_login_device)
+            value (#{openid}, #{phoneNumber}, #{nickname}, #{avatarUrl}, #{gender}, #{followingCount},
+                   #{followersCount},
+                   #{userIdentity}, #{registrationTime}, #{lastLoginTime}, #{lastLoginIp}, #{lastLoginDevice})
     </insert>
 
+    <update id="update">
+        update user
+        <set>
+            <if test="openid != null">
+                openid = #{openid},
+            </if>
+            <if test="phoneNumber != null">
+                phone_number = #{phoneNumber},
+            </if>
+            <if test="nickname != null">
+                nickname = #{nickname},
+            </if>
+            <if test="avatarUrl != null">
+                avatar_url = #{avatarUrl},
+            </if>
+            <if test="gender != null">
+                gender = #{gender},
+            </if>
+            <if test="followingCount != null">
+                following_count = #{followingCount},
+            </if>
+            <if test="followersCount != null">
+                followers_count = #{followersCount},
+            </if>
+            <if test="userIdentity != null">
+                user_identity = #{userIdentity},
+            </if>
+            <if test="registrationTime != null">
+                registration_time = #{registrationTime},
+            </if>
+            <if test="lastLoginTime != null">
+                last_login_time = #{lastLoginTime},
+            </if>
+            <if test="lastLoginIp != null">
+                last_login_ip = #{lastLoginIp},
+            </if>
+            <if test="lastLoginDevice != null">
+                last_login_device = #{lastLoginDevice},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="queryById" resultMap="UserMap">
+        select id,
+               openid,
+               phone_number,
+               nickname,
+               avatar_url,
+               gender,
+               following_count,
+               followers_count,
+               user_identity,
+               registration_time,
+               last_login_time,
+               last_login_ip,
+               last_login_device
+        from user
+        where id = #{id}
+    </select>
 
 </mapper>
 

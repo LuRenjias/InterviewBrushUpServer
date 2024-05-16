@@ -28,7 +28,10 @@ public class LoginCheckFilter implements Filter {
         String url = req.getRequestURL().toString();
         log.info("url:{}", url);
         //2.判断请求是否包含有login、register或code，如果包含，放行
-        if (url.contains("Login") || url.contains("register") || url.contains("sendCaptcha")) {
+        if (url.contains("weChatLogin")
+                || url.contains("register")
+                || url.contains("sendCaptcha")
+                || url.contains("avatar")) {
             log.info("登录、注册或发送验证码操作，放行");
             filterChain.doFilter(request, response);
             return;

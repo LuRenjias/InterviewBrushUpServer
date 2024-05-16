@@ -19,5 +19,9 @@ public interface UserDao {
 
     int insert(User user);
 
+    int update(User user);
+
+    User queryById(@Param("id") int id);
+
 }
 

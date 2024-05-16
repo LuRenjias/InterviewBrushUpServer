@@ -25,7 +25,7 @@
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="ArticleMap">
         select
-iduser_idtitlecontentcreate_timelikes_countfavorites_countcategoryviews_countstatus
+        iduser_idtitlecontentcreate_timelikes_countfavorites_countcategoryviews_countstatus
         from article
         <where>
             <if test="id != null">
@@ -110,7 +110,7 @@ iduser_idtitlecontentcreate_timelikes_countfavorites_countcategoryviews_countsta
         insert into article(user_idtitlecontentcreate_timelikes_countfavorites_countcategoryviews_countstatus)
         values
         <foreach collection="entities" item="entity" separator=",">
-        (#{entity.userId}#{entity.title}#{entity.content}#{entity.createTime}#{entity.likesCount}#{entity.favoritesCount}#{entity.category}#{entity.viewsCount}#{entity.status})
+            (#{entity.userId}#{entity.title}#{entity.content}#{entity.createTime}#{entity.likesCount}#{entity.favoritesCount}#{entity.category}#{entity.viewsCount}#{entity.status})
         </foreach>
     </insert>
 
@@ -121,7 +121,9 @@ iduser_idtitlecontentcreate_timelikes_countfavorites_countcategoryviews_countsta
             (#{entity.userId}#{entity.title}#{entity.content}#{entity.createTime}#{entity.likesCount}#{entity.favoritesCount}#{entity.category}#{entity.viewsCount}#{entity.status})
         </foreach>
         on duplicate key update
-user_id = values(user_id)title = values(title)content = values(content)create_time = values(create_time)likes_count = values(likes_count)favorites_count = values(favorites_count)category = values(category)views_count = values(views_count)status = values(status)
+        user_id = values(user_id)title = values(title)content = values(content)create_time =
+        values(create_time)likes_count = values(likes_count)favorites_count = values(favorites_count)category =
+        values(category)views_count = values(views_count)status = values(status)
     </insert>
 
     <!--通过主键修改数据-->
@@ -168,7 +170,9 @@ user_id = values(user_id)title = values(title)content = values(content)create_ti
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from article where id = #{id}
+        delete
+        from article
+        where id = #{id}
     </delete>
 
 </mapper>
