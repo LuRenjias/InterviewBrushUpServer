@@ -3,7 +3,10 @@ package edu.hnu.service.impl;
 import cn.hutool.core.io.FileTypeUtil;
 import com.alibaba.fastjson.JSONObject;
 import edu.hnu.api.WechatLoginApi;
+import edu.hnu.dao.ArticleDao;
 import edu.hnu.dao.UserDao;
+import edu.hnu.dto.UserDTO;
+import edu.hnu.entity.Article;
 import edu.hnu.entity.User;
 import edu.hnu.service.UserService;
 import edu.hnu.utils.RandomStringGenerator;
@@ -26,6 +29,9 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
     @Resource
     private UserDao userDao;
+
+    @Resource
+    private ArticleDao articleDao;
 
     @Resource
     private WechatLoginApi wechatLoginApi;
@@ -141,5 +147,19 @@ public class UserServiceImpl implements UserService {
         user.setAvatarUrl(avatarUrl);
         userDao.update(user);
         return 2;
+    }
+
+    @Override
+    public UserDTO userInfo(int id) {
+        User query = userDao.queryById(id);
+
+        Article article = new Article();
+        article.setUserId(id);
+        long articleCount = articleDao.count(article);
+
+        return new UserDTO(query.getId(), query.getNickname(),
+                query.getAvatarUrl(), query.getGender(),
+                query.getFollowingCount(), query.getFollowersCount(),
+                query.getUserIdentity(), articleCount);
     }
 }

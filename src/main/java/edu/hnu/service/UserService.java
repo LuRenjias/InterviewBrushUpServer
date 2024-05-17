@@ -1,6 +1,7 @@
 package edu.hnu.service;
 
 
+import edu.hnu.dto.UserDTO;
 import edu.hnu.entity.User;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,4 +28,9 @@ public interface UserService {
      * 上传头像.
      */
     int uploadAvatar(MultipartFile file, int id) throws IOException;
+
+    /**
+     * 用户信息.
+     */
+    UserDTO userInfo(int id);
 }

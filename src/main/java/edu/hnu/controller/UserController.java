@@ -1,5 +1,6 @@
 package edu.hnu.controller;
 
+import edu.hnu.dto.UserDTO;
 import edu.hnu.entity.User;
 import edu.hnu.service.UserService;
 import edu.hnu.utils.IpUtil;
@@ -76,6 +77,18 @@ public class UserController {
             default -> null;
         };
 
+    }
+
+    /**
+     * 用户信息.
+     */
+    @GetMapping("userInfo")
+    public Result userInfo(@RequestHeader String token) {
+        log.info("userInfo: 用户信息");
+
+        UserDTO userInfo = userService.userInfo(JwtUtils.getUserId(token));
+
+        return Result.success(userInfo);
     }
 
 }
