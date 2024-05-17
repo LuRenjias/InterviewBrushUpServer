@@ -3,6 +3,7 @@ package edu.hnu.dao;
 import edu.hnu.entity.Admin;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -81,5 +82,14 @@ public interface AdminDao {
      */
     int deleteById(Integer id);
 
+    /**
+     * 通过账号密码查询信息
+     *
+     * @param account 账号
+     * @param password 密码
+     * @return 对应 ID
+     */
+    @Select("select admin.id from admin where phone_number=#{account} and password=#{password}")
+    Integer queryByAccountAndPasswd(String account, String password);
 }
 

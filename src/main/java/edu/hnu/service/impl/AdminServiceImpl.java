@@ -2,11 +2,8 @@ package edu.hnu.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import edu.hnu.dao.ArticleDao;
-import edu.hnu.dao.ChoiceQuestionDao;
-import edu.hnu.dao.IntegratedQuestionDao;
+import edu.hnu.dao.*;
 import edu.hnu.entity.*;
-import edu.hnu.dao.AdminDao;
 import edu.hnu.service.AdminService;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +26,8 @@ public class AdminServiceImpl implements AdminService {
   private ChoiceQuestionDao choiceQuestionDao;
   @Resource
   private IntegratedQuestionDao integratedQuestionDao;
+  @Resource
+  private UserDao userDao;
 
   /**
    * 通过ID查询单条数据
@@ -139,9 +138,25 @@ public class AdminServiceImpl implements AdminService {
   @Override
   public PageBean ListUser(Integer page, Integer pageSize) {
     PageHelper.startPage(page, pageSize);
-    List<IntegratedQuestion> listIntegratedQuestion = integratedQuestionDao.list();
-    Page<IntegratedQuestion> p = (Page<IntegratedQuestion>) listIntegratedQuestion;
+    List<User> listUser = userDao.list();
+    Page<User> p = (Page<User>) listUser;
     PageBean pageBean = new PageBean(p.getTotal(), p.getResult());
     return pageBean;
+  }
+
+  @Override
+  public Integer queryByAccountAndPasswd(String account, String password) {
+    return adminDao.queryByAccountAndPasswd(account, password);
+  }
+
+  @Override
+  public void addChoiceQuestion(Integer type, Integer category, String question, String options, String correctOption, String publishTime) {
+    String t = null;
+    if (type == 0) {
+      t="single";
+    } else {
+      t="multiple";
+    }
+    choiceQuestionDao.addQuestion(t, category, question, options, correctOption, publishTime);
   }
 }

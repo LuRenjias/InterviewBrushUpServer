@@ -111,6 +111,11 @@
         = values(correct_option)publish_time = values(publish_time)views_count = values(views_count)
     </insert>
 
+    <insert id="addQuestion">
+        insert into choice_question(question, options, type, category, correct_option, publish_time, views_count)
+        values (#{question},#{options},#{type},#{category},#{correctOption},#{publishTime},0)
+    </insert>
+
     <!--通过主键修改数据-->
     <update id="update">
         update choice_question

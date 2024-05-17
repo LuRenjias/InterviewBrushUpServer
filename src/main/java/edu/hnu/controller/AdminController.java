@@ -32,6 +32,23 @@ public class AdminController {
   private AdminService adminService;
 
   /**
+   * 管理员登录.
+   *
+   * @param jsonObject 账号密码信息
+   */
+  @PostMapping("login")
+  public Result login(@RequestBody JSONObject jsonObject) {
+    String account = jsonObject.getString("account");
+    String password = jsonObject.getString("password");
+    log.info("管理员登录，账号密码：{},{}", account, password);
+    Integer id = adminService.queryByAccountAndPasswd(account, password);
+    if (id == null) {
+      return Result.error(StatusCode.LOGIN_ERROR);
+    }
+    return Result.success();
+  }
+
+  /**
    * 分页查询文章数据.
    *
    * @param page     当前页码
@@ -58,6 +75,24 @@ public class AdminController {
   }
 
   /**
+   * 添加选择题.
+   *
+   * @param jsonObject 选择题内容
+   */
+  @PostMapping("addChoiceQuestion")
+  public Result addChoiceQuestion(@RequestBody JSONObject jsonObject) {
+    log.info("新增选择题");
+    Integer type = jsonObject.getInteger("type");
+    Integer category = jsonObject.getInteger("category");
+    String question = jsonObject.getString("question");
+    String options = jsonObject.getString("options");
+    String correct_option = jsonObject.getString("correct_option");
+    String publish_time = jsonObject.getString("publish_time");
+    adminService.addChoiceQuestion(type,category,question,options,correct_option,publish_time);
+    return Result.success();
+  }
+
+  /**
    * 分页查询八股数据.
    *
    * @param page     当前页码
@@ -81,6 +116,13 @@ public class AdminController {
     log.info("分页查询用户数据，参数：{},{}", page, pageSize);
     PageBean pageBean = adminService.ListUser(page, pageSize);
     return Result.success(pageBean);
+  }
+
+  @PostMapping("disableUser")
+  public Result disableUser(@RequestBody JSONObject jsonObject) {
+    log.info("禁用用户");
+    //adminService.updateUserState
+    return Result.success();
   }
 
   /**
@@ -132,8 +174,8 @@ public class AdminController {
    *
    * @param jsonObject 封装的 idList 集合
    */
-  @PostMapping("addArticle")
-  public Result addArticle(@RequestBody JSONObject jsonObject) {
+  @PostMapping("examiningArticle")
+  public Result examiningArticle(@RequestBody JSONObject jsonObject) {
     log.info("审核文章");
     JSONArray jsonArray = jsonObject.getJSONArray("idList");
     if (jsonArray == null || jsonArray.isEmpty()) {
@@ -149,8 +191,8 @@ public class AdminController {
    *
    * @param jsonObject 封装的 idList 集合
    */
-  @PostMapping("addQuestion")
-  public Result addQuestion(@RequestBody JSONObject jsonObject) {
+  @PostMapping("examiningQuestion")
+  public Result examiningQuestion(@RequestBody JSONObject jsonObject) {
     log.info("审核题目");
     JSONArray jsonArray = jsonObject.getJSONArray("idList");
     if (jsonArray == null || jsonArray.isEmpty()) {

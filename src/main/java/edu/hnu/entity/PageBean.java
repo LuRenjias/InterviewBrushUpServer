@@ -14,5 +14,5 @@ import java.util.List;
 @AllArgsConstructor
 public class PageBean {
   private long total; // 数据列表
-  private List rows; // 总记录数
+  private List data; // 总记录数
 }

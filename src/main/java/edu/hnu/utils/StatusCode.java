@@ -14,7 +14,10 @@ public enum StatusCode {
     ILLEGAL_FORMAT(502),
 
     // 传入 id 数量为 0
-    NO_SELECT_ID(600);
+    NO_SELECT_ID(600),
+
+    // 管理员登录异常，数据库没有对应信息或密码有无
+    LOGIN_ERROR(601);
 
     // 状态码
     private final int code;

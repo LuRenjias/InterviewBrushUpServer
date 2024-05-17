@@ -87,4 +87,25 @@ public interface AdminService {
    * @return 用户数据的封装类
    */
   PageBean ListUser(Integer page, Integer pageSize);
+
+  /**
+   * 管理员通过账号密码登录.
+   *
+   * @param account 账号
+   * @param password 密码
+   * @return 对应 id
+   */
+  Integer queryByAccountAndPasswd(String account, String password);
+
+  /**
+   * 新增单选题.
+   *
+   * @param type 类型
+   * @param category 类别
+   * @param question 问题
+   * @param options 选项
+   * @param correctOption 答案
+   * @param publishTime 发布时间
+   */
+  void addChoiceQuestion(Integer type, Integer category, String question, String options, String correctOption, String publishTime);
 }

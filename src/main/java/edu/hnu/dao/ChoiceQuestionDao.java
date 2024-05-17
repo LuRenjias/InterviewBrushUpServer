@@ -89,5 +89,7 @@ public interface ChoiceQuestionDao {
    */
   @Select("select * from choice_question")
   List<ChoiceQuestion> list();
+
+  void addQuestion(String type, Integer category, String question, String options, String correctOption, String publishTime);
 }
 
