@@ -93,10 +93,10 @@ public interface ArticleDao {
     /**
      * 修改审核状态为成功
      *
-     * @param id 文章 id
+     * @param idList 文章 id
      * @return 影响行数
      */
-    int updateStateById(Integer id);
+    int updateStateByIdList(List<Integer> idList);
 
 }
 

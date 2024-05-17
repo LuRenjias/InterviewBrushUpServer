@@ -5,6 +5,7 @@ import edu.hnu.entity.Admin;
 import edu.hnu.entity.PageBean;
 
 import java.awt.print.Pageable;
+import java.util.List;
 
 
 /**
@@ -56,7 +57,34 @@ public interface AdminService {
    */
   boolean deleteById(Integer id);
 
-  void updateAStateById(Integer id);
+  void updateAStateByIdList(List<Integer> idList);
 
-  void updateQStateById(Integer id);
+  void updateQStateByIdList(List<Integer> idList);
+
+  /**
+   * 查询当前页的题目数据.
+   *
+   * @param page 页码
+   * @param pageSize 一页展示的文章数量
+   * @return 文章数据的封装类
+   */
+  PageBean ListChoiceQuestion(Integer page, Integer pageSize);
+
+  /**
+   * 查询当前页的八股数据.
+   *
+   * @param page 页码
+   * @param pageSize 一页展示的八股数量
+   * @return 八股数据的封装类
+   */
+  PageBean ListIntegratedQuestion(Integer page, Integer pageSize);
+
+  /**
+   * 查询当前页的用户数据.
+   *
+   * @param page 页码
+   * @param pageSize 一页展示的用户数量
+   * @return 用户数据的封装类
+   */
+  PageBean ListUser(Integer page, Integer pageSize);
 }

@@ -3,12 +3,10 @@ package edu.hnu.service.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import edu.hnu.dao.ArticleDao;
+import edu.hnu.dao.ChoiceQuestionDao;
 import edu.hnu.dao.IntegratedQuestionDao;
-import edu.hnu.entity.Admin;
+import edu.hnu.entity.*;
 import edu.hnu.dao.AdminDao;
-import edu.hnu.entity.Article;
-import edu.hnu.entity.IntegratedQuestion;
-import edu.hnu.entity.PageBean;
 import edu.hnu.service.AdminService;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +26,8 @@ public class AdminServiceImpl implements AdminService {
   @Resource
   private ArticleDao articleDao;
   @Resource
+  private ChoiceQuestionDao choiceQuestionDao;
+  @Resource
   private IntegratedQuestionDao integratedQuestionDao;
 
   /**
@@ -46,10 +46,7 @@ public class AdminServiceImpl implements AdminService {
     PageHelper.startPage(page, pageSize);
     List<Article> listArticle = articleDao.list();
     Page<Article> p = (Page<Article>) listArticle;
-    System.out.println(listArticle);
-    System.out.println(p);
     PageBean pageBean = new PageBean(p.getTotal(), p.getResult());
-    System.out.println(pageBean);
     return pageBean;
   }
 
@@ -104,20 +101,47 @@ public class AdminServiceImpl implements AdminService {
   /**
    * 通过主键更新文章审核状态
    *
-   * @param id 主键
+   * @param idList 主键
    */
   @Override
-  public void updateAStateById(Integer id) {
-    this.articleDao.updateStateById(id);
+  public void updateAStateByIdList(List<Integer> idList) {
+    this.articleDao.updateStateByIdList(idList);
   }
 
   /**
    * 通过主键更新题目审核状态
    *
-   * @param id 主键
+   * @param idList 主键
    */
   @Override
-  public void updateQStateById(Integer id) {
-    this.integratedQuestionDao.updateStateById(id);
+  public void updateQStateByIdList(List<Integer> idList) {
+    this.integratedQuestionDao.updateStateByIdList(idList);
+  }
+
+  @Override
+  public PageBean ListChoiceQuestion(Integer page, Integer pageSize) {
+    PageHelper.startPage(page, pageSize);
+    List<ChoiceQuestion> listChoice = choiceQuestionDao.list();
+    Page<ChoiceQuestion> p = (Page<ChoiceQuestion>) listChoice;
+    PageBean pageBean = new PageBean(p.getTotal(), p.getResult());
+    return pageBean;
+  }
+
+  @Override
+  public PageBean ListIntegratedQuestion(Integer page, Integer pageSize) {
+    PageHelper.startPage(page, pageSize);
+    List<IntegratedQuestion> listIntegratedQuestion = integratedQuestionDao.list();
+    Page<IntegratedQuestion> p = (Page<IntegratedQuestion>) listIntegratedQuestion;
+    PageBean pageBean = new PageBean(p.getTotal(), p.getResult());
+    return pageBean;
+  }
+
+  @Override
+  public PageBean ListUser(Integer page, Integer pageSize) {
+    PageHelper.startPage(page, pageSize);
+    List<IntegratedQuestion> listIntegratedQuestion = integratedQuestionDao.list();
+    Page<IntegratedQuestion> p = (Page<IntegratedQuestion>) listIntegratedQuestion;
+    PageBean pageBean = new PageBean(p.getTotal(), p.getResult());
+    return pageBean;
   }
 }

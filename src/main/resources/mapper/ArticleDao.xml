@@ -167,6 +167,16 @@
         </set>
         where id = #{id}
     </update>
+    <update id="updateStateByIdList">
+        update article
+        <set>
+            status = 1
+        </set>
+        where id in
+        <foreach item="item" index="index" collection="idList" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
 
     <!--通过主键删除-->
     <delete id="deleteById">
