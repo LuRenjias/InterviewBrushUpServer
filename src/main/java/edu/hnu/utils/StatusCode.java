@@ -23,7 +23,10 @@ public enum StatusCode {
     DATABASE_ERROR(602),
 
     // 传入数据类型有误
-    DATA_TYPE_ERROR(603);
+    DATA_TYPE_ERROR(603),
+
+    // 传入 id 不存在
+    MISSING_SELECT_ID(604);
 
     // 状态码
     private final int code;

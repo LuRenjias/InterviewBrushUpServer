@@ -108,4 +108,8 @@ public interface AdminService {
    * @param publishTime 发布时间
    */
   void addChoiceQuestion(Integer type, Integer category, String question, String options, String correctOption, String publishTime);
+
+  boolean deleteArticle(List<Integer> list);
+
+  boolean deleteChoiceQuestion(List<Integer> list);
 }

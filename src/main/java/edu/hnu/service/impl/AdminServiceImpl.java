@@ -159,4 +159,14 @@ public class AdminServiceImpl implements AdminService {
     }
     choiceQuestionDao.addQuestion(t, category, question, options, correctOption, publishTime);
   }
+
+  @Override
+  public boolean deleteArticle(List<Integer> list) {
+    return articleDao.deleteByIdList(list)>0;
+  }
+
+  @Override
+  public boolean deleteChoiceQuestion(List<Integer> list) {
+    return choiceQuestionDao.deleteByIdList(list)>0;
+  }
 }

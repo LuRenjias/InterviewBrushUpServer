@@ -98,5 +98,6 @@ public interface ArticleDao {
      */
     int updateStateByIdList(List<Integer> idList);
 
+    int deleteByIdList(List<Integer> idList);
 }
 

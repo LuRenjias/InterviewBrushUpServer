@@ -159,14 +159,45 @@ public class AdminController {
   }
 
   /**
-   * 删除数据
+   * 删除文章数据
    *
-   * @param id 主键
+   * @param jsonObject 包含所有要删除的文章 id
    * @return 删除是否成功
    */
-  @DeleteMapping
-  public ResponseEntity<Boolean> deleteById(Integer id) {
-    return ResponseEntity.ok(this.adminService.deleteById(id));
+  @DeleteMapping("deleteArticle")
+  public Result deleteArticleByIdList(@RequestBody JSONObject jsonObject) {
+    log.info("删除文章");
+    JSONArray jsonArray = jsonObject.getJSONArray("idList");
+    if (jsonArray == null || jsonArray.isEmpty()) {
+      return Result.error(StatusCode.NO_SELECT_ID);
+    }
+    List<Integer> list = jsonArray.toJavaList(Integer.class);
+    if(this.adminService.deleteArticle(list)){
+      return Result.success();
+    } else{
+      return Result.error(StatusCode.MISSING_SELECT_ID);
+    }
+  }
+
+  /**
+   * 删除题目数据
+   *
+   * @param jsonObject 包含所有要删除的题目 id
+   * @return 删除是否成功
+   */
+  @DeleteMapping("deleteChoiceQuestion")
+  public Result deleteChoiceQuestion(@RequestBody JSONObject jsonObject) {
+    log.info("删除题目");
+    JSONArray jsonArray = jsonObject.getJSONArray("idList");
+    if (jsonArray == null || jsonArray.isEmpty()) {
+      return Result.error(StatusCode.NO_SELECT_ID);
+    }
+    List<Integer> list = jsonArray.toJavaList(Integer.class);
+    if(this.adminService.deleteChoiceQuestion(list)){
+      return Result.success();
+    } else{
+      return Result.error(StatusCode.MISSING_SELECT_ID);
+    }
   }
 
   /**

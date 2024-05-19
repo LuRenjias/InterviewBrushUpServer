@@ -151,6 +151,13 @@
         from choice_question
         where id = #{id}
     </delete>
+    <delete id="deleteByIdList">
+        delete from choice_question
+        where id in
+        <foreach item="item" index="index" collection="idList" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
 
 </mapper>
 
