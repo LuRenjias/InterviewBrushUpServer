@@ -17,7 +17,13 @@ public enum StatusCode {
     NO_SELECT_ID(600),
 
     // 管理员登录异常，数据库没有对应信息或密码有无
-    LOGIN_ERROR(601);
+    LOGIN_ERROR(601),
+
+    // 数据库访问数据异常
+    DATABASE_ERROR(602),
+
+    // 传入数据类型有误
+    DATA_TYPE_ERROR(603);
 
     // 状态码
     private final int code;
