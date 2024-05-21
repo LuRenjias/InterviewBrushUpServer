@@ -96,5 +96,7 @@ public interface IntegratedQuestionDao {
    * @param idList 主键
    */
   void updateStateByIdList(List<Integer> idList);
+
+  String queryAnswerById(Integer id);
 }
 

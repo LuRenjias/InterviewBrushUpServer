@@ -93,5 +93,7 @@ public interface ChoiceQuestionDao {
   void addQuestion(String type, Integer category, String question, String options, String correctOption, String publishTime);
 
   Integer deleteByIdList(List<Integer> idList);
+
+  List<ChoiceQuestion> queryByCategory(Integer category);
 }
 

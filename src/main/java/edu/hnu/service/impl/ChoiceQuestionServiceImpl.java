@@ -7,6 +7,7 @@ import edu.hnu.service.ChoiceQuestionService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * (ChoiceQuestion)表服务实现类
@@ -76,5 +77,10 @@ public class ChoiceQuestionServiceImpl implements ChoiceQuestionService {
     @Override
     public boolean deleteById(Integer id) {
         return this.choiceQuestionDao.deleteById(id) > 0;
+    }
+
+    @Override
+    public List<ChoiceQuestion> queryByCategory(Integer category) {
+        return choiceQuestionDao.queryByCategory(category);
     }
 }

@@ -85,6 +85,11 @@
             </if>
         </where>
     </select>
+    <select id="queryByCategory" resultType="edu.hnu.entity.ChoiceQuestion">
+        select *
+        from choice_question
+        where category=#{category}
+    </select>
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
