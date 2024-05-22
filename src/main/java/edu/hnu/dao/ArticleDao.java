@@ -101,6 +101,8 @@ public interface ArticleDao {
 
     int deleteByIdList(List<Integer> idList);
 
+    void updateStateByIdList2(List<Integer> idList);
+
     List<ArticleAbbreviationsDTO> queryAbbreviationsByUserId(@Param("userId") Integer userId);
 
     List<ArticleAbbreviationsDTO> listAllAbbreviations();
