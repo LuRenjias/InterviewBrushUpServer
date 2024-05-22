@@ -57,9 +57,19 @@ public interface AdminService {
    */
   boolean deleteById(Integer id);
 
-  void updateAStateByIdList(List<Integer> idList);
+  /**
+   * 通过主键更新文章审核通过
+   *
+   * @param idList 主键
+   */
+  void updateAStateByIdList1(List<Integer> idList);
 
-  void updateQStateByIdList(List<Integer> idList);
+  /**
+   * 通过主键更新题目审核通过
+   *
+   * @param idList 主键
+   */
+  void updateQStateByIdList1(List<Integer> idList);
 
   /**
    * 查询当前页的题目数据.
@@ -112,4 +122,18 @@ public interface AdminService {
   boolean deleteArticle(List<Integer> list);
 
   boolean deleteChoiceQuestion(List<Integer> list);
+
+  /**
+   * 通过主键更新文章审核不通过
+   *
+   * @param idList 主键
+   */
+  void updateAStateByIdList2(List<Integer> idList);
+
+  /**
+   * 通过主键更新文章审核不通过
+   *
+   * @param idList 主键
+   */
+  void updateQStateByIdList2(List<Integer> idList);
 }

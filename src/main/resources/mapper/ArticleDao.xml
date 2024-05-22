@@ -190,10 +190,20 @@
         </set>
         where id = #{id}
     </update>
-    <update id="updateStateByIdList">
+    <update id="updateStateByIdList1">
         update article
         <set>
             status = 1
+        </set>
+        where id in
+        <foreach item="item" index="index" collection="idList" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+    <update id="updateStateByIdList2">
+        update article
+        <set>
+            status = 2
         </set>
         where id in
         <foreach item="item" index="index" collection="idList" open="(" separator="," close=")">

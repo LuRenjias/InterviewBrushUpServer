@@ -97,24 +97,14 @@ public class AdminServiceImpl implements AdminService {
     return this.adminDao.deleteById(id) > 0;
   }
 
-  /**
-   * 通过主键更新文章审核状态
-   *
-   * @param idList 主键
-   */
   @Override
-  public void updateAStateByIdList(List<Integer> idList) {
-    this.articleDao.updateStateByIdList(idList);
+  public void updateAStateByIdList1(List<Integer> idList) {
+    this.articleDao.updateStateByIdList1(idList);
   }
 
-  /**
-   * 通过主键更新题目审核状态
-   *
-   * @param idList 主键
-   */
   @Override
-  public void updateQStateByIdList(List<Integer> idList) {
-    this.integratedQuestionDao.updateStateByIdList(idList);
+  public void updateQStateByIdList1(List<Integer> idList) {
+    this.integratedQuestionDao.updateStateByIdList1(idList);
   }
 
   @Override
@@ -168,5 +158,15 @@ public class AdminServiceImpl implements AdminService {
   @Override
   public boolean deleteChoiceQuestion(List<Integer> list) {
     return choiceQuestionDao.deleteByIdList(list)>0;
+  }
+
+  @Override
+  public void updateAStateByIdList2(List<Integer> list) {
+    articleDao.updateStateByIdList2(list);
+  }
+
+  @Override
+  public void updateQStateByIdList2(List<Integer> idList) {
+    integratedQuestionDao.updateStateByIdList2(idList);
   }
 }
