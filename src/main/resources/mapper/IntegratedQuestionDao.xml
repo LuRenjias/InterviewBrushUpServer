@@ -16,7 +16,7 @@
 
     <!--查询单个-->
     <select id="queryById" resultMap="IntegratedQuestionMap">
-        select iduser_idquestionanswercategoryimportance_levelpublish_timeviews_countstatus
+        select *
         from integrated_question
         where id = #{id}
     </select>
@@ -91,6 +91,11 @@
                 and status = #{status}
             </if>
         </where>
+    </select>
+    <select id="queryAnswerById" resultType="java.lang.String">
+        select answer
+        from integrated_question
+        where id=#{id}
     </select>
 
     <!--新增所有列-->

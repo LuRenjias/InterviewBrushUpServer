@@ -77,4 +77,9 @@ public class IntegratedQuestionServiceImpl implements IntegratedQuestionService 
     public boolean deleteById(Integer id) {
         return this.integratedQuestionDao.deleteById(id) > 0;
     }
+
+    @Override
+    public String queryAnswerById(Integer id) {
+        return integratedQuestionDao.queryAnswerById(id);
+    }
 }

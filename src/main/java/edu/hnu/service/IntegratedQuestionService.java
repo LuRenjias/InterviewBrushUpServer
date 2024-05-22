@@ -53,4 +53,11 @@ public interface IntegratedQuestionService {
      */
     boolean deleteById(Integer id);
 
+    /**
+     * 通过主键查询答案
+     *
+     * @param id 主键
+     * @return 答案字符串
+     */
+    String queryAnswerById(Integer id);
 }
