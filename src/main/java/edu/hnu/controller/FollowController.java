@@ -1,12 +1,18 @@
 package edu.hnu.controller;
 
 import com.github.pagehelper.Page;
+import edu.hnu.dto.UserAbbreviationsDTO;
 import edu.hnu.entity.Follow;
 import edu.hnu.service.FollowService;
+import edu.hnu.utils.JwtUtils;
+import edu.hnu.utils.Result;
+import edu.hnu.utils.StatusCode;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * (Follow)表控制层
@@ -16,6 +22,7 @@ import javax.annotation.Resource;
  */
 @RestController
 @RequestMapping("follow")
+@Slf4j
 public class FollowController {
     /**
      * 服务对象
@@ -24,59 +31,59 @@ public class FollowController {
     private FollowService followService;
 
     /**
-     * 分页查询
-     *
-     * @param follow 筛选条件
-     * @param pageRequest      分页对象
-     * @return 查询结果
+     * 添加关注.
      */
-   /* @GetMapping
-    public ResponseEntity<Page<Follow>> queryByPage(Follow follow, PageRequest pageRequest) {
-        return ResponseEntity.ok(this.followService.queryByPage(follow, pageRequest));
-    }*/
+    @PostMapping("addFollow")
+    public Result addFollow(Integer userId, Integer followerUserId) {
+        log.info("addFollow: 添加关注");
 
-    /**
-     * 通过主键查询单条数据
-     *
-     * @param id 主键
-     * @return 单条数据
-     */
-    @GetMapping("{id}")
-    public ResponseEntity<Follow> queryById(@PathVariable("id") Integer id) {
-        return ResponseEntity.ok(this.followService.queryById(id));
+        int i = followService.addFollow(userId, followerUserId);
+
+        return switch (i) {
+            case 0 -> Result.error(StatusCode.REPEAT_FOLLOW);
+            case 1 -> Result.success();
+            default -> null;
+        };
     }
 
     /**
-     * 新增数据
-     *
-     * @param follow 实体
-     * @return 新增结果
+     * 移除关注.
      */
-    @PostMapping
-    public ResponseEntity<Follow> add(Follow follow) {
-        return ResponseEntity.ok(this.followService.insert(follow));
+    @DeleteMapping("removeFollow")
+    public Result removeFollow(Integer userId, Integer followerUserId) {
+        log.info("removeFollow: 移除关注");
+
+        int i = followService.removeFollow(userId, followerUserId);
+
+        return switch (i) {
+            case 0 -> Result.error(StatusCode.REPEAT_REMOVE_FOLLOW);
+            case 1 -> Result.success();
+            default -> null;
+        };
     }
 
     /**
-     * 编辑数据
-     *
-     * @param follow 实体
-     * @return 编辑结果
+     * 关注列表.
      */
-    @PutMapping
-    public ResponseEntity<Follow> edit(Follow follow) {
-        return ResponseEntity.ok(this.followService.update(follow));
+    @GetMapping("followList")
+    public Result followList(Integer userId) {
+        log.info("followList: 关注列表");
+
+        List<UserAbbreviationsDTO> userAbbreviationsDTOS = followService.followList(userId);
+
+        return Result.success(userAbbreviationsDTOS);
     }
 
     /**
-     * 删除数据
-     *
-     * @param id 主键
-     * @return 删除是否成功
+     * 粉丝列表.
      */
-    @DeleteMapping
-    public ResponseEntity<Boolean> deleteById(Integer id) {
-        return ResponseEntity.ok(this.followService.deleteById(id));
+    @GetMapping("fanList")
+    public Result fanList(Integer userId) {
+        log.info("fanList: 粉丝列表");
+
+        List<UserAbbreviationsDTO> userAbbreviationsDTOS = followService.fanList(userId);
+
+        return Result.success(userAbbreviationsDTOS);
     }
 
 }

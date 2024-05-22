@@ -1,7 +1,10 @@
 package edu.hnu.service;
 
 import com.github.pagehelper.Page;
+import edu.hnu.dto.UserAbbreviationsDTO;
 import edu.hnu.entity.Follow;
+
+import java.util.List;
 
 
 /**
@@ -13,44 +16,22 @@ import edu.hnu.entity.Follow;
 public interface FollowService {
 
     /**
-     * 通过ID查询单条数据
-     *
-     * @param id 主键
-     * @return 实例对象
+     * 添加关注.
      */
-    Follow queryById(Integer id);
+    int addFollow(Integer userId, Integer followerUserId);
 
     /**
-     * 分页查询
-     *
-     * @param follow 筛选条件
-     * @param pageRequest      分页对象
-     * @return 查询结果
+     * 移除关注.
      */
-    //Page<Follow> queryByPage(Follow follow, PageRequest pageRequest);
+    int removeFollow(Integer userId, Integer followerUserId);
 
     /**
-     * 新增数据
-     *
-     * @param follow 实例对象
-     * @return 实例对象
+     * 关注列表.
      */
-    Follow insert(Follow follow);
+    List<UserAbbreviationsDTO> followList(Integer userId);
 
     /**
-     * 修改数据
-     *
-     * @param follow 实例对象
-     * @return 实例对象
+     * 粉丝列表.
      */
-    Follow update(Follow follow);
-
-    /**
-     * 通过主键删除数据
-     *
-     * @param id 主键
-     * @return 是否成功
-     */
-    boolean deleteById(Integer id);
-
+    List<UserAbbreviationsDTO> fanList(Integer userId);
 }

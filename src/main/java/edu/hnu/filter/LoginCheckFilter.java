@@ -31,7 +31,8 @@ public class LoginCheckFilter implements Filter {
         if (url.contains("weChatLogin")
                 || url.contains("register")
                 || url.contains("sendCaptcha")
-                || url.contains("avatar")) {
+                || url.contains("avatar")
+                || url.contains("image")) {
             log.info("登录、注册或发送验证码操作，放行");
             filterChain.doFilter(request, response);
             return;

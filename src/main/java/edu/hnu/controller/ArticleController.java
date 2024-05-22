@@ -3,10 +3,16 @@ package edu.hnu.controller;
 import com.github.pagehelper.Page;
 import edu.hnu.entity.Article;
 import edu.hnu.service.ArticleService;
+import edu.hnu.utils.JwtUtils;
+import edu.hnu.utils.Result;
+import edu.hnu.utils.StatusCode;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * (Article)表控制层
@@ -16,6 +22,7 @@ import javax.annotation.Resource;
  */
 @RestController
 @RequestMapping("article")
+@Slf4j
 public class ArticleController {
     /**
      * 服务对象
@@ -24,59 +31,33 @@ public class ArticleController {
     private ArticleService articleService;
 
     /**
-     * 分页查询
-     *
-     * @param article 筛选条件
-     * @param pageRequest      分页对象
-     * @return 查询结果
+     * 发布文章.
      */
-    /*@GetMapping
-    public ResponseEntity<Page<Article>> queryByPage(Article article, PageRequest pageRequest) {
-        return ResponseEntity.ok(this.articleService.queryByPage(article, pageRequest));
-    }*/
+    @PostMapping("publish")
+    public Result publish(Article article, @RequestHeader String token) {
+        log.info("publish: 发布文章");
 
-    /**
-     * 通过主键查询单条数据
-     *
-     * @param id 主键
-     * @return 单条数据
-     */
-    @GetMapping("{id}")
-    public ResponseEntity<Article> queryById(@PathVariable("id") Integer id) {
-        return ResponseEntity.ok(this.articleService.queryById(id));
+        int articleId = articleService.publish(article, JwtUtils.getUserId(token));
+
+        Map<String, Integer> result = new HashMap<>();
+        result.put("articleId", articleId);
+        return Result.success(result);
     }
 
     /**
-     * 新增数据
-     *
-     * @param article 实体
-     * @return 新增结果
+     * 删除文章.
      */
-    @PostMapping
-    public ResponseEntity<Article> add(Article article) {
-        return ResponseEntity.ok(this.articleService.insert(article));
-    }
+    @DeleteMapping("delete")
+    public Result delete(Integer articleId, @RequestHeader String token) {
+        log.info("delete: 删除文章");
 
-    /**
-     * 编辑数据
-     *
-     * @param article 实体
-     * @return 编辑结果
-     */
-    @PutMapping
-    public ResponseEntity<Article> edit(Article article) {
-        return ResponseEntity.ok(this.articleService.update(article));
-    }
+        int i = articleService.delete(articleId, JwtUtils.getUserId(token));
 
-    /**
-     * 删除数据
-     *
-     * @param id 主键
-     * @return 删除是否成功
-     */
-    @DeleteMapping
-    public ResponseEntity<Boolean> deleteById(Integer id) {
-        return ResponseEntity.ok(this.articleService.deleteById(id));
+        return switch (i) {
+            case 0 -> Result.error(StatusCode.ILLEGAL_DELETION);
+            case 1 -> Result.success();
+            default -> null;
+        };
     }
 
 }

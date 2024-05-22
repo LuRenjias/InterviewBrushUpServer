@@ -16,28 +16,6 @@
         where id = #{id}
     </select>
 
-    <!--查询指定行数据-->
-    <select id="queryAllByLimit" resultMap="FollowMap">
-        select
-        iduser_idfollower_user_idfollow_time
-        from follow
-        <where>
-            <if test="id != null">
-                and id = #{id}
-            </if>
-            <if test="userId != null">
-                and user_id = #{userId}
-            </if>
-            <if test="followerUserId != null">
-                and follower_user_id = #{followerUserId}
-            </if>
-            <if test="followTime != null">
-                and follow_time = #{followTime}
-            </if>
-        </where>
-        limit #{pageable.offset}, #{pageable.pageSize}
-    </select>
-
     <!--统计总行数-->
     <select id="count" resultType="java.lang.Long">
         select count(1)
@@ -60,8 +38,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into follow(user_idfollower_user_idfollow_time)
-        values (#{userId}#{followerUserId}#{followTime})
+        insert into follow(user_id, follower_user_id, follow_time)
+        values (#{userId}, #{followerUserId}, #{followTime})
     </insert>
 
     <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
@@ -105,6 +83,25 @@
         from follow
         where id = #{id}
     </delete>
+
+    <select id="queryStatus" resultMap="FollowMap">
+        select *
+        from follow
+        where user_id = #{userId}
+          and follower_user_id = #{followerUserId}
+    </select>
+
+    <select id="queryByFollowerUserId" resultMap="FollowMap">
+        select *
+        from follow
+        where follower_user_id = #{followerUserId}
+    </select>
+
+    <select id="queryByUserId" resultMap="FollowMap">
+        select *
+        from follow
+        where user_id = #{userId}
+    </select>
 
 </mapper>
 

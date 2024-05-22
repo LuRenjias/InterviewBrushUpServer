@@ -13,4 +13,5 @@ public class Info {
     private int nicknameLength;
     private String defaultAvatarUrl;
     private String avatarBaseUrl;
+    private String imageBaseUrl;
 }

@@ -3,6 +3,8 @@ package edu.hnu.dao;
 import edu.hnu.entity.Follow;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+
 import java.util.List;
 
 /**
@@ -21,15 +23,6 @@ public interface FollowDao {
      * @return 实例对象
      */
     Follow queryById(Integer id);
-
-    /**
-     * 查询指定行数据
-     *
-     * @param follow 查询条件
-     * @param pageable         分页对象
-     * @return 对象列表
-     */
-    //List<Follow> queryAllByLimit(Follow follow, @Param("pageable") Pageable pageable);
 
     /**
      * 统计总行数
@@ -80,5 +73,14 @@ public interface FollowDao {
      */
     int deleteById(Integer id);
 
+    Follow queryStatus(@Param("userId") Integer userId,
+                       @Param("followerUserId") Integer followerUserId);
+
+    List<Follow> queryByFollowerUserId(@Param("followerUserId") Integer followerUserId);
+
+    List<Follow> queryByUserId(@Param("userId") Integer userId);
+
+    @Select("select * from follow")
+    List<Follow> listAll();
 }
 

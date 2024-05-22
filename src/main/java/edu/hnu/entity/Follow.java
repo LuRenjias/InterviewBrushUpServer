@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * (Follow)实体类
@@ -31,7 +31,7 @@ public class Follow {
     /**
      * 关注_时间
      */
-    private Date followTime;
+    private LocalDateTime followTime;
 
 
 }

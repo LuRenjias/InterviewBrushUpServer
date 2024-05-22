@@ -4,9 +4,11 @@ import cn.hutool.core.io.FileTypeUtil;
 import com.alibaba.fastjson.JSONObject;
 import edu.hnu.api.WechatLoginApi;
 import edu.hnu.dao.ArticleDao;
+import edu.hnu.dao.FollowDao;
 import edu.hnu.dao.UserDao;
 import edu.hnu.dto.UserDTO;
 import edu.hnu.entity.Article;
+import edu.hnu.entity.Follow;
 import edu.hnu.entity.User;
 import edu.hnu.service.UserService;
 import edu.hnu.utils.RandomStringGenerator;
@@ -19,7 +21,6 @@ import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -32,6 +33,9 @@ public class UserServiceImpl implements UserService {
 
     @Resource
     private ArticleDao articleDao;
+
+    @Resource
+    private FollowDao followDao;
 
     @Resource
     private WechatLoginApi wechatLoginApi;
@@ -131,9 +135,9 @@ public class UserServiceImpl implements UserService {
 
         // 使用UUID表示文件名
         String uuName = UUID.randomUUID().toString();
-        // 设置文件保存位置
+        // 设置文件访问地址
         avatarUrl = avatarBaseUrl + uuName + "." + fileType;
-
+        // 设置文件保存位置
         String savePath = avatarBasePath + uuName + "." + fileType;
 
         File saveFile = new File(savePath);
@@ -150,16 +154,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO userInfo(int id) {
-        User query = userDao.queryById(id);
+    public UserDTO userInfo(int userId, Integer loginUserId) {
+        User query = userDao.queryById(userId);
+
+        if (query == null) {
+            return null;
+        }
 
         Article article = new Article();
-        article.setUserId(id);
+        article.setUserId(userId);
         long articleCount = articleDao.count(article);
+
+        Follow follow = followDao.queryStatus(userId, loginUserId);
+        boolean isFollow = follow != null;
 
         return new UserDTO(query.getId(), query.getNickname(),
                 query.getAvatarUrl(), query.getGender(),
                 query.getFollowingCount(), query.getFollowersCount(),
-                query.getUserIdentity(), articleCount);
+                query.getUserIdentity(), articleCount, isFollow);
     }
 }
