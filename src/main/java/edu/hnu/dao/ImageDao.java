@@ -3,6 +3,7 @@ package edu.hnu.dao;
 import edu.hnu.entity.Image;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -18,4 +19,7 @@ public interface ImageDao {
 
     int deleteByCategoryAndCategoryId(@Param("category") Integer category,
                                       @Param("categoryId") Integer categoryId);
+
+    @Select("select * from image")
+    List<Image> listAll();
 }

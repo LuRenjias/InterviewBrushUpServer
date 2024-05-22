@@ -1,6 +1,7 @@
 package edu.hnu.controller;
 
 import com.github.pagehelper.Page;
+import edu.hnu.dto.ArticleAbbreviationsDTO;
 import edu.hnu.entity.Article;
 import edu.hnu.service.ArticleService;
 import edu.hnu.utils.JwtUtils;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -58,6 +60,30 @@ public class ArticleController {
             case 1 -> Result.success();
             default -> null;
         };
+    }
+
+    /**
+     * 我的文章.
+     */
+    @GetMapping("myList")
+    public Result myList(@RequestHeader String token) {
+        log.info("my: 我的文章");
+
+        List<ArticleAbbreviationsDTO> articleAbbreviationsDTOS = articleService.myList(JwtUtils.getUserId(token));
+
+        return Result.success(articleAbbreviationsDTOS);
+    }
+
+    /**
+     * 发现页文章.
+     */
+    @GetMapping("findList")
+    public Result findList() {
+        log.info("findList: 发现页文章");
+
+        List<ArticleAbbreviationsDTO> list = articleService.findList();
+
+        return Result.success(list);
     }
 
 }

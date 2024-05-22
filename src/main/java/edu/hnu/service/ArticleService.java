@@ -1,6 +1,9 @@
 package edu.hnu.service;
 
+import edu.hnu.dto.ArticleAbbreviationsDTO;
 import edu.hnu.entity.Article;
+
+import java.util.List;
 
 
 /**
@@ -20,4 +23,14 @@ public interface ArticleService {
      * 删除文章.
      */
     int delete(Integer articleId, Integer userId);
+
+    /**
+     * 我的文章.
+     */
+    List<ArticleAbbreviationsDTO> myList(Integer userId);
+
+    /**
+     * 发现页文章.
+     */
+    List<ArticleAbbreviationsDTO> findList();
 }
