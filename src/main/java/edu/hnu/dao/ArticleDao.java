@@ -96,8 +96,10 @@ public interface ArticleDao {
      * @param idList 文章 id
      * @return 影响行数
      */
-    int updateStateByIdList(List<Integer> idList);
+    int updateStateByIdList1(List<Integer> idList);
 
     int deleteByIdList(List<Integer> idList);
+
+    void updateStateByIdList2(List<Integer> idList);
 }
 

@@ -91,12 +91,25 @@ public interface IntegratedQuestionDao {
   int deleteById(Integer id);
 
   /**
-   * 通过主键更新审核状态.
+   * 通过主键更新审核通过.
    *
    * @param idList 主键
    */
-  void updateStateByIdList(List<Integer> idList);
+  void updateStateByIdList1(List<Integer> idList);
 
+  /**
+   * 查询八股答案.
+   *
+   * @param id 八股 id
+   * @return answer字段
+   */
   String queryAnswerById(Integer id);
+
+  /**
+   * 通过主键更新审核不通过.
+   *
+   * @param idList 主键
+   */
+  void updateStateByIdList2(List<Integer> idList);
 }
 

@@ -201,36 +201,70 @@ public class AdminController {
   }
 
   /**
-   * 审核文章.
+   * 审核文章通过.
    *
    * @param jsonObject 封装的 idList 集合
    */
-  @PostMapping("examiningArticle")
-  public Result examiningArticle(@RequestBody JSONObject jsonObject) {
-    log.info("审核文章");
+  @PostMapping("passArticle")
+  public Result passArticle(@RequestBody JSONObject jsonObject) {
+    log.info("审核文章通过");
     JSONArray jsonArray = jsonObject.getJSONArray("idList");
     if (jsonArray == null || jsonArray.isEmpty()) {
       return Result.error(StatusCode.NO_SELECT_ID);
     }
     List<Integer> list = jsonArray.toJavaList(Integer.class);
-    this.adminService.updateAStateByIdList(list);
+    this.adminService.updateAStateByIdList1(list);
     return Result.success();
   }
 
   /**
-   * 审核题目.
+   * 审核题目通过.
    *
    * @param jsonObject 封装的 idList 集合
    */
-  @PostMapping("examiningQuestion")
-  public Result examiningQuestion(@RequestBody JSONObject jsonObject) {
-    log.info("审核题目");
+  @PostMapping("passQuestion")
+  public Result passQuestion(@RequestBody JSONObject jsonObject) {
+    log.info("审核题目通过");
     JSONArray jsonArray = jsonObject.getJSONArray("idList");
     if (jsonArray == null || jsonArray.isEmpty()) {
       return Result.error(StatusCode.NO_SELECT_ID);
     }
     List<Integer> list = jsonArray.toJavaList(Integer.class);
-    this.adminService.updateQStateByIdList(list);
+    this.adminService.updateQStateByIdList1(list);
+    return Result.success();
+  }
+
+  /**
+   * 审核文章不通过.
+   *
+   * @param jsonObject 封装的 idList 集合
+   */
+  @PostMapping("rejectArticle")
+  public Result rejectArticle(@RequestBody JSONObject jsonObject) {
+    log.info("审核文章不通过");
+    JSONArray jsonArray = jsonObject.getJSONArray("idList");
+    if (jsonArray == null || jsonArray.isEmpty()) {
+      return Result.error(StatusCode.NO_SELECT_ID);
+    }
+    List<Integer> list = jsonArray.toJavaList(Integer.class);
+    this.adminService.updateAStateByIdList2(list);
+    return Result.success();
+  }
+
+  /**
+   * 审核题目不通过.
+   *
+   * @param jsonObject 封装的 idList 集合
+   */
+  @PostMapping("rejectQuestion")
+  public Result examiningQuestion(@RequestBody JSONObject jsonObject) {
+    log.info("审核题目不通过");
+    JSONArray jsonArray = jsonObject.getJSONArray("idList");
+    if (jsonArray == null || jsonArray.isEmpty()) {
+      return Result.error(StatusCode.NO_SELECT_ID);
+    }
+    List<Integer> list = jsonArray.toJavaList(Integer.class);
+    this.adminService.updateQStateByIdList2(list);
     return Result.success();
   }
 }
