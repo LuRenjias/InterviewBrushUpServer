@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.hnu.dao.ImageDao">
+    <resultMap id="ImageMap" type="edu.hnu.entity.Image">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="category" column="category" jdbcType="INTEGER"/>
+        <result property="categoryId" column="category_id" jdbcType="INTEGER"/>
+        <result property="orderId" column="order_id" jdbcType="INTEGER"/>
+        <result property="imageUrl" column="image_url" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into image(category, category_id, order_id, image_url)
+            value (#{category}, #{categoryId}, #{orderId}, #{imageUrl})
+    </insert>
+
+    <update id="update">
+        update image
+        <set>
+            <if test="id != null">
+                id = #{id}
+            </if>
+            <if test="category != null">
+                category = #{category}
+            </if>
+            <if test="categoryId != null">
+                category_id #{categoryId}
+            </if>
+            <if test="orderId != null">
+                order_id = #{orderId}
+            </if>
+            <if test="imageUrl != null">
+                image_url = #{imageUrl}
+            </if>
+        </set>
+    </update>
+
+    <select id="queryByCategoryAndCategoryId" resultMap="ImageMap">
+        select *
+        from image
+        where category = #{category}
+          and category_id = #{categoryId}
+    </select>
+
+    <delete id="deleteByCategoryAndCategoryId">
+        delete
+        from image
+        where category = #{category}
+          and category_id = #{categoryId}
+    </delete>
+</mapper>

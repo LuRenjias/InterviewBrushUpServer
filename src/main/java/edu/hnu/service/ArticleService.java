@@ -12,44 +12,12 @@ import edu.hnu.entity.Article;
 public interface ArticleService {
 
     /**
-     * 通过ID查询单条数据
-     *
-     * @param id 主键
-     * @return 实例对象
+     * 发布文章.
      */
-    Article queryById(Integer id);
+    int publish(Article article, Integer userId);
 
     /**
-     * 分页查询
-     *
-     * @param article 筛选条件
-     * @param pageRequest      分页对象
-     * @return 查询结果
+     * 删除文章.
      */
-    //Page<Article> queryByPage(Article article, PageRequest pageRequest);
-
-    /**
-     * 新增数据
-     *
-     * @param article 实例对象
-     * @return 实例对象
-     */
-    Article insert(Article article);
-
-    /**
-     * 修改数据
-     *
-     * @param article 实例对象
-     * @return 实例对象
-     */
-    Article update(Article article);
-
-    /**
-     * 通过主键删除数据
-     *
-     * @param id 主键
-     * @return 是否成功
-     */
-    boolean deleteById(Integer id);
-
+    int delete(Integer articleId, Integer userId);
 }

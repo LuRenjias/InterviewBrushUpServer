@@ -32,5 +32,5 @@ public interface UserService {
     /**
      * 用户信息.
      */
-    UserDTO userInfo(int id);
+    UserDTO userInfo(int userId, Integer loginUserId);
 }

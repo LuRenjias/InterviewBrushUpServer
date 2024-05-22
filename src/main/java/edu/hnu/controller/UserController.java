@@ -83,13 +83,16 @@ public class UserController {
      * 用户信息.
      */
     @GetMapping("userInfo")
-    public Result userInfo(@RequestHeader String token) {
+    public Result userInfo(Integer userId, @RequestHeader String token) {
         log.info("userInfo: 用户信息");
 
-        UserDTO userInfo = userService.userInfo(JwtUtils.getUserId(token));
+        UserDTO userInfo = userService.userInfo(userId, JwtUtils.getUserId(token));
+
+        if (userInfo == null) {
+            return Result.error(StatusCode.USER_NOT_EXIST);
+        }
 
         return Result.success(userInfo);
     }
-
 }
 

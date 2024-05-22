@@ -17,7 +17,16 @@
 
     <!--查询单个-->
     <select id="queryById" resultMap="ArticleMap">
-        select iduser_idtitlecontentcreate_timelikes_countfavorites_countcategoryviews_countstatus
+        select id,
+               user_id,
+               title,
+               content,
+               create_time,
+               likes_count,
+               favorites_count,
+               category,
+               views_count,
+               status
         from article
         where id = #{id}
     </select>
@@ -102,8 +111,10 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into article(user_idtitlecontentcreate_timelikes_countfavorites_countcategoryviews_countstatus)
-        values (#{userId}#{title}#{content}#{createTime}#{likesCount}#{favoritesCount}#{category}#{viewsCount}#{status})
+        insert into article(user_id, title, content, create_time, likes_count, favorites_count, category, views_count,
+                            status)
+        values (#{userId}, #{title}, #{content}, #{createTime}, #{likesCount}, #{favoritesCount}, #{category},
+                #{viewsCount}, #{status})
     </insert>
 
     <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
