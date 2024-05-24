@@ -1,8 +1,10 @@
 package edu.hnu.dao;
 
+import edu.hnu.dto.CollectionDTO;
 import edu.hnu.entity.Collection;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 /**
@@ -17,10 +19,11 @@ public interface CollectionDao {
     /**
      * 通过ID查询单条数据
      *
-     * @param id 主键
+     * @param user_id 主键
+     * @param module 所属模块
      * @return 实例对象
      */
-    Collection queryById(Integer id);
+    List<CollectionDTO> queryByIdAndModule(Integer user_id,Integer module);
 
     /**
      * 查询指定行数据
@@ -42,10 +45,13 @@ public interface CollectionDao {
     /**
      * 新增数据
      *
-     * @param collection 实例对象
+     * @param userId 用户id
+     * @param collectionName 分组名
+     * @param createTime 创建时间
+     * @param module 所属模块
      * @return 影响行数
      */
-    int insert(Collection collection);
+    int insert(Integer userId, String collectionName, String createTime, Integer module);
 
     /**
      * 批量新增数据（MyBatis原生foreach方法）
@@ -80,5 +86,6 @@ public interface CollectionDao {
      */
     int deleteById(Integer id);
 
+    int deleteByIdAndNameAndModule(Integer userId, String collectionName, Integer module);
 }
 

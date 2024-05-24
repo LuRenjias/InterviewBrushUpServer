@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import edu.hnu.entity.Admin;
 import edu.hnu.entity.PageBean;
 import edu.hnu.service.AdminService;
+import edu.hnu.utils.JwtUtils;
 import edu.hnu.utils.Result;
 import edu.hnu.utils.StatusCode;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,11 +41,11 @@ public class AdminController {
     String account = jsonObject.getString("account");
     String password = jsonObject.getString("password");
     log.info("管理员登录，账号密码：{},{}", account, password);
-    Integer id = adminService.queryByAccountAndPasswd(account, password);
-    if (id == null) {
+    Admin admin = adminService.queryByAccountAndPasswd(account, password);
+    if (admin == null) {
       return Result.error(StatusCode.LOGIN_ERROR);
     }
-    return Result.success();
+    return Result.success(JwtUtils.getAdminToken(admin));
   }
 
   /**

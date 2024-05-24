@@ -2,21 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="edu.hnu.dao.CollectionDao">
 
-    <resultMap type="edu.hnu.entity.Collection" id="CollectionMap">
-        <result property="id" column="id" jdbcType="INTEGER"/>
-        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+    <resultMap type="edu.hnu.dto.CollectionDTO" id="CollectionMap">
         <result property="collectionName" column="collection_name" jdbcType="VARCHAR"/>
-        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
         <result property="contentCount" column="content_count" jdbcType="INTEGER"/>
-        <result property="module" column="module" jdbcType="INTEGER"/>
     </resultMap>
 
-    <!--查询单个-->
-    <select id="queryById" resultMap="CollectionMap">
-        select iduser_idcollection_namecreate_timecontent_countmodule
-        from collection
-        where id = #{id}
-    </select>
+
 
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="CollectionMap">
@@ -71,12 +62,12 @@
             </if>
         </where>
     </select>
+    <select id="queryByIdAndModule" resultType="edu.hnu.dto.CollectionDTO">
+        select collection_name,content_count
+        from collection
+        where user_id = #{user_id} and module = #{module}
+    </select>
 
-    <!--新增所有列-->
-    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into collection(user_idcollection_namecreate_timecontent_countmodule)
-        values (#{userId}#{collectionName}#{createTime}#{contentCount}#{module})
-    </insert>
 
     <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
         insert into collection(user_idcollection_namecreate_timecontent_countmodule)
@@ -95,6 +86,10 @@
         on duplicate key update
         user_id = values(user_id)collection_name = values(collection_name)create_time = values(create_time)content_count
         = values(content_count)module = values(module)
+    </insert>
+    <insert id="insert">
+        insert into collection(user_id,collection_name,create_time,content_count,module)
+        values (#{userId},#{collectionName},#{createTime},0,#{module})
     </insert>
 
     <!--通过主键修改数据-->
@@ -125,6 +120,11 @@
         delete
         from collection
         where id = #{id}
+    </delete>
+    <delete id="deleteByIdAndNameAndModule">
+        delete
+        from collection
+        where user_id = #{userId} and collection_name = #{collectionName} and module = #{module}
     </delete>
 
 </mapper>

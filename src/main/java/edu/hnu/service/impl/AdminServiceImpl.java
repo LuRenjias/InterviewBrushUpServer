@@ -135,7 +135,7 @@ public class AdminServiceImpl implements AdminService {
   }
 
   @Override
-  public Integer queryByAccountAndPasswd(String account, String password) {
+  public Admin queryByAccountAndPasswd(String account, String password) {
     return adminDao.queryByAccountAndPasswd(account, password);
   }
 

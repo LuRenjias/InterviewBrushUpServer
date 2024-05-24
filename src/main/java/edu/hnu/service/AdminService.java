@@ -1,10 +1,8 @@
 package edu.hnu.service;
 
-import com.github.pagehelper.Page;
 import edu.hnu.entity.Admin;
 import edu.hnu.entity.PageBean;
 
-import java.awt.print.Pageable;
 import java.util.List;
 
 
@@ -105,7 +103,7 @@ public interface AdminService {
    * @param password 密码
    * @return 对应 id
    */
-  Integer queryByAccountAndPasswd(String account, String password);
+  Admin queryByAccountAndPasswd(String account, String password);
 
   /**
    * 新增单选题.
