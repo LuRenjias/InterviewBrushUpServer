@@ -3,6 +3,8 @@ package edu.hnu.dao;
 import edu.hnu.entity.Comment;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+
 import java.util.List;
 
 /**
@@ -79,6 +81,9 @@ public interface CommentDao {
      * @return 影响行数
      */
     int deleteById(Integer id);
+
+    @Select("select * from comment")
+    List<Comment> listAll();
 
 }
 

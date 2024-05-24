@@ -15,6 +15,18 @@
         <result property="status" column="status" jdbcType="INTEGER"/>
     </resultMap>
 
+    <resultMap id="ArticleAbbreviationsDTOMap" type="edu.hnu.dto.ArticleAbbreviationsDTO">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="title" column="title" jdbcType="VARCHAR"/>
+        <result property="content" column="content" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="likesCount" column="likes_count" jdbcType="INTEGER"/>
+        <result property="viewsCount" column="views_count" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="nickname" column="nickname" jdbcType="VARCHAR"/>
+        <result property="avatarUrl" column="avatar_url" jdbcType="VARCHAR"/>
+    </resultMap>
+
     <!--查询单个-->
     <select id="queryById" resultMap="ArticleMap">
         select id,
@@ -212,6 +224,52 @@
             #{item}
         </foreach>
     </delete>
+
+    <select id="queryAbbreviationsByUserId" resultMap="ArticleAbbreviationsDTOMap">
+        select a.id,
+               a.title,
+               a.content,
+               a.create_time,
+               a.likes_count,
+               a.views_count,
+               a.user_id,
+               u.nickname,
+               u.avatar_url
+        from article a
+                 join user u on a.user_id = u.id
+        where a.user_id = #{userId}
+        order by a.create_time desc
+    </select>
+
+    <select id="listAllAbbreviations" resultMap="ArticleAbbreviationsDTOMap">
+        select a.id,
+               a.title,
+               a.content,
+               a.create_time,
+               a.likes_count,
+               a.views_count,
+               a.user_id,
+               u.nickname,
+               u.avatar_url
+        from article a
+                 join user u on a.user_id = u.id
+    </select>
+
+    <select id="listAbbreviationsLimit" resultMap="ArticleAbbreviationsDTOMap">
+        select a.id,
+               a.title,
+               a.content,
+               a.create_time,
+               a.likes_count,
+               a.views_count,
+               a.user_id,
+               u.nickname,
+               u.avatar_url
+        from article a
+                 join user u on a.user_id = u.id
+            limit #{skipCount}
+           , #{returnCount}
+    </select>
 
 </mapper>
 

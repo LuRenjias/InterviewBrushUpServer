@@ -1,5 +1,6 @@
 package edu.hnu.dao;
 
+import edu.hnu.dto.ArticleAbbreviationsDTO;
 import edu.hnu.entity.Article;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -101,5 +102,13 @@ public interface ArticleDao {
     int deleteByIdList(List<Integer> idList);
 
     void updateStateByIdList2(List<Integer> idList);
+
+    List<ArticleAbbreviationsDTO> queryAbbreviationsByUserId(@Param("userId") Integer userId);
+
+    List<ArticleAbbreviationsDTO> listAllAbbreviations();
+
+    List<ArticleAbbreviationsDTO> listAbbreviationsLimit(@Param("skipCount") Integer skipCount,
+                                                         @Param("returnCount") Integer returnCount);
+
 }
 
