@@ -1,5 +1,6 @@
 package edu.hnu.utils;
 
+import edu.hnu.entity.Admin;
 import edu.hnu.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -65,6 +66,16 @@ public class JwtUtils {
         Map<String, Object> claims = new HashMap<>();
         Integer id = user.getId();
         claims.put("userId", id);
+        return generateJwt(claims);
+    }
+
+    /**
+     * 根据管理员手机号生成JWT令牌.
+     */
+    public static String getAdminToken(Admin admin) {
+        Map<String, Object> claims = new HashMap<>();
+        String phoneNumber = admin.getPhoneNumber();
+        claims.put("phoneNumber", phoneNumber);
         return generateJwt(claims);
     }
 }

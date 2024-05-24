@@ -1,7 +1,9 @@
 package edu.hnu.service;
 
-import com.github.pagehelper.Page;
+import edu.hnu.dto.CollectionDTO;
 import edu.hnu.entity.Collection;
+
+import java.util.List;
 
 
 /**
@@ -13,12 +15,13 @@ import edu.hnu.entity.Collection;
 public interface CollectionService {
 
     /**
-     * 通过ID查询单条数据
+     * 通过 user_id 和 module 查询单条数据
      *
-     * @param id 主键
-     * @return 实例对象
+     * @param  user_id 用户 id
+     * @param module 所属模块
+     * @return 数据列表
      */
-    Collection queryById(Integer id);
+    List<CollectionDTO> queryByIdAndModule(Integer user_id,Integer module);
 
     /**
      * 分页查询
@@ -29,13 +32,17 @@ public interface CollectionService {
      */
     //Page<Collection> queryByPage(Collection collection, PageRequest pageRequest);
 
+
     /**
-     * 新增数据
+     * 新增收藏分组
      *
-     * @param collection 实例对象
-     * @return 实例对象
+     * @param user_id 用户 id
+     * @param collection_name 分组名
+     * @param create_time 创建时间
+     * @param module 所属模块
+     * @return 影响行数
      */
-    Collection insert(Collection collection);
+    int insert(Integer user_id, String collection_name, String create_time, Integer module);
 
     /**
      * 修改数据
@@ -53,4 +60,5 @@ public interface CollectionService {
      */
     boolean deleteById(Integer id);
 
+    boolean deleteByIdAndNameAndModule(Integer userId, String collectionName, Integer module);
 }

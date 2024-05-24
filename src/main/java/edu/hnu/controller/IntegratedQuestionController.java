@@ -1,6 +1,5 @@
 package edu.hnu.controller;
 
-import com.github.pagehelper.Page;
 import edu.hnu.entity.IntegratedQuestion;
 import edu.hnu.service.IntegratedQuestionService;
 import edu.hnu.utils.Result;
@@ -47,11 +46,11 @@ public class IntegratedQuestionController {
    */
   @GetMapping("getQuestion")
   public Result queryById(Integer id) {
-    log.info("读取八股数据，八股id：{}",id);
+    log.info("读取八股数据，八股id：{}", id);
     if (id == null) {
       return Result.error(StatusCode.NO_SELECT_ID);
     }
-    IntegratedQuestion integratedQuestion=integratedQuestionService.queryById(id);
+    IntegratedQuestion integratedQuestion = integratedQuestionService.queryById(id);
     return Result.success(integratedQuestion);
   }
 
@@ -96,14 +95,13 @@ public class IntegratedQuestionController {
    */
   @GetMapping("getAnswer")
   public Result getAnswer(Integer id) {
-    log.info("读取八股答案，八股id：{}",id);
+    log.info("读取八股答案，八股id：{}", id);
     if (id == null) {
       return Result.error(StatusCode.NO_SELECT_ID);
     }
-    String answer=integratedQuestionService.queryAnswerById(id);
+    String answer = integratedQuestionService.queryAnswerById(id);
     return Result.success(answer);
   }
-
 
 }
 

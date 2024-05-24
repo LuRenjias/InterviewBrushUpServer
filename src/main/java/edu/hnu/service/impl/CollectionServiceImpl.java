@@ -1,12 +1,13 @@
 package edu.hnu.service.impl;
 
-import edu.hnu.entity.Collection;
 import edu.hnu.dao.CollectionDao;
+import edu.hnu.dto.CollectionDTO;
+import edu.hnu.entity.Collection;
 import edu.hnu.service.CollectionService;
 import org.springframework.stereotype.Service;
 
-
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * (Collection)表服务实现类
@@ -19,15 +20,9 @@ public class CollectionServiceImpl implements CollectionService {
     @Resource
     private CollectionDao collectionDao;
 
-    /**
-     * 通过ID查询单条数据
-     *
-     * @param id 主键
-     * @return 实例对象
-     */
     @Override
-    public Collection queryById(Integer id) {
-        return this.collectionDao.queryById(id);
+    public List<CollectionDTO> queryByIdAndModule(Integer user_id,Integer module) {
+        return this.collectionDao.queryByIdAndModule(user_id,module);
     }
 
     /**
@@ -43,16 +38,10 @@ public class CollectionServiceImpl implements CollectionService {
         return new PageImpl<>(this.collectionDao.queryAllByLimit(collection, pageRequest), pageRequest, total);
     }*/
 
-    /**
-     * 新增数据
-     *
-     * @param collection 实例对象
-     * @return 实例对象
-     */
+
     @Override
-    public Collection insert(Collection collection) {
-        this.collectionDao.insert(collection);
-        return collection;
+    public int insert(Integer user_id, String collection_name, String create_time, Integer module) {
+        return this.collectionDao.insert(user_id,collection_name,create_time,module);
     }
 
     /**
@@ -64,7 +53,8 @@ public class CollectionServiceImpl implements CollectionService {
     @Override
     public Collection update(Collection collection) {
         this.collectionDao.update(collection);
-        return this.queryById(collection.getId());
+        //return (Collection) this.queryById(collection.getId());
+        return new Collection();
     }
 
     /**
@@ -76,5 +66,10 @@ public class CollectionServiceImpl implements CollectionService {
     @Override
     public boolean deleteById(Integer id) {
         return this.collectionDao.deleteById(id) > 0;
+    }
+
+    @Override
+    public boolean deleteByIdAndNameAndModule(Integer userId, String collectionName, Integer module) {
+        return this.collectionDao.deleteByIdAndNameAndModule(userId,collectionName,module) > 0;
     }
 }

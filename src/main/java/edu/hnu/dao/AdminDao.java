@@ -89,7 +89,7 @@ public interface AdminDao {
      * @param password 密码
      * @return 对应 ID
      */
-    @Select("select admin.id from admin where phone_number=#{account} and password=#{password}")
-    Integer queryByAccountAndPasswd(String account, String password);
+    @Select("select * from admin where phone_number=#{account} and password=#{password}")
+    Admin queryByAccountAndPasswd(String account, String password);
 }
 
