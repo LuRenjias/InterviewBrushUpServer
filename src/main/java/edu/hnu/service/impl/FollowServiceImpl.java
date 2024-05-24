@@ -2,6 +2,7 @@ package edu.hnu.service.impl;
 
 import cn.hutool.core.lang.Pair;
 import edu.hnu.dao.UserDao;
+import edu.hnu.dto.ArticleAbbreviationsDTO;
 import edu.hnu.dto.UserAbbreviationsDTO;
 import edu.hnu.entity.Follow;
 import edu.hnu.dao.FollowDao;
@@ -12,10 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -83,7 +81,16 @@ public class FollowServiceImpl implements FollowService {
         // 关注的用户的ID列表
         List<Integer> followingIds = follows.stream().map(Follow::getUserId).toList();
 
-        List<User> userList = userDao.list();
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("(");
+        for (Integer id : followingIds) {
+            stringBuilder.append(id).append(",");
+        }
+        stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+        stringBuilder.append(")");
+        String ids = stringBuilder.toString().equals(")") ? null : stringBuilder.toString();
+
+        List<User> userList = userDao.listIn(ids);
         Map<Integer, User> userMap = new HashMap<>();
         for (User user : userList) {
             userMap.put(user.getId(), user);
@@ -108,13 +115,22 @@ public class FollowServiceImpl implements FollowService {
         // 粉丝的ID列表
         List<Integer> fanIds = follows.stream().map(Follow::getFollowerUserId).toList();
 
-        List<User> userList = userDao.list();
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("(");
+        for (Integer id : fanIds) {
+            stringBuilder.append(id).append(",");
+        }
+        stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+        stringBuilder.append(")");
+        String ids = stringBuilder.toString().equals(")") ? null : stringBuilder.toString();
+
+        List<User> userList = userDao.listIn(ids);
         Map<Integer, User> userMap = new HashMap<>();
         for (User user : userList) {
             userMap.put(user.getId(), user);
         }
 
-        List<Follow> followList = followDao.listAll();
+        List<Follow> followList = followDao.queryByFollowerUserId(userId);
         Map<Pair<Integer, Integer>, Integer> followMap = new HashMap<>();
         for (Follow follow : followList) {
             followMap.put(new Pair<>(follow.getFollowerUserId(), follow.getUserId()), 1);

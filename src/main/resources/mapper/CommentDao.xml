@@ -137,5 +137,15 @@
         where id = #{id}
     </delete>
 
+    <select id="listIn" resultMap="CommentMap">
+        select *
+        from comment
+        where category = #{category}
+        and (false
+        <if test="ids != null and ids != ''">
+            or category_id in ${ids}
+        </if>)
+    </select>
+
 </mapper>
 

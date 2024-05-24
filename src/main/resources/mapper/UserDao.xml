@@ -105,5 +105,19 @@
         where id = #{id}
     </select>
 
+    <select id="countLessThan" resultType="integer">
+        select count(1)
+        from user
+        where id <![CDATA[ < ]]> #{id}
+    </select>
+
+    <select id="listIn" resultMap="UserMap">
+        select *
+        from user
+        where false
+        <if test="ids != null and ids != ''">
+            or id in ${ids}
+        </if>
+    </select>
 </mapper>
 

@@ -85,5 +85,8 @@ public interface CommentDao {
     @Select("select * from comment")
     List<Comment> listAll();
 
+    List<Comment> listIn(@Param("category") Integer category,
+                       @Param("ids") String ids);
+
 }
 

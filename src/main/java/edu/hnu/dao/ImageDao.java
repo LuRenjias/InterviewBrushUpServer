@@ -20,6 +20,8 @@ public interface ImageDao {
     int deleteByCategoryAndCategoryId(@Param("category") Integer category,
                                       @Param("categoryId") Integer categoryId);
 
-    @Select("select * from image")
     List<Image> listAll();
+
+    List<Image> listIn(@Param("category") Integer category,
+                       @Param("ids") String ids);
 }

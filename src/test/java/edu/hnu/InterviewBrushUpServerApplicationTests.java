@@ -22,7 +22,7 @@ class InterviewBrushUpServerApplicationTests {
 
     @Test
     void contextLoads() {
-        Integer id = 4;
+        Integer id = 3;
         User user = new User();
         user.setId(id);
         System.out.println(JwtUtils.getToken(user));

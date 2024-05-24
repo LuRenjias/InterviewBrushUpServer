@@ -37,6 +37,12 @@ public enum StatusCode {
     // 非法上传（如为某id的文章/八股上传图片，但是对应id的文章/八股实际上不存在）
     ILLEGAL_UPLOAD(507),
 
+    // 文章不存在
+    ARTICLE_NOT_EXIST(508),
+
+    // 重复点赞或重复取消点赞
+    REPEAT_LIKE(509),
+
     // 传入 id 数量为 0
     NO_SELECT_ID(600),
 

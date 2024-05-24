@@ -1,6 +1,7 @@
 package edu.hnu.service;
 
 import edu.hnu.dto.ArticleAbbreviationsDTO;
+import edu.hnu.dto.ArticleDTO;
 import edu.hnu.entity.Article;
 
 import java.util.List;
@@ -33,4 +34,14 @@ public interface ArticleService {
      * 发现页文章.
      */
     List<ArticleAbbreviationsDTO> findList();
+
+    /**
+     * 文章详情.
+     */
+    ArticleDTO detail(Integer articleId, Integer userId);
+
+    /**
+     * 点赞或取消点赞.
+     */
+    int like(Integer articleId, boolean like, Integer userId);
 }
