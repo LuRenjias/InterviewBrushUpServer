@@ -13,6 +13,19 @@
         <result property="status" column="status" jdbcType="INTEGER"/>
     </resultMap>
 
+    <resultMap type="edu.hnu.dto.CommentDTO" id="CommentDTOMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="category" column="category" jdbcType="INTEGER"/>
+        <result property="categoryId" column="category_id" jdbcType="INTEGER"/>
+        <result property="commentContent" column="comment_content" jdbcType="VARCHAR"/>
+        <result property="commentTime" column="comment_time" jdbcType="TIMESTAMP"/>
+        <result property="parentCommentId" column="parent_comment_id" jdbcType="INTEGER"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+        <result property="nickname" column="nickname" jdbcType="VARCHAR"/>
+        <result property="avatarUrl" column="avatar_url" jdbcType="VARCHAR"/>
+    </resultMap>
+
     <!--查询单个-->
     <select id="queryById" resultMap="CommentMap">
         select id,
@@ -113,17 +126,19 @@
         </if>)
     </select>
 
-    <select id="queryRootByCategoryIdWithCategory" resultMap="CommentMap">
-        select *
-        from comment
+    <select id="queryRootByCategoryIdWithCategory" resultMap="CommentDTOMap">
+        select c.*, u.nickname, u.avatar_url
+        from comment c
+                 join user u on c.user_id = u.id
         where category = #{category}
           and category_id = #{categoryId}
           and parent_comment_id = 0
     </select>
 
-    <select id="queryByParentComment" resultMap="CommentMap">
-        select *
-        from comment
+    <select id="queryByParentComment" resultMap="CommentDTOMap">
+        select c.*, u.nickname, u.avatar_url
+        from comment c
+                 join user u on c.user_id = u.id
         where parent_comment_id = #{id}
     </select>
 

@@ -1,5 +1,6 @@
 package edu.hnu.service;
 
+import edu.hnu.dto.CommentDTO;
 import edu.hnu.entity.Comment;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public interface CommentService {
     /**
      * 查看文章评论.
      */
-    List<Comment> getComment(Integer category, Integer categoryId);
+    List<CommentDTO> getComment(Integer category, Integer categoryId);
 
     int updateCommentStatus(Integer commentId, Integer status, Integer userId);
 }

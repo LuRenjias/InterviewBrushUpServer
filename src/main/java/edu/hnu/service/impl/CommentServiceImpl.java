@@ -1,5 +1,6 @@
 package edu.hnu.service.impl;
 
+import edu.hnu.dto.CommentDTO;
 import edu.hnu.entity.Comment;
 import edu.hnu.dao.CommentDao;
 import edu.hnu.service.CommentService;
@@ -38,8 +39,8 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<Comment> getComment(Integer category, Integer categoryId) {
-        List<Comment> parentComments = commentDao.queryRootByCategoryIdWithCategory(category, categoryId);
+    public List<CommentDTO> getComment(Integer category, Integer categoryId) {
+        List<CommentDTO> parentComments = commentDao.queryRootByCategoryIdWithCategory(category, categoryId);
         parentComments.forEach(this::loadReplies);
         return parentComments;
     }
@@ -63,8 +64,8 @@ public class CommentServiceImpl implements CommentService {
         return 1;
     }
 
-    private void loadReplies(Comment comment) {
-        List<Comment> replies = commentDao.queryByParentComment(comment);
+    private void loadReplies(CommentDTO comment) {
+        List<CommentDTO> replies = commentDao.queryByParentComment(comment);
         comment.setReplies(replies);
         replies.forEach(this::loadReplies);
     }

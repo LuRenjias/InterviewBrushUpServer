@@ -1,5 +1,6 @@
 package edu.hnu.dao;
 
+import edu.hnu.dto.CommentDTO;
 import edu.hnu.entity.Comment;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -62,10 +63,10 @@ public interface CommentDao {
     List<Comment> listIn(@Param("category") Integer category,
                          @Param("ids") String ids);
 
-    List<Comment> queryRootByCategoryIdWithCategory(@Param("category") Integer category,
+    List<CommentDTO> queryRootByCategoryIdWithCategory(@Param("category") Integer category,
                                                     @Param("categoryId") Integer categoryId);
 
-    List<Comment> queryByParentComment(Comment comment);
+    List<CommentDTO> queryByParentComment(CommentDTO comment);
 
 }
 

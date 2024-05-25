@@ -1,6 +1,7 @@
 package edu.hnu.controller;
 
 import com.github.pagehelper.Page;
+import edu.hnu.dto.CommentDTO;
 import edu.hnu.entity.Comment;
 import edu.hnu.service.CommentService;
 import edu.hnu.utils.JwtUtils;
@@ -53,7 +54,7 @@ public class CommentController {
     public Result getComment(Integer category, Integer categoryId) {
         log.info("getComment: 查看评论");
 
-        List<Comment> comment = commentService.getComment(category, categoryId);
+        List<CommentDTO> comment = commentService.getComment(category, categoryId);
 
         return Result.success(comment);
 
