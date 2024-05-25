@@ -1,4 +1,3 @@
-/*
 package edu.hnu.utils;
 
 import lombok.extern.slf4j.Slf4j;
@@ -23,4 +22,3 @@ public class GlobalExceptionHandler {
     return Result.error(StatusCode.DATA_TYPE_ERROR);
   }
 }
-*/
