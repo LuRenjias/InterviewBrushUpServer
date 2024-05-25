@@ -3,10 +3,15 @@ package edu.hnu.controller;
 import com.github.pagehelper.Page;
 import edu.hnu.entity.Comment;
 import edu.hnu.service.CommentService;
+import edu.hnu.utils.JwtUtils;
+import edu.hnu.utils.Result;
+import edu.hnu.utils.StatusCode;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * (Comment)表控制层
@@ -16,6 +21,7 @@ import javax.annotation.Resource;
  */
 @RestController
 @RequestMapping("comment")
+@Slf4j
 public class CommentController {
     /**
      * 服务对象
@@ -24,59 +30,50 @@ public class CommentController {
     private CommentService commentService;
 
     /**
-     * 分页查询
-     *
-     * @param comment 筛选条件
-     * @param pageRequest      分页对象
-     * @return 查询结果
+     * 添加评论.
      */
-    /*@GetMapping
-    public ResponseEntity<Page<Comment>> queryByPage(Comment comment, PageRequest pageRequest) {
-        return ResponseEntity.ok(this.commentService.queryByPage(comment, pageRequest));
-    }*/
+    @PostMapping("addComment")
+    public Result addComment(Comment comment, @RequestHeader String token) {
+        log.info("addComment: 添加评论");
 
-    /**
-     * 通过主键查询单条数据
-     *
-     * @param id 主键
-     * @return 单条数据
-     */
-    @GetMapping("{id}")
-    public ResponseEntity<Comment> queryById(@PathVariable("id") Integer id) {
-        return ResponseEntity.ok(this.commentService.queryById(id));
+        comment.setUserId(JwtUtils.getUserId(token));
+        int i = commentService.addComment(comment);
+
+        return switch (i) {
+            case 0 -> Result.error(StatusCode.PARENT_COMMENT_NOT_EXIST);
+            case 1 -> Result.success();
+            default -> null;
+        };
     }
 
     /**
-     * 新增数据
-     *
-     * @param comment 实体
-     * @return 新增结果
+     * 查看评论.
      */
-    @PostMapping
-    public ResponseEntity<Comment> add(Comment comment) {
-        return ResponseEntity.ok(this.commentService.insert(comment));
+    @GetMapping("getComment")
+    public Result getComment(Integer category, Integer categoryId) {
+        log.info("getComment: 查看评论");
+
+        List<Comment> comment = commentService.getComment(category, categoryId);
+
+        return Result.success(comment);
+
     }
 
     /**
-     * 编辑数据
-     *
-     * @param comment 实体
-     * @return 编辑结果
+     * 删除评论(仅修改状态).
      */
-    @PutMapping
-    public ResponseEntity<Comment> edit(Comment comment) {
-        return ResponseEntity.ok(this.commentService.update(comment));
-    }
+    @PutMapping("deleteComment")
+    public Result deleteComment(Integer commentId, @RequestHeader String token) {
+        log.info("deleteComment: 删除评论(仅修改状态)");
 
-    /**
-     * 删除数据
-     *
-     * @param id 主键
-     * @return 删除是否成功
-     */
-    @DeleteMapping
-    public ResponseEntity<Boolean> deleteById(Integer id) {
-        return ResponseEntity.ok(this.commentService.deleteById(id));
+        // 评论状态 1表示正常 -1表示已删除
+        int i = commentService.updateCommentStatus(commentId, -1, JwtUtils.getUserId(token));
+
+        return switch (i) {
+            case 0 -> Result.error(StatusCode.ILLEGAL_DELETION);
+            case 1 -> Result.success();
+            default -> null;
+        };
     }
 
 }

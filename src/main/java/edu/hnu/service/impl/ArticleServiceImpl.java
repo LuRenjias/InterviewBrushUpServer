@@ -161,6 +161,7 @@ public class ArticleServiceImpl implements ArticleService {
         comment.setCategoryId(articleId);
         long commentsCount = commentDao.count(comment);
         articleDTO.setCommentsCount((int) commentsCount);
+
         // 评论列表
 
         // 图片访问地址

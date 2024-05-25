@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * (Comment)表服务实现类
@@ -19,62 +21,51 @@ public class CommentServiceImpl implements CommentService {
     @Resource
     private CommentDao commentDao;
 
-    /**
-     * 通过ID查询单条数据
-     *
-     * @param id 主键
-     * @return 实例对象
-     */
+
     @Override
-    public Comment queryById(Integer id) {
-        return this.commentDao.queryById(id);
+    public int addComment(Comment comment) {
+        Integer parentCommentId = comment.getParentCommentId();
+        Comment query = commentDao.queryById(parentCommentId);
+        // 父评论不存在
+        if (!parentCommentId.equals(0) && query == null) {
+            return 0;
+        }
+
+        comment.setCommentTime(LocalDateTime.now());
+        comment.setStatus(1); // 评论状态 1表示正常 -1表示已删除
+        commentDao.insert(comment);
+        return 1;
     }
 
-    /**
-     * 分页查询
-     *
-     * @param comment 筛选条件
-     * @param pageRequest      分页对象
-     * @return 查询结果
-     */
-    /*@Override
-    public Page<Comment> queryByPage(Comment comment, PageRequest pageRequest) {
-        long total = this.commentDao.count(comment);
-        return new PageImpl<>(this.commentDao.queryAllByLimit(comment, pageRequest), pageRequest, total);
-    }*/
-
-    /**
-     * 新增数据
-     *
-     * @param comment 实例对象
-     * @return 实例对象
-     */
     @Override
-    public Comment insert(Comment comment) {
-        this.commentDao.insert(comment);
-        return comment;
+    public List<Comment> getComment(Integer category, Integer categoryId) {
+        List<Comment> parentComments = commentDao.queryRootByCategoryIdWithCategory(category, categoryId);
+        parentComments.forEach(this::loadReplies);
+        return parentComments;
     }
 
-    /**
-     * 修改数据
-     *
-     * @param comment 实例对象
-     * @return 实例对象
-     */
     @Override
-    public Comment update(Comment comment) {
-        this.commentDao.update(comment);
-        return this.queryById(comment.getId());
+    public int updateCommentStatus(Integer commentId, Integer status, Integer userId) {
+        Comment query = commentDao.queryById(commentId);
+        // 评论不存在
+        if (query == null) {
+            return 0;
+        }
+        // 不是自己的评论，无权删除
+        if (!query.getUserId().equals(userId)) {
+            return 0;
+        }
+
+        Comment comment = new Comment();
+        comment.setId(commentId);
+        comment.setStatus(status);
+        commentDao.update(comment);
+        return 1;
     }
 
-    /**
-     * 通过主键删除数据
-     *
-     * @param id 主键
-     * @return 是否成功
-     */
-    @Override
-    public boolean deleteById(Integer id) {
-        return this.commentDao.deleteById(id) > 0;
+    private void loadReplies(Comment comment) {
+        List<Comment> replies = commentDao.queryByParentComment(comment);
+        comment.setReplies(replies);
+        replies.forEach(this::loadReplies);
     }
 }

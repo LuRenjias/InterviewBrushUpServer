@@ -31,7 +31,7 @@ public enum StatusCode {
     // 重复取消关注
     REPEAT_REMOVE_FOLLOW(505),
 
-    // 非法删除（如删除不属于自己的文章/八股，或文章/八股根本不存在）
+    // 非法删除（如删除不属于自己的文章/八股/评论，或文章/八股/评论根本不存在）
     ILLEGAL_DELETION(506),
 
     // 非法上传（如为某id的文章/八股上传图片，但是对应id的文章/八股实际上不存在）
@@ -42,6 +42,9 @@ public enum StatusCode {
 
     // 重复点赞或重复取消点赞
     REPEAT_LIKE(509),
+
+    // 父评论不存在
+    PARENT_COMMENT_NOT_EXIST(510),
 
     // 传入 id 数量为 0
     NO_SELECT_ID(600),
