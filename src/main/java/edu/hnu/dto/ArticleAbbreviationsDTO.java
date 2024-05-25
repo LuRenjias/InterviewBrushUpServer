@@ -25,4 +25,7 @@ public class ArticleAbbreviationsDTO {
     private String nickname; // 作者昵称
     private String avatarUrl; // 作者头像
 
+    private LocalDateTime likeTime; // 点赞时间
+    private LocalDateTime visitTime; // 访问时间
+
 }

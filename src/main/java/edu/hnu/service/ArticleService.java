@@ -44,4 +44,6 @@ public interface ArticleService {
      * 点赞或取消点赞.
      */
     int like(Integer articleId, boolean like, Integer userId);
+
+    List<ArticleAbbreviationsDTO> likeRecordOrHistory(Integer userId, Integer type);
 }

@@ -4,6 +4,8 @@ import edu.hnu.entity.LikeRecord;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 @Mapper
 public interface LikeRecordDao {
     int insert(LikeRecord record);
@@ -15,4 +17,6 @@ public interface LikeRecordDao {
 
     LikeRecord queryByUserIdAndArticleId(@Param("userId") int userId,
                                          @Param("articleId") int articleId);
+
+    List<LikeRecord> queryByUserId(@Param("userId") Integer userId);
 }

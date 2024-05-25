@@ -1,16 +1,9 @@
 package edu.hnu.service.impl;
 
-import cn.hutool.core.text.StrBuilder;
-import edu.hnu.dao.CommentDao;
-import edu.hnu.dao.ImageDao;
-import edu.hnu.dao.LikeRecordDao;
+import edu.hnu.dao.*;
 import edu.hnu.dto.ArticleAbbreviationsDTO;
 import edu.hnu.dto.ArticleDTO;
-import edu.hnu.entity.Article;
-import edu.hnu.dao.ArticleDao;
-import edu.hnu.entity.Comment;
-import edu.hnu.entity.Image;
-import edu.hnu.entity.LikeRecord;
+import edu.hnu.entity.*;
 import edu.hnu.service.ArticleService;
 import edu.hnu.utils.StatusCode;
 import org.springframework.beans.factory.annotation.Value;
@@ -41,6 +34,9 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Resource
     private LikeRecordDao likeRecordDao;
+
+    @Resource
+    private HistoryDao historyDao;
 
     @Value("${info.content-length}")
     private Integer contentLength;
@@ -101,6 +97,10 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public List<ArticleAbbreviationsDTO> myList(Integer userId) {
         List<ArticleAbbreviationsDTO> articleAbbreviationsDTOS = articleDao.queryAbbreviationsByUserId(userId);
+        // 为空判断
+        if (articleAbbreviationsDTOS.isEmpty()) {
+            return null;
+        }
 
         constructArticleAbbreviationsDTOs(articleAbbreviationsDTOS);
 
@@ -113,6 +113,11 @@ public class ArticleServiceImpl implements ArticleService {
 
         if (count < recommendCount) {
             List<ArticleAbbreviationsDTO> articleAbbreviationsDTOS = articleDao.listAllAbbreviations();
+            // 为空判断
+            if (articleAbbreviationsDTOS.isEmpty()) {
+                return null;
+            }
+
             Collections.shuffle(articleAbbreviationsDTOS);
             constructArticleAbbreviationsDTOs(articleAbbreviationsDTOS);
             return articleAbbreviationsDTOS;
@@ -121,6 +126,11 @@ public class ArticleServiceImpl implements ArticleService {
             long diff = count - recommendCount;
             int skipCount = random.nextInt((int) (diff + 1));
             List<ArticleAbbreviationsDTO> articleAbbreviationsDTOS = articleDao.listAbbreviationsLimit(skipCount, recommendCount);
+            // 为空判断
+            if (articleAbbreviationsDTOS.isEmpty()) {
+                return null;
+            }
+
             Collections.shuffle(articleAbbreviationsDTOS);
             constructArticleAbbreviationsDTOs(articleAbbreviationsDTOS);
             return articleAbbreviationsDTOS;
@@ -134,6 +144,17 @@ public class ArticleServiceImpl implements ArticleService {
         if (articleDTO == null) {
             return null;
         }
+
+        // 添加到或更新历史记录
+        History query = historyDao.queryByUserIdAndArticleId(userId, articleId);
+        if (query == null) { // 添加到历史记录
+            History history = new History(0, userId, articleId, LocalDateTime.now());
+            historyDao.insert(history);
+        } else { // 更新历史记录
+            query.setVisitTime(LocalDateTime.now());
+            historyDao.update(query);
+        }
+
         // 评论数量
         Comment comment = new Comment();
         comment.setCategory(0); // 0表示文章
@@ -191,13 +212,48 @@ public class ArticleServiceImpl implements ArticleService {
         return 1;
     }
 
-    // 查询`image`和`comment`表构造`文章缩略信息`中的`图片地址字段`和`评论数量字段`
-    void constructArticleAbbreviationsDTOs(List<ArticleAbbreviationsDTO> articleAbbreviationsDTOS) {
-        // 为空判断
-        if (articleAbbreviationsDTOS.isEmpty()) {
-            return;
+    @Override
+    public List<ArticleAbbreviationsDTO> likeRecordOrHistory(Integer userId, Integer type) {
+        List<LikeRecord> likeRecords;
+        List<History> history;
+        List<Integer> articleIds;
+
+        if (type == 0) { // 0表示点赞记录
+            likeRecords = likeRecordDao.queryByUserId(userId);
+            articleIds = likeRecords.stream().map(LikeRecord::getArticleId).toList();
+        } else { // 1表示历史记录
+            history = historyDao.queryByUserId(userId);
+            articleIds = history.stream().map(History::getArticleId).toList();
         }
 
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("(");
+        for (Integer id : articleIds) {
+            stringBuilder.append(id).append(",");
+        }
+        stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+        stringBuilder.append(")");
+        String ids = stringBuilder.toString().equals(")") ? null : stringBuilder.toString();
+
+        List<ArticleAbbreviationsDTO> articleAbbreviationsDTOS;
+        if (type == 0) { // 0表示点赞记录
+            articleAbbreviationsDTOS = articleDao.queryLikeInArticleId(ids);
+        } else { // 1表示历史记录
+            articleAbbreviationsDTOS = articleDao.queryHistoryInArticleId(ids);
+        }
+        // 为空判断
+        if (articleAbbreviationsDTOS.isEmpty()) {
+            return null;
+        }
+
+        constructArticleAbbreviationsDTOs(articleAbbreviationsDTOS);
+
+        return articleAbbreviationsDTOS;
+
+    }
+
+    // 查询`image`和`comment`表构造`文章缩略信息`中的`图片地址字段`和`评论数量字段`
+    void constructArticleAbbreviationsDTOs(List<ArticleAbbreviationsDTO> articleAbbreviationsDTOS) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("(");
         for (ArticleAbbreviationsDTO articleAbbreviationsDTO : articleAbbreviationsDTOS) {
@@ -220,7 +276,7 @@ public class ArticleServiceImpl implements ArticleService {
             }
         }
 
-        List<Comment> commentList = commentDao.listIn(0, stringBuilder.toString()); // 0表示文章
+        List<Comment> commentList = commentDao.listIn(0, ids); // 0表示文章
         Map<Integer, Integer> commentMap = new HashMap<>();
         for (Comment comment : commentList) {
             if (!commentMap.containsKey(comment.getCategoryId())) {

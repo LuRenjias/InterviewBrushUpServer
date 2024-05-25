@@ -32,4 +32,10 @@
         where user_id = #{userId}
           and article_id = #{articleId}
     </select>
+
+    <select id="queryByUserId" resultMap="LikeRecordMap">
+        select *
+        from like_record
+        where user_id = #{userId}
+    </select>
 </mapper>

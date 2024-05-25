@@ -1,6 +1,5 @@
 package edu.hnu.controller;
 
-import com.github.pagehelper.Page;
 import edu.hnu.dto.ArticleAbbreviationsDTO;
 import edu.hnu.dto.ArticleDTO;
 import edu.hnu.entity.Article;
@@ -9,7 +8,6 @@ import edu.hnu.utils.JwtUtils;
 import edu.hnu.utils.Result;
 import edu.hnu.utils.StatusCode;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -123,11 +121,13 @@ public class ArticleController {
     /**
      * 点赞记录.
      */
-    @GetMapping("likeRecord")
-    public Result likeRecord(Integer userId) {
-        log.info("likeRecord: 点赞记录");
+    @GetMapping("likeRecordOrHistory")
+    public Result likeRecordOrHistory(Integer userId, Integer type) {
+        log.info("likeRecordOrHistory: 点赞记录或历史记录");
 
-        return null;
+        List<ArticleAbbreviationsDTO> articleAbbreviationsDTOS = articleService.likeRecordOrHistory(userId, type);
+
+        return Result.success(articleAbbreviationsDTOS);
     }
 }
 

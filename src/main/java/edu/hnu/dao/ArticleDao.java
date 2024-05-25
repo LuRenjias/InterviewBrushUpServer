@@ -112,5 +112,9 @@ public interface ArticleDao {
                                                          @Param("returnCount") Integer returnCount);
 
     ArticleDTO queryDetailById(@Param("articleId") Integer articleId);
+
+    List<ArticleAbbreviationsDTO> queryLikeInArticleId(@Param("ids") String ids);
+
+    List<ArticleAbbreviationsDTO> queryHistoryInArticleId(@Param("ids") String ids);
 }
 
