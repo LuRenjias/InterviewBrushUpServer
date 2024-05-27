@@ -91,6 +91,13 @@
         insert into collection(user_id,collection_name,create_time,content_count,module)
         values (#{userId},#{collectionName},#{createTime},0,#{module})
     </insert>
+    <update id="addCount">
+        update collection
+        <set>
+            content_count = content_count+1
+        </set>
+        where user_id = #{userId} and collection_name = #{collectionName} and module = #{module}
+    </update>
 
     <!--通过主键修改数据-->
     <update id="update">
@@ -113,6 +120,13 @@
             </if>
         </set>
         where id = #{id}
+    </update>
+    <update id="reduceCount">
+        update collection
+        <set>
+            content_count = content_count-1
+        </set>
+        where id = #{collectionId}
     </update>
 
     <!--通过主键删除-->

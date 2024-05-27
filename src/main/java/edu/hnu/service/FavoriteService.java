@@ -1,6 +1,5 @@
 package edu.hnu.service;
 
-import com.github.pagehelper.Page;
 import edu.hnu.entity.Favorite;
 
 
@@ -30,12 +29,16 @@ public interface FavoriteService {
     //Page<Favorite> queryByPage(Favorite favorite, PageRequest pageRequest);
 
     /**
-     * 新增数据
+     * 新增收藏.
      *
-     * @param favorite 实例对象
-     * @return 实例对象
+     * @param user_id 用户 id
+     * @param content_id 收藏内容 id
+     * @param collection_name 分组名
+     * @param collect_time 收藏时间
+     * @param module 分组所属模块
+     * @return 影响行数
      */
-    Favorite insert(Favorite favorite);
+    int insert(Integer user_id,Integer content_id,String collection_name,String collect_time,Integer module);
 
     /**
      * 修改数据
@@ -53,4 +56,30 @@ public interface FavoriteService {
      */
     boolean deleteById(Integer id);
 
+    /**
+     * 收藏夹对应分组收藏数量+1.
+     *
+     * @param userId 用户 id
+     * @param collectionName 分组名
+     * @param module 所属模块
+     * @return 影响行数
+     */
+    int addCollection(Integer userId, String collectionName, Integer module);
+
+    /**
+     * 查询收藏对象.
+     *
+     * @param userId 用户 id
+     * @param contentId 收藏内容 id
+     * @param module 所属模块
+     * @return 收藏对象
+     */
+    Favorite queryByUIdAndContentIdAndModule(Integer userId, Integer contentId, Integer module);
+
+    /**
+     * 收藏夹对应分组收藏数量-1.
+     *
+     * @param collectionId 分组 id
+     */
+    void reduceCollection(Integer collectionId);
 }

@@ -1,12 +1,16 @@
 package edu.hnu.service.impl;
 
-import edu.hnu.entity.IntegratedQuestion;
 import edu.hnu.dao.IntegratedQuestionDao;
+import edu.hnu.dto.IntegratedQuestionDTO;
+import edu.hnu.entity.IntegratedQuestion;
 import edu.hnu.service.IntegratedQuestionService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-
 import javax.annotation.Resource;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
 /**
  * (IntegratedQuestion)表服务实现类
@@ -18,6 +22,8 @@ import javax.annotation.Resource;
 public class IntegratedQuestionServiceImpl implements IntegratedQuestionService {
     @Resource
     private IntegratedQuestionDao integratedQuestionDao;
+    @Value("100")
+    private Long recommendCount;
 
     /**
      * 通过ID查询单条数据
@@ -81,5 +87,22 @@ public class IntegratedQuestionServiceImpl implements IntegratedQuestionService 
     @Override
     public String queryAnswerById(Integer id) {
         return integratedQuestionDao.queryAnswerById(id);
+    }
+
+    @Override
+    public List<IntegratedQuestionDTO> queryByCategory(Integer category) {
+        long count = integratedQuestionDao.count(null);
+        if (count < recommendCount) {
+            List<IntegratedQuestionDTO> list = integratedQuestionDao.list1(category);
+            Collections.shuffle(list);
+            return list;
+        } else {
+            Random random = new Random(); // 5-3=2 [0,2] (0,3) (1,3) (2,3)
+            long diff = count - recommendCount;
+            int skipCount = random.nextInt((int) (diff + 1));
+            List<IntegratedQuestionDTO> list = integratedQuestionDao.listLimit(skipCount, recommendCount,category);
+            Collections.shuffle(list);
+            return list;
+        }
     }
 }

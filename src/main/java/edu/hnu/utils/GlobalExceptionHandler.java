@@ -21,4 +21,11 @@ public class GlobalExceptionHandler {
     // 错误处理逻辑，例如记录日志、创建错误响应等
     return Result.error(StatusCode.DATA_TYPE_ERROR);
   }
+
+  @ExceptionHandler(java.time.format.DateTimeParseException.class)
+  public Result handleDateTypeException(java.time.format.DateTimeParseException ex) {
+    log.error("传入时间数据格式有误",ex);
+    // 错误处理逻辑，例如记录日志、创建错误响应等
+    return Result.error(StatusCode.DATE_FORMAT_ERROR);
+  }
 }

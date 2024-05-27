@@ -67,8 +67,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into choice_question_record(user_idchoice_question_iduser_optionchoice_time)
-        values (#{userId}#{choiceQuestionId}#{userOption}#{choiceTime})
+        insert into choice_question_record(user_id,choice_question_id,user_option,choice_time,is_correct)
+        values (#{userId},#{choiceQuestionId},#{userOption},#{choiceTime},#{isCorrect})
     </insert>
 
     <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">

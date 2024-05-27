@@ -50,7 +50,13 @@ public enum StatusCode {
     DATA_TYPE_ERROR(603),
 
     // 传入 id 不存在
-    MISSING_SELECT_ID(604);
+    MISSING_SELECT_ID(604),
+
+    // 传入数据为空
+    MISSING_DATA(605),
+
+    // 传入时间格式有误
+    DATE_FORMAT_ERROR(606);
 
     // 状态码
     private final int code;

@@ -1,10 +1,10 @@
 package edu.hnu.service.impl;
 
-import edu.hnu.entity.Favorite;
+import edu.hnu.dao.CollectionDao;
 import edu.hnu.dao.FavoriteDao;
+import edu.hnu.entity.Favorite;
 import edu.hnu.service.FavoriteService;
 import org.springframework.stereotype.Service;
-
 
 import javax.annotation.Resource;
 
@@ -18,6 +18,8 @@ import javax.annotation.Resource;
 public class FavoriteServiceImpl implements FavoriteService {
     @Resource
     private FavoriteDao favoriteDao;
+    @Resource
+    private CollectionDao collectionDao;
 
     /**
      * 通过ID查询单条数据
@@ -28,6 +30,11 @@ public class FavoriteServiceImpl implements FavoriteService {
     @Override
     public Favorite queryById(Integer id) {
         return this.favoriteDao.queryById(id);
+    }
+
+    @Override
+    public int insert(Integer user_id, Integer content_id, String collection_name, String collect_time, Integer module) {
+        return favoriteDao.insert(user_id,content_id,collection_name,collect_time,module);
     }
 
     /**
@@ -42,18 +49,6 @@ public class FavoriteServiceImpl implements FavoriteService {
         long total = this.favoriteDao.count(favorite);
         return new PageImpl<>(this.favoriteDao.queryAllByLimit(favorite, pageRequest), pageRequest, total);
     }*/
-
-    /**
-     * 新增数据
-     *
-     * @param favorite 实例对象
-     * @return 实例对象
-     */
-    @Override
-    public Favorite insert(Favorite favorite) {
-        this.favoriteDao.insert(favorite);
-        return favorite;
-    }
 
     /**
      * 修改数据
@@ -76,5 +71,20 @@ public class FavoriteServiceImpl implements FavoriteService {
     @Override
     public boolean deleteById(Integer id) {
         return this.favoriteDao.deleteById(id) > 0;
+    }
+
+    @Override
+    public int addCollection(Integer userId, String collectionName, Integer module) {
+        return collectionDao.addCount(userId,collectionName,module);
+    }
+
+    @Override
+    public Favorite queryByUIdAndContentIdAndModule(Integer userId, Integer contentId, Integer module) {
+        return favoriteDao.queryByUIdAndContentIdAndModule(userId,contentId,module);
+    }
+
+    @Override
+    public void reduceCollection(Integer collectionId) {
+        collectionDao.reduceCount(collectionId);
     }
 }

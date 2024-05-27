@@ -95,5 +95,9 @@ public interface ChoiceQuestionDao {
   Integer deleteByIdList(List<Integer> idList);
 
   List<ChoiceQuestion> queryByCategory(Integer category);
+
+  Integer queryByIdAndAnswer(Integer id, String answer);
+
+  String queryAnswer(Integer id);
 }
 

@@ -97,6 +97,19 @@
         from integrated_question
         where id=#{id}
     </select>
+    <select id="list1" resultType="edu.hnu.dto.IntegratedQuestionDTO">
+        select question, nickname as user_name, importance_level
+        from integrated_question,
+             user
+        where user_id = user.id and category = #{category}
+    </select>
+    <select id="listLimit" resultType="edu.hnu.dto.IntegratedQuestionDTO">
+        select question, nickname, importance_level
+        from integrated_question,
+             user
+        where user_id = user.id and category = #{category}
+        limit #{skipCount}, #{returnCount}
+    </select>
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">

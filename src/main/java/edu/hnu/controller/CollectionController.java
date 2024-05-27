@@ -72,6 +72,7 @@ public class CollectionController {
     String collection_name = jsonObject.getString("collection_name");
     String create_time = jsonObject.getString("create_time");
     Integer module = jsonObject.getInteger("module");
+    log.info("新增分组，user_id:{},collection_name:{},module:{}",user_id,collection_name,module);
     int line = collectionService.insert(user_id, collection_name, create_time, module);
     if (line != 1) {
       return Result.error();
@@ -90,6 +91,7 @@ public class CollectionController {
     Integer user_id = JwtUtils.getUserId(token);
     String collection_name = jsonObject.getString("collection_name");
     Integer module = jsonObject.getInteger("module");
+    log.info("删除分组，user_id:{},collection_name:{},module:{}",user_id,collection_name,module);
     boolean flag = collectionService.deleteByIdAndNameAndModule(user_id, collection_name, module);
     if (!flag) {
       return Result.error();

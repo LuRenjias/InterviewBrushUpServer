@@ -1,5 +1,6 @@
 package edu.hnu.dao;
 
+import edu.hnu.dto.IntegratedQuestionDTO;
 import edu.hnu.entity.IntegratedQuestion;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -111,5 +112,12 @@ public interface IntegratedQuestionDao {
    * @param idList 主键
    */
   void updateStateByIdList2(List<Integer> idList);
+
+  /**
+   * 返回指定类型的八股数据.
+   */
+  List<IntegratedQuestionDTO> list1(Integer category);
+
+  List<IntegratedQuestionDTO> listLimit(int skipCount, Long recommendCount, Integer category);
 }
 

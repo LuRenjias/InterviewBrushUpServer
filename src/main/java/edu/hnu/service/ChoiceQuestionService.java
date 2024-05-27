@@ -1,6 +1,5 @@
 package edu.hnu.service;
 
-import com.github.pagehelper.Page;
 import edu.hnu.entity.ChoiceQuestion;
 
 import java.util.List;
@@ -56,4 +55,6 @@ public interface ChoiceQuestionService {
   boolean deleteById(Integer id);
 
   List<ChoiceQuestion> queryByCategory(Integer category);
+
+  List<ChoiceQuestion> ListChoiceQuestion(Integer page, int i);
 }

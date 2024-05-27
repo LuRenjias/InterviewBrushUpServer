@@ -1,9 +1,10 @@
 package edu.hnu.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import edu.hnu.dao.ChoiceQuestionDao;
 import edu.hnu.entity.ChoiceQuestion;
 import edu.hnu.service.ChoiceQuestionService;
-
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -82,5 +83,13 @@ public class ChoiceQuestionServiceImpl implements ChoiceQuestionService {
     @Override
     public List<ChoiceQuestion> queryByCategory(Integer category) {
         return choiceQuestionDao.queryByCategory(category);
+    }
+
+    @Override
+    public List<ChoiceQuestion> ListChoiceQuestion(Integer page, int i) {
+        PageHelper.startPage(page, i);
+        List<ChoiceQuestion> listChoiceQuestion = choiceQuestionDao.list();
+        Page<ChoiceQuestion> p = (Page<ChoiceQuestion>) listChoiceQuestion;
+        return p.getResult();
     }
 }

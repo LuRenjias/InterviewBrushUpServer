@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * (Favorite)实体类
@@ -35,7 +35,7 @@ public class Favorite {
     /**
      * 收藏_时间
      */
-    private Date favoriteTime;
+    private LocalDateTime favoriteTime;
 
 
 }

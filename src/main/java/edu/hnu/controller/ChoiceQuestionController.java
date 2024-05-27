@@ -1,8 +1,7 @@
 package edu.hnu.controller;
 
-import com.github.pagehelper.Page;
+import edu.hnu.dto.ChoiceQuestionDTO;
 import edu.hnu.entity.ChoiceQuestion;
-import edu.hnu.entity.IntegratedQuestion;
 import edu.hnu.service.ChoiceQuestionService;
 import edu.hnu.utils.Result;
 import edu.hnu.utils.StatusCode;
@@ -93,6 +92,14 @@ public class ChoiceQuestionController {
     }
     List<ChoiceQuestion> choiceQuestionList = choiceQuestionService.queryByCategory(category);
     return Result.success(choiceQuestionList);
+  }
+
+  @GetMapping("getChoiceQuestion")
+  public Result getChoiceQuestion(Integer category,Integer page){
+    log.info("读取题库题目数据，题库 category：{}，当前page:{}", category,page);
+    List<ChoiceQuestion> list = choiceQuestionService.ListChoiceQuestion(page, 1);
+    ChoiceQuestion choiceQuestion=list.get(0);
+    return Result.success(new ChoiceQuestionDTO(choiceQuestion.getQuestion(),choiceQuestion.getOptions(),choiceQuestion.getType()));
   }
 
 }

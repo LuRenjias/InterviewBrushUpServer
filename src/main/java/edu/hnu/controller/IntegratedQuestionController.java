@@ -1,5 +1,6 @@
 package edu.hnu.controller;
 
+import edu.hnu.dto.IntegratedQuestionDTO;
 import edu.hnu.entity.IntegratedQuestion;
 import edu.hnu.service.IntegratedQuestionService;
 import edu.hnu.utils.Result;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * (IntegratedQuestion)表控制层
@@ -103,5 +105,16 @@ public class IntegratedQuestionController {
     return Result.success(answer);
   }
 
+  /**
+   * 获取指定类型八股列表.
+   *
+   * @param category 八股种类
+   */
+  @GetMapping("getQuestionList")
+  public Result getQuestionList(Integer category){
+    log.info("获取指定类型八股列表，category：{}",category);
+    List<IntegratedQuestionDTO> list = integratedQuestionService.queryByCategory(category);
+    return Result.success(list);
+  }
 }
 

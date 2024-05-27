@@ -64,12 +64,14 @@
             </if>
         </where>
     </select>
+    <select id="queryByUIdAndContentIdAndModule" resultType="edu.hnu.entity.Favorite">
+        select *
+        from favorite
+        where user_id = #{userId} and favorite_content_id = #{contentId}
+          and collection_id in (SELECT id from collection
+                                          where user_id = #{userId} and module = #{module})
+    </select>
 
-    <!--新增所有列-->
-    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into favorite(user_idcollection_idfavorite_content_idfavorite_time)
-        values (#{userId}#{collectionId}#{favoriteContentId}#{favoriteTime})
-    </insert>
 
     <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
         insert into favorite(user_idcollection_idfavorite_content_idfavorite_time)
@@ -88,6 +90,12 @@
         on duplicate key update
         user_id = values(user_id)collection_id = values(collection_id)favorite_content_id =
         values(favorite_content_id)favorite_time = values(favorite_time)
+    </insert>
+    <insert id="insert">
+        insert into favorite(user_id,collection_id,favorite_content_id,favorite_time)
+        values (#{user_id},
+                (SELECT id FROM collection WHERE collection_name = #{collection_name} and module = #{module} and user_id = #{user_id}),
+                #{content_id},#{collect_time})
     </insert>
 
     <!--通过主键修改数据-->

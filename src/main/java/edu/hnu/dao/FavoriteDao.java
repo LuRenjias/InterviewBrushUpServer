@@ -80,5 +80,18 @@ public interface FavoriteDao {
      */
     int deleteById(Integer id);
 
+    /**
+     * 新增收藏.
+     *
+     * @param user_id 用户 id
+     * @param content_id 收藏内容 id
+     * @param collection_name 分组名
+     * @param collect_time 收藏时间
+     * @param module 分组所属模块
+     * @return 影响行数
+     */
+    int insert(Integer user_id, Integer content_id, String collection_name, String collect_time, Integer module);
+
+    Favorite queryByUIdAndContentIdAndModule(Integer userId, Integer contentId, Integer module);
 }
 
