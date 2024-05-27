@@ -1,14 +1,13 @@
 package edu.hnu.controller;
 
-import com.github.pagehelper.Page;
 import edu.hnu.dto.ArticleAbbreviationsDTO;
+import edu.hnu.dto.ArticleDTO;
 import edu.hnu.entity.Article;
 import edu.hnu.service.ArticleService;
 import edu.hnu.utils.JwtUtils;
 import edu.hnu.utils.Result;
 import edu.hnu.utils.StatusCode;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -66,10 +65,10 @@ public class ArticleController {
      * 我的文章.
      */
     @GetMapping("myList")
-    public Result myList(@RequestHeader String token) {
+    public Result myList(Integer userId) {
         log.info("my: 我的文章");
 
-        List<ArticleAbbreviationsDTO> articleAbbreviationsDTOS = articleService.myList(JwtUtils.getUserId(token));
+        List<ArticleAbbreviationsDTO> articleAbbreviationsDTOS = articleService.myList(userId);
 
         return Result.success(articleAbbreviationsDTOS);
     }
@@ -86,5 +85,49 @@ public class ArticleController {
         return Result.success(list);
     }
 
+    /**
+     * 文章详情.
+     */
+    @GetMapping("detail")
+    public Result detail(Integer articleId, @RequestHeader String token) {
+        log.info("detail: 文章详情");
+
+        ArticleDTO detail = articleService.detail(articleId, JwtUtils.getUserId(token));
+
+        if (detail == null) {
+            return Result.error(StatusCode.ARTICLE_NOT_EXIST);
+        }
+
+        return Result.success(detail);
+    }
+
+    /**
+     * 点赞或取消点赞.
+     */
+    @PutMapping("like")
+    public Result like(Integer articleId, boolean like, @RequestHeader String token) {
+        log.info("like: 点赞{}或取消点赞{}", like, !like);
+
+        int i = articleService.like(articleId, like, JwtUtils.getUserId(token));
+
+        return switch (i) {
+            case 0 -> Result.error(StatusCode.ARTICLE_NOT_EXIST);
+            case 1 -> Result.success();
+            case 2 -> Result.error(StatusCode.REPEAT_LIKE);
+            default -> null;
+        };
+    }
+
+    /**
+     * 点赞记录.
+     */
+    @GetMapping("likeRecordOrHistory")
+    public Result likeRecordOrHistory(Integer userId, Integer type) {
+        log.info("likeRecordOrHistory: 点赞记录或历史记录");
+
+        List<ArticleAbbreviationsDTO> articleAbbreviationsDTOS = articleService.likeRecordOrHistory(userId, type);
+
+        return Result.success(articleAbbreviationsDTOS);
+    }
 }
 

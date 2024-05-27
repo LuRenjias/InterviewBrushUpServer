@@ -4,7 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 /**
  * (Comment)实体类
@@ -35,7 +37,7 @@ public class Comment {
     /**
      * 评论_时间
      */
-    private Date commentTime;
+    private LocalDateTime commentTime;
     /**
      * 父评论的_id
      */
@@ -45,6 +47,8 @@ public class Comment {
      */
     private Integer category;
 
+    private Integer status; // 评论状态 1表示正常 -1表示已删除
 
+    private List<Comment> replies; // 回复（子评论）
 }
 

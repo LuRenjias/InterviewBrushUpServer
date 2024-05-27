@@ -16,15 +16,19 @@ import java.util.List;
 @Mapper
 public interface UserDao {
 
-  User queryByOpenId(@Param("openId") String openId);
+    User queryByOpenId(@Param("openId") String openId);
 
-  int insert(User user);
+    int insert(User user);
 
-  int update(User user);
+    int update(User user);
 
-  User queryById(@Param("id") int id);
+    User queryById(@Param("id") int id);
 
-  @Select("select * from user")
-  List<User> list();
+    @Select("select * from user")
+    List<User> list();
+
+    int countLessThan(@Param("id") int id);
+
+    List<User> listIn(@Param("ids") String ids);
 }
 

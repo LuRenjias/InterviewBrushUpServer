@@ -1,7 +1,9 @@
 package edu.hnu.service;
 
-import com.github.pagehelper.Page;
+import edu.hnu.dto.CommentDTO;
 import edu.hnu.entity.Comment;
+
+import java.util.List;
 
 
 /**
@@ -13,44 +15,14 @@ import edu.hnu.entity.Comment;
 public interface CommentService {
 
     /**
-     * 通过ID查询单条数据
-     *
-     * @param id 主键
-     * @return 实例对象
+     * 添加评论.
      */
-    Comment queryById(Integer id);
+    int addComment(Comment comment);
 
     /**
-     * 分页查询
-     *
-     * @param comment 筛选条件
-     * @param pageRequest      分页对象
-     * @return 查询结果
+     * 查看文章评论.
      */
-    //Page<Comment> queryByPage(Comment comment, PageRequest pageRequest);
+    List<CommentDTO> getComment(Integer category, Integer categoryId);
 
-    /**
-     * 新增数据
-     *
-     * @param comment 实例对象
-     * @return 实例对象
-     */
-    Comment insert(Comment comment);
-
-    /**
-     * 修改数据
-     *
-     * @param comment 实例对象
-     * @return 实例对象
-     */
-    Comment update(Comment comment);
-
-    /**
-     * 通过主键删除数据
-     *
-     * @param id 主键
-     * @return 是否成功
-     */
-    boolean deleteById(Integer id);
-
+    int updateCommentStatus(Integer commentId, Integer status, Integer userId);
 }

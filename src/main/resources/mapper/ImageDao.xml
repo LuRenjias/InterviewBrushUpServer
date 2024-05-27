@@ -48,4 +48,19 @@
         where category = #{category}
           and category_id = #{categoryId}
     </delete>
+
+    <select id="listAll" resultMap="ImageMap">
+        select *
+        from image
+    </select>
+
+    <select id="listIn" resultMap="ImageMap">
+        select *
+        from image
+        where category = #{category}
+        and (false
+        <if test="ids != null and ids != ''">
+            or category_id in ${ids}
+        </if>)
+    </select>
 </mapper>

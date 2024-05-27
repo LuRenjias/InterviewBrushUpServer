@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.hnu.dao.HistoryDao">
+    <resultMap id="HistoryMap" type="edu.hnu.entity.History">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="articleId" column="article_id" jdbcType="INTEGER"/>
+        <result property="visitTime" column="visit_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into history(user_id, article_id, visit_time)
+        values (#{userId}, #{articleId}, #{visitTime})
+    </insert>
+    
+    <select id="queryByUserIdAndArticleId" resultMap="HistoryMap">
+        select *
+        from history
+        where user_id = #{userId}
+          and article_id = #{articleId}
+    </select>
+
+    <select id="queryByUserId" resultMap="HistoryMap">
+        select *
+        from history
+        where user_id = #{userId}
+    </select>
+
+    <update id="update">
+        update history
+        <set>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="articleId != null">
+                article_id = #{articleId},
+            </if>
+            <if test="visitTime != null">
+                visit_time = #{visitTime},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+</mapper>

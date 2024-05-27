@@ -1,6 +1,7 @@
 package edu.hnu.dao;
 
 import edu.hnu.dto.ArticleAbbreviationsDTO;
+import edu.hnu.dto.ArticleDTO;
 import edu.hnu.entity.Article;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -110,5 +111,10 @@ public interface ArticleDao {
     List<ArticleAbbreviationsDTO> listAbbreviationsLimit(@Param("skipCount") Integer skipCount,
                                                          @Param("returnCount") Integer returnCount);
 
+    ArticleDTO queryDetailById(@Param("articleId") Integer articleId);
+
+    List<ArticleAbbreviationsDTO> queryLikeInArticleId(@Param("ids") String ids);
+
+    List<ArticleAbbreviationsDTO> queryHistoryInArticleId(@Param("ids") String ids);
 }
 
