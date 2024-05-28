@@ -78,8 +78,7 @@
         select question, category, choice_time
         from choice_question_record,
              choice_question
-        where choice_question_id = choice_question.id
-          and user_id = #{userId}
+        where choice_question_id = choice_question.id and user_id = #{userId}
           and is_correct = false
         order by choice_time DESC
     </select>
