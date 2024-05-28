@@ -2,13 +2,11 @@ package edu.hnu.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import edu.hnu.dto.CollectionDTO;
-import edu.hnu.entity.Collection;
 import edu.hnu.service.CollectionService;
 import edu.hnu.utils.JwtUtils;
 import edu.hnu.utils.Result;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -33,17 +31,6 @@ public class CollectionController {
   @Resource
   private HttpServletRequest request;
 
-  /**
-   * 分页查询
-   *
-   * @param collection 筛选条件
-   * @param pageRequest      分页对象
-   * @return 查询结果
-   */
-    /*@GetMapping
-    public ResponseEntity<Page<Collection>> queryByPage(Collection collection, PageRequest pageRequest) {
-        return ResponseEntity.ok(this.collectionService.queryByPage(collection, pageRequest));
-    }*/
 
   /**
    * 通过 user_id 和 module 查询多条数据
@@ -85,7 +72,7 @@ public class CollectionController {
    *
    * @param jsonObject 封装的数据实体
    */
-  @DeleteMapping("deleteCollection")
+  /*@DeleteMapping("deleteCollection")
   public Result delete(@RequestBody JSONObject jsonObject) {
     String token = request.getHeader("token");
     Integer user_id = JwtUtils.getUserId(token);
@@ -97,28 +84,36 @@ public class CollectionController {
       return Result.error();
     }
     return Result.success();
-  }
+  }*/
 
   /**
-   * 编辑数据
+   * 修改收藏夹名称.
    *
-   * @param collection 实体
-   * @return 编辑结果
+   * @param name 新名字
+   * @param id 收藏夹id
    */
-  @PutMapping
-  public ResponseEntity<Collection> edit(Collection collection) {
-    return ResponseEntity.ok(this.collectionService.update(collection));
+  @PostMapping("editName")
+  public Result editName(String name,Integer id){
+    log.info("修改收藏夹名称，name:{},id:{}",name,id);
+    boolean flag = collectionService.updateNameById(id,name);
+    if(!flag){
+      return Result.error();
+    }
+    return Result.success();
   }
 
   /**
-   * 删除数据
+   * 删除收藏分组.
    *
    * @param id 主键
    * @return 删除是否成功
    */
-  @DeleteMapping
-  public ResponseEntity<Boolean> deleteById(Integer id) {
-    return ResponseEntity.ok(this.collectionService.deleteById(id));
+  @DeleteMapping("deleteCollection")
+  public Result deleteById(Integer id) {
+    if(!collectionService.deleteById(id)){
+      return Result.error();
+    }
+    return Result.success();
   }
 
 }

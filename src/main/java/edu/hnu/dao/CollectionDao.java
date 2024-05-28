@@ -91,5 +91,7 @@ public interface CollectionDao {
   int addCount(Integer userId, String collectionName, Integer module);
 
   void reduceCount(Integer collectionId);
+
+  int updateNameById(Integer id, String name);
 }
 

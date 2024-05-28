@@ -1,6 +1,9 @@
 package edu.hnu.service;
 
+import edu.hnu.dto.ChoiceQuestionErrorSetDTO;
 import edu.hnu.entity.ChoiceQuestionRecord;
+
+import java.util.List;
 
 
 /**
@@ -55,4 +58,6 @@ public interface ChoiceQuestionRecordService {
   Boolean queryByIdAndAnswer(Integer id, Integer userId, String answer, String choiceTime);
 
   String queryAnswer(Integer id);
+
+  List<ChoiceQuestionErrorSetDTO> queryErrorSet(Integer userId);
 }

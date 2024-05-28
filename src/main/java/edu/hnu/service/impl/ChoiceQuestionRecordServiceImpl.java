@@ -1,6 +1,7 @@
 package edu.hnu.service.impl;
 
 import edu.hnu.dao.ChoiceQuestionDao;
+import edu.hnu.dto.ChoiceQuestionErrorSetDTO;
 import edu.hnu.entity.ChoiceQuestionRecord;
 import edu.hnu.dao.ChoiceQuestionRecordDao;
 import edu.hnu.service.ChoiceQuestionRecordService;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * (ChoiceQuestionRecord)表服务实现类
@@ -98,5 +100,10 @@ public class ChoiceQuestionRecordServiceImpl implements ChoiceQuestionRecordServ
   @Override
   public String queryAnswer(Integer id) {
     return choiceQuestionDao.queryAnswer(id);
+  }
+
+  @Override
+  public List<ChoiceQuestionErrorSetDTO> queryErrorSet(Integer userId) {
+    return choiceQuestionRecordDao.queryErrorSet(userId);
   }
 }

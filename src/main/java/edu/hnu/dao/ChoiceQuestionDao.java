@@ -1,5 +1,7 @@
 package edu.hnu.dao;
 
+import edu.hnu.dto.ChoiceQuestionListDTO;
+import edu.hnu.dto.ChoiceQuestionListOrderByTimeDTO;
 import edu.hnu.entity.ChoiceQuestion;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -99,5 +101,14 @@ public interface ChoiceQuestionDao {
   Integer queryByIdAndAnswer(Integer id, String answer);
 
   String queryAnswer(Integer id);
+
+  Long countByCategory(Integer category);
+
+  List<ChoiceQuestionListDTO> listAll(Integer user_id);
+
+  @Select("select * from choice_question where category = #{category}")
+  List<ChoiceQuestion> listByCategory(Integer category);
+
+  List<ChoiceQuestionListOrderByTimeDTO> queryByUId(Integer userId);
 }
 

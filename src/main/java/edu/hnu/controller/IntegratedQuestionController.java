@@ -1,10 +1,13 @@
 package edu.hnu.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import edu.hnu.dto.IntegratedQuestionDTO;
 import edu.hnu.entity.IntegratedQuestion;
 import edu.hnu.service.IntegratedQuestionService;
+import edu.hnu.utils.JwtUtils;
 import edu.hnu.utils.Result;
 import edu.hnu.utils.StatusCode;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,18 +30,8 @@ public class IntegratedQuestionController {
    */
   @Resource
   private IntegratedQuestionService integratedQuestionService;
-
-  /**
-   * 分页查询
-   *
-   * @param integratedQuestion 筛选条件
-   * @param pageRequest      分页对象
-   * @return 查询结果
-   */
-    /*@GetMapping
-    public ResponseEntity<Page<IntegratedQuestion>> queryByPage(IntegratedQuestion integratedQuestion, PageRequest pageRequest) {
-        return ResponseEntity.ok(this.integratedQuestionService.queryByPage(integratedQuestion, pageRequest));
-    }*/
+  @Resource
+  private HttpServletRequest request;
 
   /**
    * 通过主键查询单条数据
@@ -115,6 +108,26 @@ public class IntegratedQuestionController {
     log.info("获取指定类型八股列表，category：{}",category);
     List<IntegratedQuestionDTO> list = integratedQuestionService.queryByCategory(category);
     return Result.success(list);
+  }
+
+  /**
+   * 上传八股题.
+   *
+   * @param jsonObject 封装的数据对象
+   */
+  @PostMapping("uploadIntegratedQuestion")
+  public Result uploadIntegratedQuestion(@RequestBody JSONObject jsonObject){
+    log.info("读取全部题库题目数据，返回列表");
+    String token = request.getHeader("token");
+    Integer user_id = JwtUtils.getUserId(token);
+    String question = jsonObject.getString("question");
+    String answer = jsonObject.getString("answer");
+    Integer category = jsonObject.getInteger("category");
+    String uploadTime = jsonObject.getString("upload_time");
+    Integer importanceLevel = jsonObject.getInteger("importanceLevel");
+    IntegratedQuestion integratedQuestion = new IntegratedQuestion(user_id,question,answer,category,importanceLevel,uploadTime,0,0);
+    integratedQuestionService.insert(integratedQuestion);
+    return Result.success();
   }
 }
 

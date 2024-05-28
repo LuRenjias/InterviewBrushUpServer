@@ -64,6 +64,23 @@
             </if>
         </where>
     </select>
+    <select id="countByUidAndCategory" resultType="java.lang.Long">
+        select count(*)
+        from choice_question_record
+        where user_id = #{userId} and choice_question_id in (select id from choice_question where category = #{category})
+    </select>
+    <select id="queryByUIdAndQId" resultType="edu.hnu.entity.ChoiceQuestionRecord">
+        select *
+        from choice_question_record
+        where user_id = #{userId} and choice_question_id = #{questionId}
+    </select>
+    <select id="queryErrorSet" resultType="edu.hnu.dto.ChoiceQuestionErrorSetDTO">
+        select question, category, choice_time
+        from choice_question_record,
+             choice_question
+        where choice_question_id = choice_question.id and user_id = #{userId}
+        order by choice_time DESC
+    </select>
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">

@@ -1,5 +1,6 @@
 package edu.hnu.dao;
 
+import edu.hnu.dto.ChoiceQuestionErrorSetDTO;
 import edu.hnu.entity.ChoiceQuestionRecord;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -80,6 +81,12 @@ public interface ChoiceQuestionRecordDao {
    * @return 影响行数
    */
   int deleteById(Integer id);
+
+  Long countByUidAndCategory(Integer userId, Integer category);
+
+  ChoiceQuestionRecord queryByUIdAndQId(Integer userId, Integer questionId);
+
+  List<ChoiceQuestionErrorSetDTO> queryErrorSet(Integer userId);
 
   //boolean queryByIdAndAnswer(Integer id,Integer userId, String answer);
 }

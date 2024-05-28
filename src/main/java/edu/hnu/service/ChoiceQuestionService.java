@@ -1,6 +1,9 @@
 package edu.hnu.service;
 
+import edu.hnu.dto.ChoiceQuestionListDTO;
+import edu.hnu.dto.ChoiceQuestionListOrderByTimeDTO;
 import edu.hnu.entity.ChoiceQuestion;
+import edu.hnu.entity.ChoiceQuestionRecord;
 
 import java.util.List;
 
@@ -56,5 +59,15 @@ public interface ChoiceQuestionService {
 
   List<ChoiceQuestion> queryByCategory(Integer category);
 
-  List<ChoiceQuestion> ListChoiceQuestion(Integer page, int i);
+  List<ChoiceQuestion> ListChoiceQuestion(Integer page, int i,Integer category);
+
+  Long countByCategory(Integer category);
+
+  Long countCompletedQuestions(Integer category, Integer user_id);
+
+  List<ChoiceQuestionListDTO> listAll(Integer user_id);
+
+  ChoiceQuestionRecord queryRecordById(Integer userId, Integer questionId);
+
+  List<ChoiceQuestionListOrderByTimeDTO> queryByUId(Integer userId);
 }

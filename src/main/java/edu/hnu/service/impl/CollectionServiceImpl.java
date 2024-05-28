@@ -72,4 +72,9 @@ public class CollectionServiceImpl implements CollectionService {
     public boolean deleteByIdAndNameAndModule(Integer userId, String collectionName, Integer module) {
         return this.collectionDao.deleteByIdAndNameAndModule(userId,collectionName,module) > 0;
     }
+
+    @Override
+    public boolean updateNameById(Integer id, String name) {
+        return collectionDao.updateNameById(id,name) > 0;
+    }
 }

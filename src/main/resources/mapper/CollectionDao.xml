@@ -128,6 +128,13 @@
         </set>
         where id = #{collectionId}
     </update>
+    <update id="updateNameById">
+        update collection
+        <set>
+            collection_name = #{name}
+        </set>
+        where id = #{id}
+    </update>
 
     <!--通过主键删除-->
     <delete id="deleteById">

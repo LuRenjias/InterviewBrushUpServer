@@ -3,7 +3,11 @@ package edu.hnu.service.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import edu.hnu.dao.ChoiceQuestionDao;
+import edu.hnu.dao.ChoiceQuestionRecordDao;
+import edu.hnu.dto.ChoiceQuestionListDTO;
+import edu.hnu.dto.ChoiceQuestionListOrderByTimeDTO;
 import edu.hnu.entity.ChoiceQuestion;
+import edu.hnu.entity.ChoiceQuestionRecord;
 import edu.hnu.service.ChoiceQuestionService;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +24,8 @@ import java.util.List;
 public class ChoiceQuestionServiceImpl implements ChoiceQuestionService {
     @Resource
     private ChoiceQuestionDao choiceQuestionDao;
+    @Resource
+    private ChoiceQuestionRecordDao choiceQuestionRecordDao;
 
     /**
      * 通过ID查询单条数据
@@ -86,10 +92,35 @@ public class ChoiceQuestionServiceImpl implements ChoiceQuestionService {
     }
 
     @Override
-    public List<ChoiceQuestion> ListChoiceQuestion(Integer page, int i) {
+    public List<ChoiceQuestion> ListChoiceQuestion(Integer page, int i,Integer category) {
         PageHelper.startPage(page, i);
-        List<ChoiceQuestion> listChoiceQuestion = choiceQuestionDao.list();
+        List<ChoiceQuestion> listChoiceQuestion = choiceQuestionDao.listByCategory(category);
         Page<ChoiceQuestion> p = (Page<ChoiceQuestion>) listChoiceQuestion;
         return p.getResult();
+    }
+
+    @Override
+    public Long countByCategory(Integer category) {
+        return choiceQuestionDao.countByCategory(category);
+    }
+
+    @Override
+    public Long countCompletedQuestions(Integer category, Integer user_id) {
+        return choiceQuestionRecordDao.countByUidAndCategory(user_id,category);
+    }
+
+    @Override
+    public List<ChoiceQuestionListDTO> listAll(Integer user_id) {
+        return choiceQuestionDao.listAll(user_id);
+    }
+
+    @Override
+    public ChoiceQuestionRecord queryRecordById(Integer userId, Integer questionId) {
+        return choiceQuestionRecordDao.queryByUIdAndQId(userId,questionId);
+    }
+
+    @Override
+    public List<ChoiceQuestionListOrderByTimeDTO> queryByUId(Integer userId) {
+        return choiceQuestionDao.queryByUId(userId);
     }
 }

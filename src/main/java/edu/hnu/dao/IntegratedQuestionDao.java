@@ -114,10 +114,13 @@ public interface IntegratedQuestionDao {
   void updateStateByIdList2(List<Integer> idList);
 
   /**
-   * 返回指定类型的八股数据.
+   * 返回指定类型的八股数据(审核通过).
    */
   List<IntegratedQuestionDTO> list1(Integer category);
 
+  /**
+   * 返回指定类型的八股数据(审核通过,限制数量).
+   */
   List<IntegratedQuestionDTO> listLimit(int skipCount, Long recommendCount, Integer category);
 }
 
