@@ -32,29 +32,6 @@ public class FavoriteController {
   private HttpServletRequest request;
 
   /**
-   * 分页查询.
-   *
-   * @param favorite 筛选条件
-   * @param pageRequest      分页对象
-   * @return 查询结果
-   */
-    /*@GetMapping
-    public ResponseEntity<Page<Favorite>> queryByPage(Favorite favorite, PageRequest pageRequest) {
-        return ResponseEntity.ok(this.favoriteService.queryByPage(favorite, pageRequest));
-    }*/
-
-  /**
-   * 通过主键查询单条数据
-   *
-   * @param id 主键
-   * @return 单条数据
-   */
-  @GetMapping("{id}")
-  public ResponseEntity<Favorite> queryById(@PathVariable("id") Integer id) {
-    return ResponseEntity.ok(this.favoriteService.queryById(id));
-  }
-
-  /**
    * 新增收藏.
    *
    * @param jsonObject 封装的数据

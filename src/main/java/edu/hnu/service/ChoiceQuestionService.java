@@ -72,4 +72,6 @@ public interface ChoiceQuestionService {
     List<ChoiceQuestionListOrderByTimeDTO> queryByUId(Integer userId);
 
     List<ChoiceQuestion> queryByQuestion(String keyword, Integer orderType);
+
+    Boolean queryIsCollectByUIdAndCId(Integer id, Integer userId);
 }

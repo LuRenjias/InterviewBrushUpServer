@@ -1,6 +1,7 @@
 package edu.hnu.service;
 
 import edu.hnu.dto.IntegratedQuestionDTO;
+import edu.hnu.dto.IntegratedQuestionListDTO;
 import edu.hnu.entity.IntegratedQuestion;
 
 import java.util.List;
@@ -63,7 +64,9 @@ public interface IntegratedQuestionService {
    */
   String queryAnswerById(Integer id);
 
-  List<IntegratedQuestionDTO> queryByCategory(Integer category);
+  List<IntegratedQuestionListDTO> queryByCategory(Integer category);
 
-  List<IntegratedQuestionDTO> queryByQuestion(String keyword, Integer orderType);
+  List<IntegratedQuestionListDTO> queryByQuestion(String keyword, Integer orderType);
+
+  IntegratedQuestionDTO queryDtoById(Integer id, Integer user_id);
 }

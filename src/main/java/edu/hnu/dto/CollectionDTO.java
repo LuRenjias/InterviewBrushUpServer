@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CollectionDTO {
+  private Integer id;
   private String collectionName;
   private Integer contentCount;
 }

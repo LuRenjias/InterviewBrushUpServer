@@ -93,5 +93,9 @@ public interface CollectionDao {
   void reduceCount(Integer collectionId);
 
   int updateNameById(Integer id, String name);
+
+  CollectionDTO queryLastInsert();
+
+  Collection queryById(Integer id);
 }
 

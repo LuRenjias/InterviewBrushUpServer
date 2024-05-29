@@ -63,9 +63,19 @@
         </where>
     </select>
     <select id="queryByIdAndModule" resultType="edu.hnu.dto.CollectionDTO">
-        select collection_name,content_count
+        select id,collection_name,content_count
         from collection
         where user_id = #{user_id} and module = #{module}
+    </select>
+    <select id="queryLastInsert" resultType="edu.hnu.dto.CollectionDTO">
+        SELECT id, collection_name, content_count
+        FROM collection
+        WHERE id = LAST_INSERT_ID();
+    </select>
+    <select id="queryById" resultType="edu.hnu.entity.Collection">
+        select *
+        from collection
+        where id = #{id}
     </select>
 
 

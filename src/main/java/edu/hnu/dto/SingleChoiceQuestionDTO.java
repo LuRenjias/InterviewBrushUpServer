@@ -7,11 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChoiceQuestionUnDoneDTO {
-  private Boolean flag; //是否做过
+public class SingleChoiceQuestionDTO {
   private Integer id;
   private String question;
-  private String options;
-  private String type;
-  private Boolean isCollect;
+  private Integer category;
 }

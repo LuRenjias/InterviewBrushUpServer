@@ -1,6 +1,6 @@
 package edu.hnu.service;
 
-import edu.hnu.dto.CollectionDTO;
+import edu.hnu.dto.*;
 import edu.hnu.entity.Collection;
 
 import java.util.List;
@@ -42,7 +42,7 @@ public interface CollectionService {
    * @param module          所属模块
    * @return 影响行数
    */
-  int insert(Integer user_id, String collection_name, String create_time, Integer module);
+  CollectionDTO insert(Integer user_id, String collection_name, String create_time, Integer module);
 
   /**
    * 修改数据
@@ -63,4 +63,12 @@ public interface CollectionService {
   boolean deleteByIdAndNameAndModule(Integer userId, String collectionName, Integer module);
 
   boolean updateNameById(Integer id, String name);
+
+  Collection queryById(Integer id);
+
+  List<ArticleAbbreviationsDTO> queryArticle(Integer id, Integer userId);
+
+  List<IntegratedQuestionListDTO> queryIntegratedQuestion(Integer id, Integer userId);
+
+  List<SingleChoiceQuestionDTO> queryChoiceQuestion(Integer id, Integer userId);
 }

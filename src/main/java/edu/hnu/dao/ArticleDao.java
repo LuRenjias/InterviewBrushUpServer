@@ -121,5 +121,7 @@ public interface ArticleDao {
     List<ArticleAbbreviationsDTO> queryByArticleTitle(@Param("articleTitle") String articleTitle,
                                                       @Param("column") String colum,
                                                       @Param("status") Integer status);
+
+    List<ArticleAbbreviationsDTO> queryByCollectionIdAndUId(Integer id, Integer userId);
 }
 

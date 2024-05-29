@@ -1,10 +1,12 @@
 package edu.hnu.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import edu.hnu.dto.CollectionDTO;
+import edu.hnu.dto.*;
+import edu.hnu.entity.Collection;
 import edu.hnu.service.CollectionService;
 import edu.hnu.utils.JwtUtils;
 import edu.hnu.utils.Result;
+import edu.hnu.utils.StatusCode;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -60,11 +62,11 @@ public class CollectionController {
     String create_time = jsonObject.getString("create_time");
     Integer module = jsonObject.getInteger("module");
     log.info("新增分组，user_id:{},collection_name:{},module:{}",user_id,collection_name,module);
-    int line = collectionService.insert(user_id, collection_name, create_time, module);
-    if (line != 1) {
+    CollectionDTO collectionDTO = collectionService.insert(user_id, collection_name, create_time, module);
+    if (collectionDTO == null) {
       return Result.error();
     }
-    return Result.success();
+    return Result.success(collectionDTO);
   }
 
   /**
@@ -114,6 +116,33 @@ public class CollectionController {
       return Result.error();
     }
     return Result.success();
+  }
+
+  /**
+   * 查询分组内容列表.
+   *
+   * @param id 主键
+   * @return 删除是否成功
+   */
+  @GetMapping("getCollectionList")
+  public Result queryCollectionList(Integer id){
+    String token = request.getHeader("token");
+    Integer user_id = JwtUtils.getUserId(token);
+    Collection collection = collectionService.queryById(id);
+    if(collection == null){
+      return Result.error(StatusCode.NO_SELECT_ID);
+    }
+    int module = collection.getModule();
+    if(module == 0){
+      List<ArticleAbbreviationsDTO> list = collectionService.queryArticle(id,user_id);
+      return Result.success(list);
+    } else if (module == 1) {
+      List<IntegratedQuestionListDTO> list = collectionService.queryIntegratedQuestion(id,user_id);
+      return Result.success(list);
+    } else {
+      List<SingleChoiceQuestionDTO> list = collectionService.queryChoiceQuestion(id,user_id);
+      return Result.success(list);
+    }
   }
 
 }

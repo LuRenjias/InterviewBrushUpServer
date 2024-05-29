@@ -1,7 +1,10 @@
 package edu.hnu.service.impl;
 
+import edu.hnu.dao.ArticleDao;
+import edu.hnu.dao.ChoiceQuestionDao;
 import edu.hnu.dao.CollectionDao;
-import edu.hnu.dto.CollectionDTO;
+import edu.hnu.dao.IntegratedQuestionDao;
+import edu.hnu.dto.*;
 import edu.hnu.entity.Collection;
 import edu.hnu.service.CollectionService;
 import org.springframework.stereotype.Service;
@@ -19,6 +22,12 @@ import java.util.List;
 public class CollectionServiceImpl implements CollectionService {
     @Resource
     private CollectionDao collectionDao;
+    @Resource
+    private ArticleDao articleDao;
+    @Resource
+    private IntegratedQuestionDao integratedQuestionDao;
+    @Resource
+    private ChoiceQuestionDao choiceQuestionDao;
 
     @Override
     public List<CollectionDTO> queryByIdAndModule(Integer user_id,Integer module) {
@@ -28,8 +37,8 @@ public class CollectionServiceImpl implements CollectionService {
     /**
      * 分页查询
      *
-     * @param collection 筛选条件
-     * @param pageRequest      分页对象
+     * @param collection  筛选条件
+     * @param pageRequest 分页对象
      * @return 查询结果
      */
     /*@Override
@@ -40,8 +49,12 @@ public class CollectionServiceImpl implements CollectionService {
 
 
     @Override
-    public int insert(Integer user_id, String collection_name, String create_time, Integer module) {
-        return this.collectionDao.insert(user_id,collection_name,create_time,module);
+    public CollectionDTO insert(Integer user_id, String collection_name, String create_time, Integer module) {
+        int line=this.collectionDao.insert(user_id,collection_name,create_time,module);
+        if(line!=1){
+            return null;
+        }
+        return collectionDao.queryLastInsert();
     }
 
     /**
@@ -76,5 +89,25 @@ public class CollectionServiceImpl implements CollectionService {
     @Override
     public boolean updateNameById(Integer id, String name) {
         return collectionDao.updateNameById(id,name) > 0;
+    }
+
+    @Override
+    public Collection queryById(Integer id) {
+        return collectionDao.queryById(id);
+    }
+
+    @Override
+    public List<ArticleAbbreviationsDTO> queryArticle(Integer id, Integer userId) {
+        return articleDao.queryByCollectionIdAndUId(id,userId);
+    }
+
+    @Override
+    public List<IntegratedQuestionListDTO> queryIntegratedQuestion(Integer id, Integer userId) {
+        return integratedQuestionDao.queryByCollectionIdAndUId(id,userId);
+    }
+
+    @Override
+    public List<SingleChoiceQuestionDTO> queryChoiceQuestion(Integer id, Integer userId) {
+        return choiceQuestionDao.queryByCollectionIdAndUId(id,userId);
     }
 }

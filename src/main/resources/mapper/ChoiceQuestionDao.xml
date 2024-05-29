@@ -15,7 +15,7 @@
 
     <!--查询单个-->
     <select id="queryById" resultMap="ChoiceQuestionMap">
-        select idquestionoptionstypecategorycorrect_optionpublish_timeviews_count
+        select id,question,options,type,category,correct_option,publish_time,views_count
         from choice_question
         where id = #{id}
     </select>
@@ -140,6 +140,11 @@
         from choice_question
         where question in (select question from choice_question where question like "%${question}%")
         order by ${column} desc
+    </select>
+    <select id="queryByCollectionIdAndUId" resultType="edu.hnu.dto.SingleChoiceQuestionDTO">
+        select choice_question.id as id,question,category
+        from choice_question,favorite
+        where favorite_content_id = choice_question.id and user_id = #{userId} and collection_id = #{id}
     </select>
 
     <!--新增所有列-->

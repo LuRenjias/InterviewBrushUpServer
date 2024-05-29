@@ -2,6 +2,7 @@ package edu.hnu.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import edu.hnu.dto.IntegratedQuestionDTO;
+import edu.hnu.dto.IntegratedQuestionListDTO;
 import edu.hnu.entity.IntegratedQuestion;
 import edu.hnu.service.IntegratedQuestionService;
 import edu.hnu.utils.JwtUtils;
@@ -45,8 +46,10 @@ public class IntegratedQuestionController {
         if (id == null) {
             return Result.error(StatusCode.NO_SELECT_ID);
         }
-        IntegratedQuestion integratedQuestion = integratedQuestionService.queryById(id);
-        return Result.success(integratedQuestion);
+        String token = request.getHeader("token");
+        Integer user_id = JwtUtils.getUserId(token);
+        IntegratedQuestionDTO integratedQuestionDTO = integratedQuestionService.queryDtoById(id,user_id);
+        return Result.success(integratedQuestionDTO);
     }
 
     /**
@@ -106,7 +109,7 @@ public class IntegratedQuestionController {
     @GetMapping("getQuestionList")
     public Result getQuestionList(Integer category) {
         log.info("获取指定类型八股列表，category：{}", category);
-        List<IntegratedQuestionDTO> list = integratedQuestionService.queryByCategory(category);
+        List<IntegratedQuestionListDTO> list = integratedQuestionService.queryByCategory(category);
         return Result.success(list);
     }
 
@@ -137,7 +140,7 @@ public class IntegratedQuestionController {
     public Result search(String keyword, Integer orderType) {
         log.info("search: 根据八股问题部分模糊查询");
 
-        List<IntegratedQuestionDTO> list = integratedQuestionService.queryByQuestion(keyword, orderType);
+        List<IntegratedQuestionListDTO> list = integratedQuestionService.queryByQuestion(keyword, orderType);
 
         return Result.success(list);
     }

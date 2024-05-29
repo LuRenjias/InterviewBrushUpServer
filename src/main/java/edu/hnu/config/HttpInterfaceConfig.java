@@ -16,16 +16,16 @@ public class HttpInterfaceConfig {
     @Bean
     WebClient webClient() {
         return WebClient.builder()
-                .baseUrl(baseUrl)
-                .build();
+            .baseUrl(baseUrl)
+            .build();
     }
 
     @Bean
     WechatLoginApi wechatLoginApi(WebClient webClient) {
         HttpServiceProxyFactory factory =
-                HttpServiceProxyFactory
-                        .builder(WebClientAdapter.forClient(webClient))
-                        .build();
+            HttpServiceProxyFactory
+                .builder(WebClientAdapter.forClient(webClient))
+                .build();
         return factory.createClient(WechatLoginApi.class);
     }
 }

@@ -9,8 +9,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ChoiceQuestionDoneDTO {
   private Boolean flag; //是否做过
+  private Integer id;
   private String question;
   private String user_option;
   private String type;
   private String answer;
+  private Boolean isCollect;
 }

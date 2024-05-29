@@ -71,6 +71,11 @@
           and collection_id in (SELECT id from collection
                                           where user_id = #{userId} and module = #{module})
     </select>
+    <select id="queryContentIdByUIdAndModule" resultType="java.lang.Integer">
+        select favorite_content_id
+        from favorite,collection
+        where collection_id = collection.id and favorite.user_id = #{userId} and module = #{module}
+    </select>
 
 
     <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">

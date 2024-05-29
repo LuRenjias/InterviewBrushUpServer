@@ -97,16 +97,16 @@
         from integrated_question
         where id=#{id}
     </select>
-    <select id="list1" resultType="edu.hnu.dto.IntegratedQuestionDTO">
-        select integrated_question.id, question, nickname as user_name, importance_level
+    <select id="list1" resultType="edu.hnu.dto.IntegratedQuestionListDTO">
+        select integrated_question.id as id, question, nickname as user_name, importance_level
         from integrated_question,
              user
         where user_id = user.id
           and category = #{category}
           and status = 1
     </select>
-    <select id="listLimit" resultType="edu.hnu.dto.IntegratedQuestionDTO">
-        select integrated_question.id, question, nickname, importance_level
+    <select id="listLimit" resultType="edu.hnu.dto.IntegratedQuestionListDTO">
+        select integrated_question.id, question, nickname as user_name, importance_level
         from integrated_question,
              user
         where user_id = user.id
@@ -115,13 +115,24 @@
         limit #{skipCount}, #{returnCount}
     </select>
 
-    <select id="queryByQuestion" resultType="edu.hnu.dto.IntegratedQuestionDTO">
+    <select id="queryByQuestion" resultType="edu.hnu.dto.IntegratedQuestionListDTO">
         select i.id, i.question, u.nickname as user_name, i.importance_level
         from integrated_question i
                  join user u on i.user_id = u.id
         where status = #{status}
           and question in (select question from integrated_question where question like "%${question}%")
         order by i.${column} desc
+    </select>
+    <select id="queryDtoById" resultType="edu.hnu.dto.IntegratedQuestionDTO">
+        select integrated_question.id as id,user.nickname as user_name,question,answer,importance_level
+        from integrated_question,user
+        where integrated_question.user_id = user.id and integrated_question.id = #{id}
+    </select>
+    <select id="queryByCollectionIdAndUId" resultType="edu.hnu.dto.IntegratedQuestionListDTO">
+        select integrated_question.id as id, question, nickname as user_name, importance_level
+        from integrated_question,user,favorite
+        where integrated_question.user_id = user.id and favorite_content_id = integrated_question.id
+        and collection_id = #{id} and favorite.user_id = #{userId}
     </select>
 
     <!--新增所有列-->

@@ -357,5 +357,23 @@
           and a.title in (select title from article where title like "%${articleTitle}%")
         order by a.${column} desc
     </select>
+    <select id="queryByCollectionIdAndUId" resultType="edu.hnu.dto.ArticleAbbreviationsDTO">
+        select a.id,
+        a.title,
+        a.content,
+        a.create_time,
+        a.likes_count,
+        a.views_count,
+        a.user_id,
+        u.nickname,
+        u.avatar_url,
+        l.like_time
+        from article a
+        join user u on a.user_id = u.id
+        join like_record l on a.id = l.article_id
+        join favorite f on f.favorite_content_id = a.id
+        where f.user_id = #{userId} and f.collection_id = #{id}
+        order by favorite_time desc
+    </select>
 </mapper>
 
