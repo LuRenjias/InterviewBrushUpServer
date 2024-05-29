@@ -64,4 +64,6 @@ public interface IntegratedQuestionService {
   String queryAnswerById(Integer id);
 
   List<IntegratedQuestionDTO> queryByCategory(Integer category);
+
+  List<IntegratedQuestionDTO> queryByQuestion(String keyword, Integer orderType);
 }

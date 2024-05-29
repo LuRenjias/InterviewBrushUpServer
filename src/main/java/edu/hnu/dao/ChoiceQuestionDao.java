@@ -18,97 +18,100 @@ import java.util.List;
 @Mapper
 public interface ChoiceQuestionDao {
 
-  /**
-   * 通过ID查询单条数据
-   *
-   * @param id 主键
-   * @return 实例对象
-   */
-  ChoiceQuestion queryById(Integer id);
+    /**
+     * 通过ID查询单条数据
+     *
+     * @param id 主键
+     * @return 实例对象
+     */
+    ChoiceQuestion queryById(Integer id);
 
-  /**
-   * 查询指定行数据
-   *
-   * @param choiceQuestion 查询条件
-   * @param pageable         分页对象
-   * @return 对象列表
-   */
-  //List<ChoiceQuestion> queryAllByLimit(ChoiceQuestion choiceQuestion, @Param("pageable") Pageable pageable);
+    /**
+     * 查询指定行数据
+     *
+     * @param choiceQuestion 查询条件
+     * @param pageable         分页对象
+     * @return 对象列表
+     */
+    //List<ChoiceQuestion> queryAllByLimit(ChoiceQuestion choiceQuestion, @Param("pageable") Pageable pageable);
 
-  /**
-   * 统计总行数
-   *
-   * @param choiceQuestion 查询条件
-   * @return 总行数
-   */
-  long count(ChoiceQuestion choiceQuestion);
+    /**
+     * 统计总行数
+     *
+     * @param choiceQuestion 查询条件
+     * @return 总行数
+     */
+    long count(ChoiceQuestion choiceQuestion);
 
-  /**
-   * 新增数据
-   *
-   * @param choiceQuestion 实例对象
-   * @return 影响行数
-   */
-  int insert(ChoiceQuestion choiceQuestion);
+    /**
+     * 新增数据
+     *
+     * @param choiceQuestion 实例对象
+     * @return 影响行数
+     */
+    int insert(ChoiceQuestion choiceQuestion);
 
-  /**
-   * 批量新增数据（MyBatis原生foreach方法）
-   *
-   * @param entities List<ChoiceQuestion> 实例对象列表
-   * @return 影响行数
-   */
-  int insertBatch(@Param("entities") List<ChoiceQuestion> entities);
+    /**
+     * 批量新增数据（MyBatis原生foreach方法）
+     *
+     * @param entities List<ChoiceQuestion> 实例对象列表
+     * @return 影响行数
+     */
+    int insertBatch(@Param("entities") List<ChoiceQuestion> entities);
 
-  /**
-   * 批量新增或按主键更新数据（MyBatis原生foreach方法）
-   *
-   * @param entities List<ChoiceQuestion> 实例对象列表
-   * @return 影响行数
-   * @throws org.springframework.jdbc.BadSqlGrammarException 入参是空List的时候会抛SQL语句错误的异常，请自行校验入参
-   */
-  int insertOrUpdateBatch(@Param("entities") List<ChoiceQuestion> entities);
+    /**
+     * 批量新增或按主键更新数据（MyBatis原生foreach方法）
+     *
+     * @param entities List<ChoiceQuestion> 实例对象列表
+     * @return 影响行数
+     * @throws org.springframework.jdbc.BadSqlGrammarException 入参是空List的时候会抛SQL语句错误的异常，请自行校验入参
+     */
+    int insertOrUpdateBatch(@Param("entities") List<ChoiceQuestion> entities);
 
-  /**
-   * 修改数据
-   *
-   * @param choiceQuestion 实例对象
-   * @return 影响行数
-   */
-  int update(ChoiceQuestion choiceQuestion);
+    /**
+     * 修改数据
+     *
+     * @param choiceQuestion 实例对象
+     * @return 影响行数
+     */
+    int update(ChoiceQuestion choiceQuestion);
 
-  /**
-   * 通过主键删除数据
-   *
-   * @param id 主键
-   * @return 影响行数
-   */
-  int deleteById(Integer id);
+    /**
+     * 通过主键删除数据
+     *
+     * @param id 主键
+     * @return 影响行数
+     */
+    int deleteById(Integer id);
 
-  /**
-   * 查询所有题目数据.
-   *
-   * @return 所有题目数据
-   */
-  @Select("select * from choice_question")
-  List<ChoiceQuestion> list();
+    /**
+     * 查询所有题目数据.
+     *
+     * @return 所有题目数据
+     */
+    @Select("select * from choice_question")
+    List<ChoiceQuestion> list();
 
-  void addQuestion(String type, Integer category, String question, String options, String correctOption, String publishTime);
+    void addQuestion(String type, Integer category, String question, String options, String correctOption, String publishTime);
 
-  Integer deleteByIdList(List<Integer> idList);
+    Integer deleteByIdList(List<Integer> idList);
 
-  List<ChoiceQuestion> queryByCategory(Integer category);
+    List<ChoiceQuestion> queryByCategory(Integer category);
 
-  Integer queryByIdAndAnswer(Integer id, String answer);
+    Integer queryByIdAndAnswer(Integer id, String answer);
 
-  String queryAnswer(Integer id);
+    String queryAnswer(Integer id);
 
-  Long countByCategory(Integer category);
+    Long countByCategory(Integer category);
 
-  List<ChoiceQuestionListDTO> listAll(Integer user_id);
+    List<ChoiceQuestionListDTO> listAll(Integer user_id);
 
-  @Select("select * from choice_question where category = #{category}")
-  List<ChoiceQuestion> listByCategory(Integer category);
+    @Select("select * from choice_question where category = #{category}")
+    List<ChoiceQuestion> listByCategory(Integer category);
 
-  List<ChoiceQuestionListOrderByTimeDTO> queryByUId(Integer userId);
+    List<ChoiceQuestionListOrderByTimeDTO> queryByUId(Integer userId);
+
+    List<ChoiceQuestion> queryByQuestion(@Param("question") String question,
+                                         @Param("column") String colum);
 }
 

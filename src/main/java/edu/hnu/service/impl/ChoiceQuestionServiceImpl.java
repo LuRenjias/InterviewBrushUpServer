@@ -9,6 +9,7 @@ import edu.hnu.dto.ChoiceQuestionListOrderByTimeDTO;
 import edu.hnu.entity.ChoiceQuestion;
 import edu.hnu.entity.ChoiceQuestionRecord;
 import edu.hnu.service.ChoiceQuestionService;
+import edu.hnu.utils.StatusCode;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -92,7 +93,7 @@ public class ChoiceQuestionServiceImpl implements ChoiceQuestionService {
     }
 
     @Override
-    public List<ChoiceQuestion> ListChoiceQuestion(Integer page, int i,Integer category) {
+    public List<ChoiceQuestion> ListChoiceQuestion(Integer page, int i, Integer category) {
         PageHelper.startPage(page, i);
         List<ChoiceQuestion> listChoiceQuestion = choiceQuestionDao.listByCategory(category);
         Page<ChoiceQuestion> p = (Page<ChoiceQuestion>) listChoiceQuestion;
@@ -106,7 +107,7 @@ public class ChoiceQuestionServiceImpl implements ChoiceQuestionService {
 
     @Override
     public Long countCompletedQuestions(Integer category, Integer user_id) {
-        return choiceQuestionRecordDao.countByUidAndCategory(user_id,category);
+        return choiceQuestionRecordDao.countByUidAndCategory(user_id, category);
     }
 
     @Override
@@ -116,11 +117,23 @@ public class ChoiceQuestionServiceImpl implements ChoiceQuestionService {
 
     @Override
     public ChoiceQuestionRecord queryRecordById(Integer userId, Integer questionId) {
-        return choiceQuestionRecordDao.queryByUIdAndQId(userId,questionId);
+        return choiceQuestionRecordDao.queryByUIdAndQId(userId, questionId);
     }
 
     @Override
     public List<ChoiceQuestionListOrderByTimeDTO> queryByUId(Integer userId) {
         return choiceQuestionDao.queryByUId(userId);
+    }
+
+    @Override
+    public List<ChoiceQuestion> queryByQuestion(String keyword, Integer orderType) {
+        return switch (orderType) {
+            case 0 -> // 0表示按时间降序
+                    choiceQuestionDao.queryByQuestion(keyword, "id");
+            case 1 -> // 1表示按浏览量降序
+                    choiceQuestionDao.queryByQuestion(keyword, "views_count");
+            default -> // 默认按照浏览量降序
+                    choiceQuestionDao.queryByQuestion(keyword, "views_count");
+        };
     }
 }

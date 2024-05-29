@@ -8,7 +8,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class IntegratedQuestionDTO {
-  private String question;
-  private String userName;
-  private Integer importanceLevel;
+    private Integer id;
+    private String question;
+    private String userName;
+    private Integer importanceLevel;
 }

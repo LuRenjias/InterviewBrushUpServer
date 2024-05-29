@@ -109,10 +109,12 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public List<ArticleAbbreviationsDTO> findList() {
-        long count = articleDao.count(null);
+        Article article = new Article();
+        article.setStatus(StatusCode.APPROVED.getCode());
+        long count = articleDao.count(article);
 
         if (count < recommendCount) {
-            List<ArticleAbbreviationsDTO> articleAbbreviationsDTOS = articleDao.listAllAbbreviations();
+            List<ArticleAbbreviationsDTO> articleAbbreviationsDTOS = articleDao.listAllAbbreviations(StatusCode.APPROVED.getCode());
             // 为空判断
             if (articleAbbreviationsDTOS.isEmpty()) {
                 return null;
@@ -125,7 +127,8 @@ public class ArticleServiceImpl implements ArticleService {
             Random random = new Random();
             long diff = count - recommendCount;
             int skipCount = random.nextInt((int) (diff + 1));
-            List<ArticleAbbreviationsDTO> articleAbbreviationsDTOS = articleDao.listAbbreviationsLimit(skipCount, recommendCount);
+            List<ArticleAbbreviationsDTO> articleAbbreviationsDTOS = articleDao.listAbbreviationsLimit(skipCount,
+                    recommendCount, StatusCode.APPROVED.getCode());
             // 为空判断
             if (articleAbbreviationsDTOS.isEmpty()) {
                 return null;
@@ -251,6 +254,28 @@ public class ArticleServiceImpl implements ArticleService {
 
         return articleAbbreviationsDTOS;
 
+    }
+
+    @Override
+    public List<ArticleAbbreviationsDTO> queryByArticleTitle(String keyword, Integer orderType) {
+        List<ArticleAbbreviationsDTO> articleAbbreviationsDTOS = switch (orderType) {
+            case 0 -> // 0表示按时间降序
+                    articleDao.queryByArticleTitle(keyword, "id", StatusCode.APPROVED.getCode());
+            case 1 -> // 1表示按浏览量降序
+                    articleDao.queryByArticleTitle(keyword, "views_count", StatusCode.APPROVED.getCode());
+            case 2 -> // 2表示按点赞数降序
+                    articleDao.queryByArticleTitle(keyword, "likes_count", StatusCode.APPROVED.getCode());
+            default -> // 默认按照浏览量降序
+                    articleDao.queryByArticleTitle(keyword, "views_count", StatusCode.APPROVED.getCode());
+        };
+        // 为空判断
+        if (articleAbbreviationsDTOS.isEmpty()) {
+            return null;
+        }
+
+        constructArticleAbbreviationsDTOs(articleAbbreviationsDTOS);
+
+        return articleAbbreviationsDTOS;
     }
 
     // 查询`image`和`comment`表构造`文章缩略信息`中的`图片地址字段`和`评论数量字段`

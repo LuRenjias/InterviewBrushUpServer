@@ -4,6 +4,7 @@ import edu.hnu.dao.IntegratedQuestionDao;
 import edu.hnu.dto.IntegratedQuestionDTO;
 import edu.hnu.entity.IntegratedQuestion;
 import edu.hnu.service.IntegratedQuestionService;
+import edu.hnu.utils.StatusCode;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -100,9 +101,23 @@ public class IntegratedQuestionServiceImpl implements IntegratedQuestionService 
             Random random = new Random(); // 5-3=2 [0,2] (0,3) (1,3) (2,3)
             long diff = count - recommendCount;
             int skipCount = random.nextInt((int) (diff + 1));
-            List<IntegratedQuestionDTO> list = integratedQuestionDao.listLimit(skipCount, recommendCount,category);
+            List<IntegratedQuestionDTO> list = integratedQuestionDao.listLimit(skipCount, recommendCount, category);
             Collections.shuffle(list);
             return list;
         }
+    }
+
+    @Override
+    public List<IntegratedQuestionDTO> queryByQuestion(String keyword, Integer orderType) {
+        return switch (orderType) {
+            case 0 -> // 0表示按时间降序
+                    integratedQuestionDao.queryByQuestion(keyword, "id", StatusCode.APPROVED.getCode());
+            case 1 -> // 1表示按浏览量降序
+                    integratedQuestionDao.queryByQuestion(keyword, "views_count", StatusCode.APPROVED.getCode());
+            case 2 -> // 2表示按重要等级降序
+                    integratedQuestionDao.queryByQuestion(keyword, "importance_level", StatusCode.APPROVED.getCode());
+            default -> // 默认按照浏览量降序
+                    integratedQuestionDao.queryByQuestion(keyword, "views_count", StatusCode.APPROVED.getCode());
+        };
     }
 }

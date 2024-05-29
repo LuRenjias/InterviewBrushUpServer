@@ -129,5 +129,22 @@ public class ArticleController {
 
         return Result.success(articleAbbreviationsDTOS);
     }
+
+    /**
+     * 根据文章标题模糊搜素.
+     */
+    @GetMapping("search")
+    public Result search(String keyword, Integer orderType) {
+        log.info("search: 根据文章标题模糊搜素");
+
+        if(orderType == null) { // 默认按浏览量降序
+            orderType = 1;
+        }
+
+        List<ArticleAbbreviationsDTO> articleAbbreviationsDTOS = articleService.queryByArticleTitle(keyword, orderType);
+
+        return Result.success(articleAbbreviationsDTOS);
+
+    }
 }
 

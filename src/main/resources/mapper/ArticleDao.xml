@@ -266,6 +266,7 @@
                u.avatar_url
         from article a
                  join user u on a.user_id = u.id
+        where a.status = #{status}
     </select>
 
     <select id="listAbbreviationsLimit" resultMap="ArticleAbbreviationsDTOMap">
@@ -280,8 +281,8 @@
                u.avatar_url
         from article a
                  join user u on a.user_id = u.id
-            limit #{skipCount}
-           , #{returnCount}
+        where a.status = #{status} limit #{skipCount}
+            , #{returnCount}
     </select>
 
     <select id="queryDetailById" resultMap="ArticleDTOMap">
@@ -319,7 +320,7 @@
         order by l.id desc
     </select>
 
-    <select id="queryHistoryInArticleId">
+    <select id="queryHistoryInArticleId" resultMap="ArticleAbbreviationsDTOMap">
         select a.id,
         a.title,
         a.content,
@@ -338,6 +339,23 @@
             or a.id in ${ids}
         </if>
         order by h.visit_time desc
+    </select>
+
+    <select id="queryByArticleTitle" resultMap="ArticleAbbreviationsDTOMap">
+        select a.id,
+               a.title,
+               a.content,
+               a.create_time,
+               a.likes_count,
+               a.views_count,
+               a.user_id,
+               u.nickname,
+               u.avatar_url
+        from article a
+                 join user u on a.user_id = u.id
+        where a.status = #{status}
+          and a.title in (select title from article where title like "%${articleTitle}%")
+        order by a.${column} desc
     </select>
 </mapper>
 

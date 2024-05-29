@@ -46,4 +46,6 @@ public interface ArticleService {
     int like(Integer articleId, boolean like, Integer userId);
 
     List<ArticleAbbreviationsDTO> likeRecordOrHistory(Integer userId, Integer type);
+
+    List<ArticleAbbreviationsDTO> queryByArticleTitle(String keyword, Integer orderType);
 }

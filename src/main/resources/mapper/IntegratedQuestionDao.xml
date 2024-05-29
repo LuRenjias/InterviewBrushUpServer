@@ -98,17 +98,30 @@
         where id=#{id}
     </select>
     <select id="list1" resultType="edu.hnu.dto.IntegratedQuestionDTO">
-        select question, nickname as user_name, importance_level
+        select integrated_question.id, question, nickname as user_name, importance_level
         from integrated_question,
              user
-        where user_id = user.id and category = #{category} and status = 1
+        where user_id = user.id
+          and category = #{category}
+          and status = 1
     </select>
     <select id="listLimit" resultType="edu.hnu.dto.IntegratedQuestionDTO">
-        select question, nickname, importance_level
+        select integrated_question.id, question, nickname, importance_level
         from integrated_question,
              user
-        where user_id = user.id and category = #{category} and status = 1
+        where user_id = user.id
+          and category = #{category}
+          and status = 1
         limit #{skipCount}, #{returnCount}
+    </select>
+
+    <select id="queryByQuestion" resultType="edu.hnu.dto.IntegratedQuestionDTO">
+        select i.id, i.question, u.nickname as user_name, i.importance_level
+        from integrated_question i
+                 join user u on i.user_id = u.id
+        where status = #{status}
+          and question in (select question from integrated_question where question like "%${question}%")
+        order by i.${column} desc
     </select>
 
     <!--新增所有列-->

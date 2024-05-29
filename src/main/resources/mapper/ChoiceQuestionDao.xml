@@ -88,12 +88,13 @@
     <select id="queryByCategory" resultType="edu.hnu.entity.ChoiceQuestion">
         select *
         from choice_question
-        where category=#{category}
+        where category = #{category}
     </select>
     <select id="queryByIdAndAnswer" resultType="java.lang.Integer">
         select id
         from choice_question
-        where id = #{id} and correct_option = #{answer}
+        where id = #{id}
+          and correct_option = #{answer}
     </select>
     <select id="queryAnswer" resultType="java.lang.String">
         select correct_option
@@ -106,41 +107,39 @@
         where category = #{category}
     </select>
     <select id="listAll" resultType="edu.hnu.dto.ChoiceQuestionListDTO">
-        SELECT
-            q.category,
-            q.total_num,
-            IFNULL(r.completed_questions, 0) AS completed_questions
-        FROM (
-                 SELECT category, COUNT(*) AS total_num
-                 FROM choice_question
-                 GROUP BY category
-             ) q
-                 LEFT JOIN (
-            SELECT category, COUNT(*) AS completed_questions
-            FROM choice_question cq
-                     JOIN choice_question_record cqr ON cqr.choice_question_id = cq.id
-            where cqr.user_id = #{user_id}
-            GROUP BY category
-        ) r ON q.category = r.category;
+        SELECT q.category,
+               q.total_num,
+               IFNULL(r.completed_questions, 0) AS completed_questions
+        FROM (SELECT category, COUNT(*) AS total_num
+              FROM choice_question
+              GROUP BY category) q
+                 LEFT JOIN (SELECT category, COUNT(*) AS completed_questions
+                            FROM choice_question cq
+                                     JOIN choice_question_record cqr ON cqr.choice_question_id = cq.id
+                            where cqr.user_id = #{user_id}
+                            GROUP BY category) r ON q.category = r.category;
     </select>
     <select id="queryByUId" resultType="edu.hnu.dto.ChoiceQuestionListOrderByTimeDTO">
-        SELECT
-            q.category,
-            q.total_num,
-            IFNULL(r.completed_questions, 0) AS completed_questions,
-            r.choice_time AS choice_time
-        FROM (
-                 SELECT category, COUNT(*) AS total_num
-                 FROM choice_question
-                 GROUP BY category
-             ) q
-                 LEFT JOIN (
-            SELECT category, COUNT(*) AS completed_questions,MAX(choice_time) AS choice_time
-            FROM choice_question cq
-                     JOIN choice_question_record cqr ON cqr.choice_question_id = cq.id
-            where cqr.user_id = #{userId}
-            GROUP BY category
-        ) r ON q.category = r.category order by r.choice_time DESC
+        SELECT q.category,
+               q.total_num,
+               IFNULL(r.completed_questions, 0) AS completed_questions,
+               r.choice_time                    AS choice_time
+        FROM (SELECT category, COUNT(*) AS total_num
+              FROM choice_question
+              GROUP BY category) q
+                 LEFT JOIN (SELECT category, COUNT(*) AS completed_questions, MAX(choice_time) AS choice_time
+                            FROM choice_question cq
+                                     JOIN choice_question_record cqr ON cqr.choice_question_id = cq.id
+                            where cqr.user_id = #{userId}
+                            GROUP BY category) r ON q.category = r.category
+        order by r.choice_time DESC
+    </select>
+
+    <select id="queryByQuestion" resultMap="ChoiceQuestionMap">
+        select *
+        from choice_question
+        where question in (select question from choice_question where question like "%${question}%")
+        order by ${column} desc
     </select>
 
     <!--新增所有列-->
@@ -170,7 +169,7 @@
 
     <insert id="addQuestion">
         insert into choice_question(question, options, type, category, correct_option, publish_time, views_count)
-        values (#{question},#{options},#{type},#{category},#{correctOption},#{publishTime},0)
+        values (#{question}, #{options}, #{type}, #{category}, #{correctOption}, #{publishTime}, 0)
     </insert>
 
     <!--通过主键修改数据-->

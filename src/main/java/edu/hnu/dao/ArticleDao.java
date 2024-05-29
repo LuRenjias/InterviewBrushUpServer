@@ -106,15 +106,20 @@ public interface ArticleDao {
 
     List<ArticleAbbreviationsDTO> queryAbbreviationsByUserId(@Param("userId") Integer userId);
 
-    List<ArticleAbbreviationsDTO> listAllAbbreviations();
+    List<ArticleAbbreviationsDTO> listAllAbbreviations(@Param("status") Integer status);
 
     List<ArticleAbbreviationsDTO> listAbbreviationsLimit(@Param("skipCount") Integer skipCount,
-                                                         @Param("returnCount") Integer returnCount);
+                                                         @Param("returnCount") Integer returnCount,
+                                                         @Param("status") Integer status);
 
     ArticleDTO queryDetailById(@Param("articleId") Integer articleId);
 
     List<ArticleAbbreviationsDTO> queryLikeInArticleId(@Param("ids") String ids);
 
     List<ArticleAbbreviationsDTO> queryHistoryInArticleId(@Param("ids") String ids);
+
+    List<ArticleAbbreviationsDTO> queryByArticleTitle(@Param("articleTitle") String articleTitle,
+                                                      @Param("column") String colum,
+                                                      @Param("status") Integer status);
 }
 
