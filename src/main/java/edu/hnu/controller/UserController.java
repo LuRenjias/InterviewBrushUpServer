@@ -86,6 +86,10 @@ public class UserController {
     public Result userInfo(Integer userId, @RequestHeader String token) {
         log.info("userInfo: 用户信息");
 
+        if (userId == null) {
+            userId = JwtUtils.getUserId(token);
+        }
+
         UserDTO userInfo = userService.userInfo(userId, JwtUtils.getUserId(token));
 
         if (userInfo == null) {
