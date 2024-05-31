@@ -115,6 +115,13 @@ public interface IntegratedQuestionDao {
   void updateStateByIdList2(List<Integer> idList);
 
   /**
+   * 增加浏览量.
+   *
+   * @param id 八股 id
+   */
+  int addViewCount(Integer id);
+
+  /**
    * 返回指定类型的八股数据(审核通过).
    */
   List<IntegratedQuestionListDTO> list1(Integer category);

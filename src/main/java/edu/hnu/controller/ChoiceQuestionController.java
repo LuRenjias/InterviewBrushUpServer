@@ -65,6 +65,7 @@ public class ChoiceQuestionController {
     if (choiceQuestionRecord != null) {
       return Result.success(new ChoiceQuestionDoneDTO(true, choiceQuestion.getId(), choiceQuestion.getQuestion(), choiceQuestionRecord.getUserOption(), choiceQuestion.getType(), choiceQuestion.getCorrectOption(), isCollect));
     }
+    choiceQuestionService.addViewCount(choiceQuestion.getId());
     return Result.success(new ChoiceQuestionUnDoneDTO(false, choiceQuestion.getId(), choiceQuestion.getQuestion(), choiceQuestion.getOptions(), choiceQuestion.getType(), isCollect));
   }
 
@@ -132,6 +133,15 @@ public class ChoiceQuestionController {
       return Result.success(new ChoiceQuestionDoneDTO(true, choiceQuestion.getId(), choiceQuestion.getQuestion(), choiceQuestionRecord.getUserOption(), choiceQuestion.getType(), choiceQuestion.getCorrectOption(), isCollect));
     }
     return Result.success(new ChoiceQuestionUnDoneDTO(false, choiceQuestion.getId(), choiceQuestion.getQuestion(), choiceQuestion.getOptions(), choiceQuestion.getType(), isCollect));
+  }
+
+  @GetMapping("getHotChoiceQuestionList")
+  public Result getHotChoiceQuestion(){
+    log.info("获取热门题库列表");
+    String token = request.getHeader("token");
+    Integer user_id = JwtUtils.getUserId(token);
+    List<ChoiceQuestionListDTO> list = choiceQuestionService.queryListOrderByViewCount(user_id);
+    return Result.success(list);
   }
 }
 

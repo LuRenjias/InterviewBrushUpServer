@@ -160,6 +160,13 @@
         values(category)importance_level = values(importance_level)publish_time = values(publish_time)views_count =
         values(views_count)status = values(status)
     </insert>
+    <update id="addViewCount">
+        update integrated_question
+        <set>
+            views_count = views_count + 1
+        </set>
+        where id = #{id}
+    </update>
 
     <!--通过主键修改数据-->
     <update id="update">

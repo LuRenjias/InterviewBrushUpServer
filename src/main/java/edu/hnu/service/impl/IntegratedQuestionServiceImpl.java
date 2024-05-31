@@ -133,6 +133,7 @@ public class IntegratedQuestionServiceImpl implements IntegratedQuestionService 
     }
     List<Integer> listId = favoriteDao.queryContentIdByUIdAndModule(user_id, 1);
     integratedQuestionDTO.setIsCollect(listId.contains(id));
+    integratedQuestionDao.addViewCount(id);
     return integratedQuestionDTO;
   }
 }

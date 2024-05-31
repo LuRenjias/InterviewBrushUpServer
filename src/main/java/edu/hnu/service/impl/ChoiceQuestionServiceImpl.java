@@ -144,4 +144,14 @@ public class ChoiceQuestionServiceImpl implements ChoiceQuestionService {
     List<Integer> list = favoriteDao.queryContentIdByUIdAndModule(userId,  2);
     return list.contains(id);
   }
+
+  @Override
+  public void addViewCount(Integer id) {
+    choiceQuestionDao.addViewCount(id);
+  }
+
+  @Override
+  public List<ChoiceQuestionListDTO> queryListOrderByViewCount(Integer userId) {
+    return choiceQuestionDao.queryListOrderByViewCount(userId);
+  }
 }

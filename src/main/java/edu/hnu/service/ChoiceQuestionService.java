@@ -74,4 +74,8 @@ public interface ChoiceQuestionService {
     List<ChoiceQuestion> queryByQuestion(String keyword, Integer orderType);
 
     Boolean queryIsCollectByUIdAndCId(Integer id, Integer userId);
+
+    void addViewCount(Integer id);
+
+    List<ChoiceQuestionListDTO> queryListOrderByViewCount(Integer userId);
 }

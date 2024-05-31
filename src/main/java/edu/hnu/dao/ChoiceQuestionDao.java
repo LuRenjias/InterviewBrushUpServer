@@ -78,6 +78,14 @@ public interface ChoiceQuestionDao {
   int update(ChoiceQuestion choiceQuestion);
 
   /**
+   * 增加浏览量
+   *
+   * @param id 题目 id
+   * @return 影响行数
+   */
+  int addViewCount(Integer id);
+
+  /**
    * 通过主键删除数据
    *
    * @param id 主键
@@ -116,5 +124,7 @@ public interface ChoiceQuestionDao {
                                        @Param("column") String colum);
 
   List<SingleChoiceQuestionDTO> queryByCollectionIdAndUId(Integer id, Integer userId);
+
+  List<ChoiceQuestionListDTO> queryListOrderByViewCount(Integer userId);
 }
 

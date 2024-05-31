@@ -146,6 +146,19 @@
         from choice_question,favorite
         where favorite_content_id = choice_question.id and user_id = #{userId} and collection_id = #{id}
     </select>
+    <select id="queryListOrderByViewCount" resultType="edu.hnu.dto.ChoiceQuestionListDTO">
+        SELECT q.category,
+               q.total_num,
+               IFNULL(r.completed_questions, 0) AS completed_questions
+        FROM (SELECT category, COUNT(*) AS total_num,sum(views_count) as views_count
+              FROM choice_question
+              GROUP BY category ORDER BY views_count DESC limit 10) q
+                 LEFT JOIN (SELECT category, COUNT(*) AS completed_questions
+                            FROM choice_question cq
+                                     JOIN choice_question_record cqr ON cqr.choice_question_id = cq.id
+                            where cqr.user_id = #{user_id}
+                            GROUP BY category) r ON q.category = r.category
+    </select>
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
@@ -176,6 +189,13 @@
         insert into choice_question(question, options, type, category, correct_option, publish_time, views_count)
         values (#{question}, #{options}, #{type}, #{category}, #{correctOption}, #{publishTime}, 0)
     </insert>
+    <update id="addViewCount">
+        update choice_question
+        <set>
+            views_count = views_count+1
+        </set>
+        where id = #{id}
+    </update>
 
     <!--通过主键修改数据-->
     <update id="update">
