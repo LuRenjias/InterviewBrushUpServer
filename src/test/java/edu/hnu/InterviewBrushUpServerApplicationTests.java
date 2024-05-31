@@ -14,20 +14,13 @@ import java.util.Map;
 @SpringBootTest
 class InterviewBrushUpServerApplicationTests {
 
-    @Resource
-    private FollowService followService;
-
-    @Resource
-    protected ArticleService articleService;
-
     @Test
     void contextLoads() {
         Integer id = 3;
         User user = new User();
         user.setId(id);
         System.out.println(JwtUtils.getToken(user));
-        followService.followList(4);
-        articleService.myList(id);
+        System.out.println(System.getProperty("user.dir"));
     }
 
 }
