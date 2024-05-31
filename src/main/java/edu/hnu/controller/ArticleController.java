@@ -65,10 +65,10 @@ public class ArticleController {
      * 我的文章.
      */
     @GetMapping("myList")
-    public Result myList(Integer userId) {
-        log.info("my: 我的文章");
+    public Result myList(Integer userId, @RequestHeader String token) {
+        log.info("myList: 我的文章");
 
-        List<ArticleAbbreviationsDTO> articleAbbreviationsDTOS = articleService.myList(userId);
+        List<ArticleAbbreviationsDTO> articleAbbreviationsDTOS = articleService.myList(userId, JwtUtils.getUserId(token));
 
         return Result.success(articleAbbreviationsDTOS);
     }
@@ -77,10 +77,10 @@ public class ArticleController {
      * 发现页文章.
      */
     @GetMapping("findList")
-    public Result findList() {
+    public Result findList(@RequestHeader String token) {
         log.info("findList: 发现页文章");
 
-        List<ArticleAbbreviationsDTO> list = articleService.findList();
+        List<ArticleAbbreviationsDTO> list = articleService.findList(JwtUtils.getUserId(token));
 
         return Result.success(list);
     }
@@ -122,10 +122,12 @@ public class ArticleController {
      * 点赞记录.
      */
     @GetMapping("likeRecordOrHistory")
-    public Result likeRecordOrHistory(Integer userId, Integer type) {
+    public Result likeRecordOrHistory(Integer userId, Integer type, @RequestHeader String token) {
         log.info("likeRecordOrHistory: 点赞记录或历史记录");
 
-        List<ArticleAbbreviationsDTO> articleAbbreviationsDTOS = articleService.likeRecordOrHistory(userId, type);
+        List<ArticleAbbreviationsDTO> articleAbbreviationsDTOS = articleService.likeRecordOrHistory(userId,
+                type,
+                JwtUtils.getUserId(token));
 
         return Result.success(articleAbbreviationsDTOS);
     }
@@ -134,14 +136,16 @@ public class ArticleController {
      * 根据文章标题模糊搜素.
      */
     @GetMapping("search")
-    public Result search(String keyword, Integer orderType) {
+    public Result search(String keyword, Integer orderType, @RequestHeader String token) {
         log.info("search: 根据文章标题模糊搜素");
 
-        if(orderType == null) { // 默认按浏览量降序
+        if (orderType == null) { // 默认按浏览量降序
             orderType = 1;
         }
 
-        List<ArticleAbbreviationsDTO> articleAbbreviationsDTOS = articleService.queryByArticleTitle(keyword, orderType);
+        List<ArticleAbbreviationsDTO> articleAbbreviationsDTOS = articleService.queryByArticleTitle(keyword,
+                orderType,
+                JwtUtils.getUserId(token));
 
         return Result.success(articleAbbreviationsDTOS);
 

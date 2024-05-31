@@ -114,9 +114,11 @@ public interface ArticleDao {
 
     ArticleDTO queryDetailById(@Param("articleId") Integer articleId);
 
-    List<ArticleAbbreviationsDTO> queryLikeInArticleId(@Param("ids") String ids);
+    List<ArticleAbbreviationsDTO> queryLikeInArticleId(@Param("ids") String ids,
+                                                       @Param("userId") Integer userId);
 
-    List<ArticleAbbreviationsDTO> queryHistoryInArticleId(@Param("ids") String ids);
+    List<ArticleAbbreviationsDTO> queryHistoryInArticleId(@Param("ids") String ids,
+                                                          @Param("userId") Integer userId);
 
     List<ArticleAbbreviationsDTO> queryByArticleTitle(@Param("articleTitle") String articleTitle,
                                                       @Param("column") String colum,

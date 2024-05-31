@@ -28,24 +28,24 @@ public interface ArticleService {
     /**
      * 我的文章.
      */
-    List<ArticleAbbreviationsDTO> myList(Integer userId);
+    List<ArticleAbbreviationsDTO> myList(Integer userId, Integer loginUserId);
 
     /**
      * 发现页文章.
      */
-    List<ArticleAbbreviationsDTO> findList();
+    List<ArticleAbbreviationsDTO> findList(Integer loginUserId);
 
     /**
      * 文章详情.
      */
-    ArticleDTO detail(Integer articleId, Integer userId);
+    ArticleDTO detail(Integer articleId, Integer loginUserId);
 
     /**
      * 点赞或取消点赞.
      */
     int like(Integer articleId, boolean like, Integer userId);
 
-    List<ArticleAbbreviationsDTO> likeRecordOrHistory(Integer userId, Integer type);
+    List<ArticleAbbreviationsDTO> likeRecordOrHistory(Integer userId, Integer type, Integer loginUserId);
 
-    List<ArticleAbbreviationsDTO> queryByArticleTitle(String keyword, Integer orderType);
+    List<ArticleAbbreviationsDTO> queryByArticleTitle(String keyword, Integer orderType, Integer loginUserId);
 }

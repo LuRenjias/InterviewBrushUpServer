@@ -95,20 +95,20 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<ArticleAbbreviationsDTO> myList(Integer userId) {
+    public List<ArticleAbbreviationsDTO> myList(Integer userId, Integer loginUserId) {
         List<ArticleAbbreviationsDTO> articleAbbreviationsDTOS = articleDao.queryAbbreviationsByUserId(userId);
         // 为空判断
         if (articleAbbreviationsDTOS.isEmpty()) {
             return null;
         }
 
-        constructArticleAbbreviationsDTOs(articleAbbreviationsDTOS);
+        constructArticleAbbreviationsDTOs(articleAbbreviationsDTOS, loginUserId);
 
         return articleAbbreviationsDTOS;
     }
 
     @Override
-    public List<ArticleAbbreviationsDTO> findList() {
+    public List<ArticleAbbreviationsDTO> findList(Integer loginUserId) {
         Article article = new Article();
         article.setStatus(StatusCode.APPROVED.getCode());
         long count = articleDao.count(article);
@@ -121,7 +121,7 @@ public class ArticleServiceImpl implements ArticleService {
             }
 
             Collections.shuffle(articleAbbreviationsDTOS);
-            constructArticleAbbreviationsDTOs(articleAbbreviationsDTOS);
+            constructArticleAbbreviationsDTOs(articleAbbreviationsDTOS, loginUserId);
             return articleAbbreviationsDTOS;
         } else {
             Random random = new Random();
@@ -135,13 +135,13 @@ public class ArticleServiceImpl implements ArticleService {
             }
 
             Collections.shuffle(articleAbbreviationsDTOS);
-            constructArticleAbbreviationsDTOs(articleAbbreviationsDTOS);
+            constructArticleAbbreviationsDTOs(articleAbbreviationsDTOS, loginUserId);
             return articleAbbreviationsDTOS;
         }
     }
 
     @Override
-    public ArticleDTO detail(Integer articleId, Integer userId) {
+    public ArticleDTO detail(Integer articleId, Integer loginUserId) {
         ArticleDTO articleDTO = articleDao.queryDetailById(articleId);
         // 文章不存在
         if (articleDTO == null) {
@@ -149,9 +149,9 @@ public class ArticleServiceImpl implements ArticleService {
         }
 
         // 添加到或更新历史记录
-        History query = historyDao.queryByUserIdAndArticleId(userId, articleId);
+        History query = historyDao.queryByUserIdAndArticleId(loginUserId, articleId);
         if (query == null) { // 添加到历史记录
-            History history = new History(0, userId, articleId, LocalDateTime.now());
+            History history = new History(0, loginUserId, articleId, LocalDateTime.now());
             historyDao.insert(history);
         } else { // 更新历史记录
             query.setVisitTime(LocalDateTime.now());
@@ -165,18 +165,21 @@ public class ArticleServiceImpl implements ArticleService {
         long commentsCount = commentDao.count(comment);
         articleDTO.setCommentsCount((int) commentsCount);
 
-        // 评论列表
+        // 评论列表 单独抽形成了一个接口
 
         // 图片访问地址
         List<Image> images = imageDao.queryByCategoryAndCategoryId(0, articleId);
         articleDTO.setImages(images);
 
         // 如果不是自己的文章，则浏览量+1
-        if (!articleDTO.getUserId().equals(userId)) {
+        if (!articleDTO.getUserId().equals(loginUserId)) {
             Article article = articleDao.queryById(articleId);
             article.setViewsCount(article.getViewsCount() + 1);
             articleDao.update(article);
         }
+
+        LikeRecord likeRecord = likeRecordDao.queryByUserIdAndArticleId(loginUserId, articleId);
+        articleDTO.setLike(likeRecord != null);
 
         return articleDTO;
     }
@@ -217,7 +220,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<ArticleAbbreviationsDTO> likeRecordOrHistory(Integer userId, Integer type) {
+    public List<ArticleAbbreviationsDTO> likeRecordOrHistory(Integer userId, Integer type, Integer loginUserId) {
         List<LikeRecord> likeRecords;
         List<History> history;
         List<Integer> articleIds;
@@ -241,23 +244,23 @@ public class ArticleServiceImpl implements ArticleService {
 
         List<ArticleAbbreviationsDTO> articleAbbreviationsDTOS;
         if (type == 0) { // 0表示点赞记录
-            articleAbbreviationsDTOS = articleDao.queryLikeInArticleId(ids);
+            articleAbbreviationsDTOS = articleDao.queryLikeInArticleId(ids, userId);
         } else { // 1表示历史记录
-            articleAbbreviationsDTOS = articleDao.queryHistoryInArticleId(ids);
+            articleAbbreviationsDTOS = articleDao.queryHistoryInArticleId(ids, userId);
         }
         // 为空判断
         if (articleAbbreviationsDTOS.isEmpty()) {
             return null;
         }
 
-        constructArticleAbbreviationsDTOs(articleAbbreviationsDTOS);
+        constructArticleAbbreviationsDTOs(articleAbbreviationsDTOS, loginUserId);
 
         return articleAbbreviationsDTOS;
 
     }
 
     @Override
-    public List<ArticleAbbreviationsDTO> queryByArticleTitle(String keyword, Integer orderType) {
+    public List<ArticleAbbreviationsDTO> queryByArticleTitle(String keyword, Integer orderType, Integer loginUserId) {
         List<ArticleAbbreviationsDTO> articleAbbreviationsDTOS = switch (orderType) {
             case 0 -> // 0表示按时间降序
                     articleDao.queryByArticleTitle(keyword, "id", StatusCode.APPROVED.getCode());
@@ -273,13 +276,13 @@ public class ArticleServiceImpl implements ArticleService {
             return null;
         }
 
-        constructArticleAbbreviationsDTOs(articleAbbreviationsDTOS);
+        constructArticleAbbreviationsDTOs(articleAbbreviationsDTOS, loginUserId);
 
         return articleAbbreviationsDTOS;
     }
 
-    // 查询`image`和`comment`表构造`文章缩略信息`中的`图片地址字段`和`评论数量字段`
-    void constructArticleAbbreviationsDTOs(List<ArticleAbbreviationsDTO> articleAbbreviationsDTOS) {
+    // 查询`image`、`comment`、`like_record`表，构造`文章缩略信息`中的`图片地址字段`、`评论数量字段`、`是否点赞字段`
+    void constructArticleAbbreviationsDTOs(List<ArticleAbbreviationsDTO> articleAbbreviationsDTOS, Integer userId) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("(");
         for (ArticleAbbreviationsDTO articleAbbreviationsDTO : articleAbbreviationsDTOS) {
@@ -312,13 +315,26 @@ public class ArticleServiceImpl implements ArticleService {
             }
         }
 
+        List<LikeRecord> likeRecordList = likeRecordDao.queryByUserId(userId);
+        Map<Integer, Integer> likeRecordMap = new HashMap<>();
+        for (LikeRecord likeRecord : likeRecordList) {
+            likeRecordMap.put(likeRecord.getArticleId(), 1);
+        }
+
         if (!articleAbbreviationsDTOS.isEmpty()) {
             articleAbbreviationsDTOS.forEach(v -> {
                 v.setImages(imageMap.get(v.getId()));
                 Integer commentCount = commentMap.get(v.getId());
                 v.setCommentsCount(commentCount == null ? 0 : commentCount);
                 String content = v.getContent();
-                v.setContent(content.substring(0, contentLength));
+                if (content.length() < contentLength) {
+                    v.setContent(content);
+                } else {
+                    v.setContent(content.substring(0, contentLength));
+
+                }
+                Integer like = likeRecordMap.get(v.getId());
+                v.setLike(like != null);
             });
         }
     }

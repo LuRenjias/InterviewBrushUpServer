@@ -28,4 +28,6 @@ public class ArticleAbbreviationsDTO {
     private LocalDateTime likeTime; // 点赞时间
     private LocalDateTime visitTime; // 访问时间
 
+    private Boolean like; // 点赞标识，true表示点赞，false表示未点赞
+
 }

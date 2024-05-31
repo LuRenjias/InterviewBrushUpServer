@@ -315,7 +315,7 @@
         join like_record l on a.id = l.article_id
         where false
         <if test="ids != null and ids != ''">
-            or a.id in ${ids}
+            or a.id in ${ids} and l.user_id = #{userId}
         </if>
         order by l.id desc
     </select>
@@ -336,7 +336,7 @@
         join history h on a.id = h.article_id
         where false
         <if test="ids != null and ids != ''">
-            or a.id in ${ids}
+            or a.id in ${ids} and h.user_id = #{userId}
         </if>
         order by h.visit_time desc
     </select>
