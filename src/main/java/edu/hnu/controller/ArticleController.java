@@ -77,10 +77,10 @@ public class ArticleController {
      * 发现页文章.
      */
     @GetMapping("findList")
-    public Result findList(@RequestHeader String token) {
+    public Result findList(Integer type, @RequestHeader String token) {
         log.info("findList: 发现页文章");
 
-        List<ArticleAbbreviationsDTO> list = articleService.findList(JwtUtils.getUserId(token));
+        List<ArticleAbbreviationsDTO> list = articleService.findList(type, JwtUtils.getUserId(token));
 
         return Result.success(list);
     }

@@ -38,6 +38,12 @@ public class ArticleServiceImpl implements ArticleService {
     @Resource
     private HistoryDao historyDao;
 
+    @Resource
+    private FollowDao followDao;
+
+    @Resource
+    private FavoriteDao favoriteDao;
+
     @Value("${info.content-length}")
     private Integer contentLength;
 
@@ -108,36 +114,73 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<ArticleAbbreviationsDTO> findList(Integer loginUserId) {
+    public List<ArticleAbbreviationsDTO> findList(Integer type, Integer loginUserId) {
         Article article = new Article();
         article.setStatus(StatusCode.APPROVED.getCode());
         long count = articleDao.count(article);
+        List<Follow> follows = followDao.queryByFollowerUserId(loginUserId);
+        // 关注的用户的ID列表
+        List<Integer> followingIds = follows.stream().map(Follow::getUserId).toList();
 
-        if (count < recommendCount) {
-            List<ArticleAbbreviationsDTO> articleAbbreviationsDTOS = articleDao.listAllAbbreviations(StatusCode.APPROVED.getCode());
-            // 为空判断
-            if (articleAbbreviationsDTOS.isEmpty()) {
-                return null;
-            }
-
-            Collections.shuffle(articleAbbreviationsDTOS);
-            constructArticleAbbreviationsDTOs(articleAbbreviationsDTOS, loginUserId);
-            return articleAbbreviationsDTOS;
-        } else {
-            Random random = new Random();
-            long diff = count - recommendCount;
-            int skipCount = random.nextInt((int) (diff + 1));
-            List<ArticleAbbreviationsDTO> articleAbbreviationsDTOS = articleDao.listAbbreviationsLimit(skipCount,
-                    recommendCount, StatusCode.APPROVED.getCode());
-            // 为空判断
-            if (articleAbbreviationsDTOS.isEmpty()) {
-                return null;
-            }
-
-            Collections.shuffle(articleAbbreviationsDTOS);
-            constructArticleAbbreviationsDTOs(articleAbbreviationsDTOS, loginUserId);
-            return articleAbbreviationsDTOS;
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("(");
+        for (Integer id : followingIds) {
+            stringBuilder.append(id).append(",");
         }
+        stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+        stringBuilder.append(")");
+        String ids = stringBuilder.toString().equals(")") ? null : stringBuilder.toString();
+
+        List<ArticleAbbreviationsDTO> articleAbbreviationsDTOS;
+        if (count < recommendCount) {
+            switch (type) {
+                case 0: // 0表示推荐
+                    articleAbbreviationsDTOS = articleDao.listAllAbbreviations(StatusCode.APPROVED.getCode());
+                    Collections.shuffle(articleAbbreviationsDTOS);
+                    break;
+                case 1: // 1表示最新
+                    articleAbbreviationsDTOS = articleDao.listAllAbbreviations(StatusCode.APPROVED.getCode());
+                    articleAbbreviationsDTOS = articleAbbreviationsDTOS.stream().
+                            sorted(Comparator.comparing(ArticleAbbreviationsDTO::getId).reversed()).
+                            toList();
+                    break;
+                case 2: // 2表示关注
+                    articleAbbreviationsDTOS = articleDao.queryAbbreviationsInUserId(ids, StatusCode.APPROVED.getCode());
+                    break;
+                default:
+                    articleAbbreviationsDTOS = new ArrayList<>();
+            }
+        } else {
+            long diff = count - recommendCount;
+            switch (type) {
+                case 0: // 0表示推荐
+                    Random random = new Random();
+                    int skipCount = random.nextInt((int) (diff + 1));
+                    articleAbbreviationsDTOS = articleDao.listAbbreviationsLimit(skipCount,
+                            recommendCount, StatusCode.APPROVED.getCode());
+                    Collections.shuffle(articleAbbreviationsDTOS);
+                    break;
+                case 1: // 1表示最新
+                    articleAbbreviationsDTOS = articleDao.listAbbreviationsLimit((int) diff,
+                            recommendCount, StatusCode.APPROVED.getCode());
+                    articleAbbreviationsDTOS = articleAbbreviationsDTOS.stream()
+                            .sorted(Comparator.comparing(ArticleAbbreviationsDTO::getId).reversed()).
+                            toList();
+                    break;
+                case 2: // 2表示关注
+                    articleAbbreviationsDTOS = articleDao.queryAbbreviationsInUserId(ids, StatusCode.APPROVED.getCode());
+                    break;
+                default:
+                    articleAbbreviationsDTOS = new ArrayList<>();
+            }
+
+        }
+        // 为空判断
+        if (articleAbbreviationsDTOS.isEmpty()) {
+            return null;
+        }
+        constructArticleAbbreviationsDTOs(articleAbbreviationsDTOS, loginUserId);
+        return articleAbbreviationsDTOS;
     }
 
     @Override
@@ -178,8 +221,17 @@ public class ArticleServiceImpl implements ArticleService {
             articleDao.update(article);
         }
 
+        // 设置点赞状态
         LikeRecord likeRecord = likeRecordDao.queryByUserIdAndArticleId(loginUserId, articleId);
         articleDTO.setLike(likeRecord != null);
+
+        // 设置关注状态
+        Follow follow = followDao.queryStatus(articleDTO.getUserId(), loginUserId);
+        articleDTO.setFollowed(follow != null);
+
+        // 设置收藏状态
+        Favorite favorite = favoriteDao.queryByUIdAndContentIdAndModule(loginUserId, articleId, 0);// 0 表示文章，1 表示八股，2 表示题目
+        articleDTO.setFavorite(favorite != null);
 
         return articleDTO;
     }

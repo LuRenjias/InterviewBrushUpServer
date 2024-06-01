@@ -33,7 +33,7 @@ public interface ArticleService {
     /**
      * 发现页文章.
      */
-    List<ArticleAbbreviationsDTO> findList(Integer loginUserId);
+    List<ArticleAbbreviationsDTO> findList(Integer type, Integer loginUserId);
 
     /**
      * 文章详情.

@@ -20,10 +20,13 @@ public class ArticleDTO {
     private Integer likesCount; // 文章点赞数量
     private Integer commentsCount; // 文章评论数量
     private List<Image> images; // 文章图片访问地址
+    private Integer category; // 文章的类别
 
     private Integer userId; // 文章作者id
     private String nickname; // 作者昵称
     private String avatarUrl; // 作者头像
 
     private Boolean like; // 点赞标识，true表示点赞，false表示未点赞
+    private Boolean followed; // 是否关注，true表示关注，false表示未关注
+    private Boolean favorite; // 收藏标识，true表示收藏，false表示未收藏
 }

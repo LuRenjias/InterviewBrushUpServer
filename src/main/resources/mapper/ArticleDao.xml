@@ -21,6 +21,7 @@
         <result property="content" column="content" jdbcType="VARCHAR"/>
         <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
         <result property="likesCount" column="likes_count" jdbcType="INTEGER"/>
+        <result property="category" column="category" jdbcType="INTEGER"/>
         <result property="viewsCount" column="views_count" jdbcType="INTEGER"/>
         <result property="userId" column="user_id" jdbcType="INTEGER"/>
         <result property="nickname" column="nickname" jdbcType="VARCHAR"/>
@@ -35,6 +36,7 @@
         <result property="content" column="content" jdbcType="VARCHAR"/>
         <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
         <result property="likesCount" column="likes_count" jdbcType="INTEGER"/>
+        <result property="category" column="category" jdbcType="INTEGER"/>
         <result property="userId" column="user_id" jdbcType="INTEGER"/>
         <result property="nickname" column="nickname" jdbcType="VARCHAR"/>
         <result property="avatarUrl" column="avatar_url" jdbcType="VARCHAR"/>
@@ -246,6 +248,7 @@
                a.likes_count,
                a.views_count,
                a.user_id,
+               a.category,
                u.nickname,
                u.avatar_url
         from article a
@@ -262,6 +265,7 @@
                a.likes_count,
                a.views_count,
                a.user_id,
+               a.category,
                u.nickname,
                u.avatar_url
         from article a
@@ -277,12 +281,33 @@
                a.likes_count,
                a.views_count,
                a.user_id,
+               a.category,
                u.nickname,
                u.avatar_url
         from article a
                  join user u on a.user_id = u.id
         where a.status = #{status} limit #{skipCount}
             , #{returnCount}
+    </select>
+
+    <select id="queryAbbreviationsInUserId" resultMap="ArticleAbbreviationsDTOMap">
+        select a.id,
+        a.title,
+        a.content,
+        a.create_time,
+        a.likes_count,
+        a.views_count,
+        a.user_id,
+        a.category,
+        u.nickname,
+        u.avatar_url
+        from article a
+        join user u on a.user_id = u.id
+        where false
+        <if test="ids != null and ids != ''">
+            or a.status = #{status} and a.user_id in ${ids}
+        </if>
+        order by a.id desc
     </select>
 
     <select id="queryDetailById" resultMap="ArticleDTOMap">
@@ -292,6 +317,7 @@
                a.create_time,
                a.views_count,
                a.user_id,
+               a.category,
                u.nickname,
                u.avatar_url
         from article a
@@ -307,6 +333,7 @@
         a.likes_count,
         a.views_count,
         a.user_id,
+        a.category,
         u.nickname,
         u.avatar_url,
         l.like_time
@@ -328,6 +355,7 @@
         a.likes_count,
         a.views_count,
         a.user_id,
+        a.category,
         u.nickname,
         u.avatar_url,
         h.visit_time
@@ -349,6 +377,7 @@
                a.likes_count,
                a.views_count,
                a.user_id,
+               a.category,
                u.nickname,
                u.avatar_url
         from article a
@@ -359,20 +388,21 @@
     </select>
     <select id="queryByCollectionIdAndUId" resultType="edu.hnu.dto.ArticleAbbreviationsDTO">
         select a.id,
-        a.title,
-        a.content,
-        a.create_time,
-        a.likes_count,
-        a.views_count,
-        a.user_id,
-        u.nickname,
-        u.avatar_url,
-        l.like_time
+               a.title,
+               a.content,
+               a.create_time,
+               a.likes_count,
+               a.views_count,
+               a.user_id,
+               u.nickname,
+               u.avatar_url,
+               l.like_time
         from article a
-        join user u on a.user_id = u.id
-        join like_record l on a.id = l.article_id
-        join favorite f on f.favorite_content_id = a.id
-        where f.user_id = #{userId} and f.collection_id = #{id}
+                 join user u on a.user_id = u.id
+                 join like_record l on a.id = l.article_id
+                 join favorite f on f.favorite_content_id = a.id
+        where f.user_id = #{userId}
+          and f.collection_id = #{id}
         order by favorite_time desc
     </select>
 </mapper>

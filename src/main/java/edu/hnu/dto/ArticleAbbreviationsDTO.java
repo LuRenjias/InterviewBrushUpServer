@@ -20,6 +20,7 @@ public class ArticleAbbreviationsDTO {
     private Integer viewsCount; // 文章浏览量
     private Integer commentsCount; // 文章评论数量
     private List<Image> images; // 文章图片访问地址
+    private Integer category; // 文章的类别
 
     private Integer userId; // 文章作者id
     private String nickname; // 作者昵称
