@@ -63,7 +63,7 @@ public class ChoiceQuestionController {
     ChoiceQuestionRecord choiceQuestionRecord = choiceQuestionService.queryRecordById(user_id, choiceQuestion.getId());
     Boolean isCollect = choiceQuestionService.queryIsCollectByUIdAndCId(choiceQuestion.getId(), user_id);
     if (choiceQuestionRecord != null) {
-      return Result.success(new ChoiceQuestionDoneDTO(true, choiceQuestion.getId(), choiceQuestion.getQuestion(), choiceQuestionRecord.getUserOption(), choiceQuestion.getType(), choiceQuestion.getCorrectOption(), isCollect));
+      return Result.success(new ChoiceQuestionDoneDTO(true, choiceQuestion.getId(), choiceQuestion.getQuestion(), choiceQuestion.getOptions(), choiceQuestionRecord.getUserOption(), choiceQuestion.getType(), choiceQuestion.getCorrectOption(), isCollect));
     }
     choiceQuestionService.addViewCount(choiceQuestion.getId());
     return Result.success(new ChoiceQuestionUnDoneDTO(false, choiceQuestion.getId(), choiceQuestion.getQuestion(), choiceQuestion.getOptions(), choiceQuestion.getType(), isCollect));
@@ -119,10 +119,10 @@ public class ChoiceQuestionController {
    * 根据id获取题目数据
    */
   @GetMapping("getSingleChoiceQuestion")
-  public Result getSingleChoiceQuestion(Integer id){
+  public Result getSingleChoiceQuestion(Integer id) {
     log.info("读取单个题目数据");
     ChoiceQuestion choiceQuestion = choiceQuestionService.queryById(id); // 得到题库数据
-    if(choiceQuestion == null){
+    if (choiceQuestion == null) {
       return Result.error(StatusCode.NO_SELECT_ID);
     }
     String token = request.getHeader("token");
@@ -130,13 +130,13 @@ public class ChoiceQuestionController {
     ChoiceQuestionRecord choiceQuestionRecord = choiceQuestionService.queryRecordById(user_id, choiceQuestion.getId());
     Boolean isCollect = choiceQuestionService.queryIsCollectByUIdAndCId(choiceQuestion.getId(), user_id);
     if (choiceQuestionRecord != null) {
-      return Result.success(new ChoiceQuestionDoneDTO(true, choiceQuestion.getId(), choiceQuestion.getQuestion(), choiceQuestionRecord.getUserOption(), choiceQuestion.getType(), choiceQuestion.getCorrectOption(), isCollect));
+      return Result.success(new ChoiceQuestionDoneDTO(true, choiceQuestion.getId(), choiceQuestion.getOptions(), choiceQuestion.getQuestion(), choiceQuestionRecord.getUserOption(), choiceQuestion.getType(), choiceQuestion.getCorrectOption(), isCollect));
     }
     return Result.success(new ChoiceQuestionUnDoneDTO(false, choiceQuestion.getId(), choiceQuestion.getQuestion(), choiceQuestion.getOptions(), choiceQuestion.getType(), isCollect));
   }
 
   @GetMapping("getHotChoiceQuestionList")
-  public Result getHotChoiceQuestion(){
+  public Result getHotChoiceQuestion() {
     log.info("获取热门题库列表");
     String token = request.getHeader("token");
     Integer user_id = JwtUtils.getUserId(token);
