@@ -1,16 +1,16 @@
 package edu.hnu.service.impl;
 
-import edu.hnu.dao.ArticleDao;
-import edu.hnu.dao.ChoiceQuestionDao;
-import edu.hnu.dao.CollectionDao;
-import edu.hnu.dao.IntegratedQuestionDao;
+import edu.hnu.dao.*;
 import edu.hnu.dto.*;
 import edu.hnu.entity.Collection;
+import edu.hnu.entity.LikeRecord;
 import edu.hnu.service.CollectionService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * (Collection)表服务实现类
@@ -28,6 +28,8 @@ public class CollectionServiceImpl implements CollectionService {
     private IntegratedQuestionDao integratedQuestionDao;
     @Resource
     private ChoiceQuestionDao choiceQuestionDao;
+    @Resource
+    private LikeRecordDao likeRecordDao;
 
     @Override
     public List<CollectionDTO> queryByIdAndModule(Integer user_id,Integer module) {
@@ -98,7 +100,19 @@ public class CollectionServiceImpl implements CollectionService {
 
     @Override
     public List<ArticleAbbreviationsDTO> queryArticle(Integer id, Integer userId) {
-        return articleDao.queryByCollectionIdAndUId(id,userId);
+        List<ArticleAbbreviationsDTO> articleAbbreviationsDTOS = articleDao.queryByCollectionIdAndUId(id,userId);
+        List<LikeRecord> likeRecordList = likeRecordDao.queryByUserId(userId);
+        Map<Integer, Integer> likeRecordMap = new HashMap<>();
+        for (LikeRecord likeRecord : likeRecordList) {
+            likeRecordMap.put(likeRecord.getArticleId(), 1);
+        }
+        if (!articleAbbreviationsDTOS.isEmpty()) {
+            articleAbbreviationsDTOS.forEach(v -> {
+                Integer like = likeRecordMap.get(v.getId());
+                v.setLike(like != null);
+            });
+        }
+        return articleAbbreviationsDTOS;
     }
 
     @Override
