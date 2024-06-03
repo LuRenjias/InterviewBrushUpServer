@@ -57,7 +57,7 @@ public class ArticleServiceImpl implements ArticleService {
         article.setLikesCount(0);
         article.setFavoritesCount(0);
         article.setViewsCount(0);
-        article.setStatus(StatusCode.UNDER_REVIEW.getCode());
+        article.setStatus(StatusCode.APPROVED.getCode());
         articleDao.insert(article); // 设置了 useGeneratedKeys="true"，插入完后，自动设置了对象的id
         return article.getId();
     }
