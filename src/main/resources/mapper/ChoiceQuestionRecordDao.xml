@@ -75,7 +75,7 @@
         where user_id = #{userId} and choice_question_id = #{questionId}
     </select>
     <select id="queryErrorSet" resultType="edu.hnu.dto.ChoiceQuestionErrorSetDTO">
-        select question, category, choice_time
+        select choice_question.id as id,question, category, choice_time
         from choice_question_record,
              choice_question
         where choice_question_id = choice_question.id and user_id = #{userId}

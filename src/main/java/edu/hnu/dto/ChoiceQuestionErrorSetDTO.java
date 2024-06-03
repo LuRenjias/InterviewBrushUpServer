@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ChoiceQuestionErrorSetDTO {
+  private Integer id;
   private String question;
   private Integer category;
   private String choiceTime;
