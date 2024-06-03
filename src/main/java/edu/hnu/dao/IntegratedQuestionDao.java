@@ -129,7 +129,7 @@ public interface IntegratedQuestionDao {
   /**
    * 返回指定类型的八股数据(审核通过,限制数量).
    */
-  List<IntegratedQuestionListDTO> listLimit(int skipCount, Long recommendCount, Integer category);
+  List<IntegratedQuestionListDTO> listLimit(int skipCount, Long returnCount, Integer category);
 
   List<IntegratedQuestionListDTO> queryByQuestion(@Param("question") String question,
                                                   @Param("column") String colum,
