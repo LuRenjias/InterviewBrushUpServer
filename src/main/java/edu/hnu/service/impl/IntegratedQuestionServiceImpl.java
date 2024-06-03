@@ -96,7 +96,9 @@ public class IntegratedQuestionServiceImpl implements IntegratedQuestionService 
 
     @Override
     public List<IntegratedQuestionListDTO> queryByCategory(Integer category) {
-        long count = integratedQuestionDao.count(null);
+        IntegratedQuestion integratedQuestion = new IntegratedQuestion();
+        integratedQuestion.setCategory(category);
+        long count = integratedQuestionDao.count(integratedQuestion);
         if (count < recommendCount) {
             List<IntegratedQuestionListDTO> list = integratedQuestionDao.list1(category);
             Collections.shuffle(list);
